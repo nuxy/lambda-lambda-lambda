@@ -1,0 +1,41 @@
+{
+  "name": "lambda-lambda-lambda",
+  "version": "0.0.1",
+  "description": "AWS Lambda@Edge application routing handler.",
+  "main": "src/Router.js",
+  "scripts": {
+    "gendoc": "node_modules/.bin/esdoc -c .esdocrc",
+    "lint": "eslint src/*.js tests",
+    "test": "mocha tests/unit/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nuxy/lambda-lambda-lambda.git"
+  },
+  "keywords": [
+    "javascript",
+    "nodejs",
+    "amazon",
+    "cloudfront",
+    "lambda",
+    "router"
+  ],
+  "bugs": {
+    "url": "https://github.com/nuxy/lambda-lambda-lambda/issues"
+  },
+  "homepage": "https://github.com/nuxy/lambda-lambda-lambda#readme",
+  "author": "Marc S. Brooks <devel@mbrooks.info> (https://mbrooks.info)",
+  "license": "MIT",
+  "devDependencies": {
+    "aws-sdk": "^2.815.0",
+    "chai": "^4.2.0",
+    "esdoc": "^1.0.4",
+    "esdoc-node": "^1.0.5",
+    "esdoc-standard-plugin": "^1.0.0",
+    "eslint": "^7.15.0",
+    "mocha": "^8.2.1"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}
