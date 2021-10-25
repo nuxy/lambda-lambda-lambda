@@ -65,6 +65,15 @@ module.exports = class RouterRequest {
   }
 
   /**
+   * Return the HTTP base64 body data as object.
+   *
+   * @return {Object}
+   */
+  param() {
+    return RouterRequest.parseBody(this.data().body.data);
+  }
+
+  /**
    * Return the HTTP method of the request.
    *
    * @return {String}
@@ -101,11 +110,76 @@ module.exports = class RouterRequest {
   }
 
   /**
+   * Return the base64-encoded body data.
+   *
+   * @return {String}
+   */
+  body() {
+    return this.data().body.data;
+  }
+
+  /**
    * Return the headers of the request.
    *
    * @return {Array<Object|undefined>}
    */
   getHeaders() {
     return this.data().headers;
+  }
+
+  /**
+   * Convert base64-encoded request body to object.
+   *
+   * @param {String} str
+   *   base64 string.
+   *
+   * @return {Object|undefined}
+   */
+  static parseBody(str) {
+    const body = Buffer.from(
+      str, 'base64'
+    ).toString();
+
+    if (RouterRequest.isJson(body)) {
+      return JSON.parse(body);
+    }
+
+    if (RouterRequest.isParams(body)) {
+      return Object.fromEntries(new URLSearchParams(body));
+    }
+  }
+
+  /**
+   * Check valid HTTP request parameters.
+   *
+   * @param {String}
+   *   Parameter (key/value) pairs.
+   */
+  static isParams(str) {
+    return (Array.from(new URLSearchParams(str)).length > 0);
+  }
+
+  /**
+   * Check valid JSON string format.
+   *
+   * @param {String}
+   *   JSON string.
+   *
+   * @return {Boolean}
+   */
+  static isJson(str) {
+    let data;
+
+    try {
+      data = JSON.parse(str);
+    } catch (err) {
+      return false;
+    }
+
+    if (Array.isArray(data) || typeof data === 'object') {
+      return true;
+    }
+
+    return false;
   }
 };

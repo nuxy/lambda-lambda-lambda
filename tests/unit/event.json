@@ -60,7 +60,13 @@
             }
           },
           "querystring": "",
-          "uri": "/api/test"
+          "uri": "/api/test",
+          "body": {
+            "action": "read-only",
+            "data": "Zm9vPWJhciZiaXo9YmF6==",
+            "encoding": "base64",
+            "inputTruncated": false
+          }
         }
       }
     }
