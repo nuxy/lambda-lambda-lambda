@@ -7,7 +7,11 @@ module.exports = (router, route) => {
 
   // Add route-bound middleware, if available.
   if (route.middleware) {
-    router.use(route.path, route.middleware);
+    if (Array.isArray(route.middleware)) {
+      route.middleware.forEach(func => router.use(route.path, func));
+    } else {
+      router.use(route.path, route.middleware);
+    }
   }
 
   const methods = {
