@@ -40,6 +40,18 @@ module.exports = class RouterResponse {
   }
 
   /**
+   * Return the body text.
+   *
+   * @param {String} body
+   *   Body as string.
+   *
+   * @return {String}
+   */
+  text(body) {
+    return body.toString();
+  }
+
+  /**
    * Set HTTP response header.
    *
    * @param {String} key
@@ -86,7 +98,7 @@ module.exports = class RouterResponse {
       },
       send: body => {
         if (body) {
-          this.data().body = body;
+          this.data().body = this.text(body);
         }
       }
     };

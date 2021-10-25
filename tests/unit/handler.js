@@ -131,6 +131,7 @@ describe('CONNECT /api/test (middleware)', function() {
       const {headers, status, body} = result;
 
       expect(headers).to.be.an('array');
+      expect(headers).to.be.empty;
 
       expect(status).to.be.an('number');
       expect(status).to.equal(405);
@@ -151,6 +152,7 @@ describe('GET /api/ (root response)', function() {
       const {headers, status, body} = result;
 
       expect(headers).to.be.an('array');
+      expect(headers).to.be.empty;
 
       expect(status).to.be.an('number');
       expect(status).to.equal(501);
@@ -160,7 +162,7 @@ describe('GET /api/ (root response)', function() {
   });
 });
 
-describe('GET /api/ (.. everything else)', function() {
+describe('GET /api/unknown (.. everything else)', function() {
   it('returns response', function() {
     event.Records[0].cf.request.method = 'GET';
     event.Records[0].cf.request.uri    = '/api/unknown';
@@ -171,6 +173,7 @@ describe('GET /api/ (.. everything else)', function() {
       const {headers, status, body} = result;
 
       expect(headers).to.be.an('array');
+      expect(headers).to.be.empty;
 
       expect(status).to.be.an('number');
       expect(status).to.equal(404);
