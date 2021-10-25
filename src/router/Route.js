@@ -12,10 +12,10 @@ module.exports = (router, route) => {
 
   const methods = {
     index: 'get',
-    create: 'post',
-    update: 'put',
-    edit: 'patch',
-    delete: 'delete'
+    create: 'put',
+    update: 'patch',
+    delete: 'delete',
+    submit: 'post'
   };
 
   for (let key in route) {

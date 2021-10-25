@@ -23,7 +23,7 @@ module.exports = {
   /**
    * PATCH /api/test
    */
-  edit (req, res) {
+  update (req, res) {
     res.status(204).send();
   },
 
