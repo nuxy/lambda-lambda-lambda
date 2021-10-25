@@ -33,4 +33,11 @@ module.exports = {
   delete (req, res) {
     res.status(200).send();
   },
+
+  /**
+   * SUBMIT /api/test
+   */
+  submit (req, res) {
+    res.status(200).send();
+  }
 };
