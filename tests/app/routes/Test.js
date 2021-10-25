@@ -38,7 +38,7 @@ module.exports = {
   },
 
   /**
-   * SUBMIT /api/test
+   * POST /api/test
    */
   submit (req, res) {
     res.status(200).send('submit');
