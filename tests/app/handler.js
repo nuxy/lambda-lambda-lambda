@@ -14,7 +14,7 @@ exports.handler = (event, context, callback) => {
 
   // Middleware (order is important).
   router.use(function(req, res, next) {
-    if (req.method() === 'POST') {
+    if (req.method() === 'CONNECT') {
       res.status(405).send();
     } else {
       next();
