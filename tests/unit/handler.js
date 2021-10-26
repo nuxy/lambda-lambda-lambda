@@ -6,179 +6,477 @@ const chai  = require('chai');
 
 const expect = chai.expect;
 
-describe('GET /api/test', function() {
-  it('returns response', function() {
-    event.Records[0].cf.request.method = 'GET';
+describe('Test route /api/', function() {
+  describe('GET', function() {
+    it('returns response', function() {
+      event.Records[0].cf.request.method = 'GET';
+      event.Records[0].cf.request.uri    = '/api/';
 
-    app.handler(event, null, function(undef, result) {
-      expect(result).to.be.an('object');
+      app.handler(event, null, function(undef, result) {
+        expect(result).to.be.an('object');
 
-      const {headers, status, body} = result;
+        const {headers, status, body} = result;
 
-      expect(headers).to.be.an('array');
+        expect(headers).to.be.an('array');
+        expect(headers).to.be.empty;
 
-      expect(headers[0]['content-type'].key).to.equal('Content-Type');
-      expect(headers[0]['content-type'].value).to.equal('text/html');
+        expect(status).to.be.an('number');
+        expect(status).to.equal(501);
 
-      expect(status).to.be.an('number');
-      expect(status).to.equal(200);
-
-      expect(body).to.be.an('string');
-      expect(body).to.equal('index');
+        expect(body).to.be.undefined;
+      });
     });
   });
 });
 
-describe('PUT /api/test', function() {
-  it('returns response', function() {
-    event.Records[0].cf.request.method = 'PUT';
+describe('Test route /api/foo', function() {
+  describe('GET', function() {
+    it('returns response', function() {
+      event.Records[0].cf.request.method = 'GET';
+      event.Records[0].cf.request.uri    = '/api/foo';
 
-    app.handler(event, null, function(undef, result) {
-      expect(result).to.be.an('object');
+      app.handler(event, null, function(undef, result) {
+        expect(result).to.be.an('object');
 
-      const {headers, status, body} = result;
+        const {headers, status, body} = result;
 
-      expect(headers).to.be.an('array');
+        expect(headers).to.be.an('array');
 
-      expect(headers[0]['content-type'].key).to.equal('Content-Type');
-      expect(headers[0]['content-type'].value).to.equal('text/html');
+        expect(headers[0]['content-type'].key).to.equal('Content-Type');
+        expect(headers[0]['content-type'].value).to.equal('text/html');
 
-      expect(status).to.be.an('number');
-      expect(status).to.equal(201);
+        expect(status).to.be.an('number');
+        expect(status).to.equal(200);
 
-      expect(body).to.be.an('string');
-      expect(body).to.equal('create');
+        expect(body).to.be.an('string');
+        expect(body).to.equal('index');
+      });
+    });
+  });
+
+  describe('PUT', function() {
+    it('returns response', function() {
+      event.Records[0].cf.request.method = 'PUT';
+      event.Records[0].cf.request.uri    = '/api/foo';
+
+      app.handler(event, null, function(undef, result) {
+        expect(result).to.be.an('object');
+
+        const {headers, status, body} = result;
+
+        expect(headers).to.be.an('array');
+
+        expect(headers[0]['content-type'].key).to.equal('Content-Type');
+        expect(headers[0]['content-type'].value).to.equal('text/html');
+
+        expect(status).to.be.an('number');
+        expect(status).to.equal(201);
+
+        expect(body).to.be.an('string');
+        expect(body).to.equal('create');
+      });
+    });
+  });
+
+  describe('PATCH', function() {
+    it('returns response', function() {
+      event.Records[0].cf.request.method = 'PATCH';
+      event.Records[0].cf.request.uri    = '/api/foo';
+
+      app.handler(event, null, function(undef, result) {
+        expect(result).to.be.an('object');
+
+        const {headers, status, body} = result;
+
+        expect(headers).to.be.an('array');
+
+        expect(headers[0]['content-type'].key).to.equal('Content-Type');
+        expect(headers[0]['content-type'].value).to.equal('text/html');
+
+        expect(status).to.be.an('number');
+        expect(status).to.equal(204);
+
+        expect(body).to.be.an('string');
+        expect(body).to.equal('update');
+      });
+    });
+  });
+
+  describe('DELETE', function() {
+    it('returns response', function() {
+      event.Records[0].cf.request.method = 'DELETE';
+      event.Records[0].cf.request.uri    = '/api/foo';
+
+      app.handler(event, null, function(undef, result) {
+        expect(result).to.be.an('object');
+
+        const {headers, status, body} = result;
+
+        expect(headers).to.be.an('array');
+
+        expect(headers[0]['content-type'].key).to.equal('Content-Type');
+        expect(headers[0]['content-type'].value).to.equal('text/html');
+
+        expect(status).to.be.an('number');
+        expect(status).to.equal(410);
+
+        expect(body).to.be.an('string');
+        expect(body).to.equal('delete');
+      });
+    });
+  });
+
+  describe('POST', function() {
+    it('returns response', function() {
+      event.Records[0].cf.request.method = 'POST';
+      event.Records[0].cf.request.uri    = '/api/foo';
+
+      app.handler(event, null, function(undef, result) {
+        expect(result).to.be.an('object');
+
+        const {headers, status, body} = result;
+
+        expect(headers).to.be.an('array');
+
+        expect(headers[0]['content-type'].key).to.equal('Content-Type');
+        expect(headers[0]['content-type'].value).to.equal('text/html');
+
+        expect(status).to.be.an('number');
+        expect(status).to.equal(200);
+
+        expect(body).to.be.an('string');
+        expect(body).to.equal('submit');
+      });
+    });
+  });
+
+  describe('CONNECT (middleware)', function() {
+    it('returns response', function() {
+      event.Records[0].cf.request.method = 'CONNECT';
+      event.Records[0].cf.request.uri    = '/api/foo';
+
+      app.handler(event, null, function(undef, result) {
+        expect(result).to.be.an('object');
+
+        const {headers, status, body} = result;
+
+        expect(headers).to.be.an('array');
+        expect(headers).to.be.empty;
+
+        expect(status).to.be.an('number');
+        expect(status).to.equal(405);
+
+        expect(body).to.be.undefined;
+      });
     });
   });
 });
 
-describe('PATCH /api/test', function() {
-  it('returns response', function() {
-    event.Records[0].cf.request.method = 'PATCH';
+describe('Test route /api/foo/bar', function() {
+  describe('GET', function() {
+    it('returns response', function() {
+      event.Records[0].cf.request.method = 'GET';
+      event.Records[0].cf.request.uri    = '/api/foo/bar';
 
-    app.handler(event, null, function(undef, result) {
-      expect(result).to.be.an('object');
+      app.handler(event, null, function(undef, result) {
+        expect(result).to.be.an('object');
 
-      const {headers, status, body} = result;
+        const {headers, status, body} = result;
 
-      expect(headers).to.be.an('array');
+        expect(headers).to.be.an('array');
 
-      expect(headers[0]['content-type'].key).to.equal('Content-Type');
-      expect(headers[0]['content-type'].value).to.equal('text/html');
+        expect(headers[0]['content-type'].key).to.equal('Content-Type');
+        expect(headers[0]['content-type'].value).to.equal('text/html');
 
-      expect(status).to.be.an('number');
-      expect(status).to.equal(204);
+        expect(status).to.be.an('number');
+        expect(status).to.equal(200);
 
-      expect(body).to.be.an('string');
-      expect(body).to.equal('update');
+        expect(body).to.be.an('string');
+        expect(body).to.equal('index');
+      });
+    });
+  });
+
+  describe('PUT', function() {
+    it('returns response', function() {
+      event.Records[0].cf.request.method = 'PUT';
+      event.Records[0].cf.request.uri    = '/api/foo/bar';
+
+      app.handler(event, null, function(undef, result) {
+        expect(result).to.be.an('object');
+
+        const {headers, status, body} = result;
+
+        expect(headers).to.be.an('array');
+
+        expect(headers[0]['content-type'].key).to.equal('Content-Type');
+        expect(headers[0]['content-type'].value).to.equal('text/html');
+
+        expect(status).to.be.an('number');
+        expect(status).to.equal(201);
+
+        expect(body).to.be.an('string');
+        expect(body).to.equal('create');
+      });
+    });
+  });
+
+  describe('PATCH', function() {
+    it('returns response', function() {
+      event.Records[0].cf.request.method = 'PATCH';
+      event.Records[0].cf.request.uri    = '/api/foo/bar';
+
+      app.handler(event, null, function(undef, result) {
+        expect(result).to.be.an('object');
+
+        const {headers, status, body} = result;
+
+        expect(headers).to.be.an('array');
+
+        expect(headers[0]['content-type'].key).to.equal('Content-Type');
+        expect(headers[0]['content-type'].value).to.equal('text/html');
+
+        expect(status).to.be.an('number');
+        expect(status).to.equal(204);
+
+        expect(body).to.be.an('string');
+        expect(body).to.equal('update');
+      });
+    });
+  });
+
+  describe('DELETE', function() {
+    it('returns response', function() {
+      event.Records[0].cf.request.method = 'DELETE';
+      event.Records[0].cf.request.uri    = '/api/foo/bar';
+
+      app.handler(event, null, function(undef, result) {
+        expect(result).to.be.an('object');
+
+        const {headers, status, body} = result;
+
+        expect(headers).to.be.an('array');
+
+        expect(headers[0]['content-type'].key).to.equal('Content-Type');
+        expect(headers[0]['content-type'].value).to.equal('text/html');
+
+        expect(status).to.be.an('number');
+        expect(status).to.equal(410);
+
+        expect(body).to.be.an('string');
+        expect(body).to.equal('delete');
+      });
+    });
+  });
+
+  describe('POST', function() {
+    it('returns response', function() {
+      event.Records[0].cf.request.method = 'POST';
+      event.Records[0].cf.request.uri    = '/api/foo/bar';
+
+      app.handler(event, null, function(undef, result) {
+        expect(result).to.be.an('object');
+
+        const {headers, status, body} = result;
+
+        expect(headers).to.be.an('array');
+
+        expect(headers[0]['content-type'].key).to.equal('Content-Type');
+        expect(headers[0]['content-type'].value).to.equal('text/html');
+
+        expect(status).to.be.an('number');
+        expect(status).to.equal(200);
+
+        expect(body).to.be.an('string');
+        expect(body).to.equal('submit');
+      });
+    });
+  });
+
+  describe('CONNECT (middleware)', function() {
+    it('returns response', function() {
+      event.Records[0].cf.request.method = 'CONNECT';
+      event.Records[0].cf.request.uri    = '/api/foo/bar';
+
+      app.handler(event, null, function(undef, result) {
+        expect(result).to.be.an('object');
+
+        const {headers, status, body} = result;
+
+        expect(headers).to.be.an('array');
+        expect(headers).to.be.empty;
+
+        expect(status).to.be.an('number');
+        expect(status).to.equal(405);
+
+        expect(body).to.be.undefined;
+      });
     });
   });
 });
 
-describe('DELETE /api/test', function() {
-  it('returns response', function() {
-    event.Records[0].cf.request.method = 'DELETE';
+describe('Test route /api/foo/bar/baz', function() {
+  describe('GET', function() {
+    it('returns response', function() {
+      event.Records[0].cf.request.method = 'GET';
+      event.Records[0].cf.request.uri    = '/api/foo/bar/baz';
 
-    app.handler(event, null, function(undef, result) {
-      expect(result).to.be.an('object');
+      app.handler(event, null, function(undef, result) {
+        expect(result).to.be.an('object');
 
-      const {headers, status, body} = result;
+        const {headers, status, body} = result;
 
-      expect(headers).to.be.an('array');
+        expect(headers).to.be.an('array');
 
-      expect(headers[0]['content-type'].key).to.equal('Content-Type');
-      expect(headers[0]['content-type'].value).to.equal('text/html');
+        expect(headers[0]['content-type'].key).to.equal('Content-Type');
+        expect(headers[0]['content-type'].value).to.equal('text/html');
 
-      expect(status).to.be.an('number');
-      expect(status).to.equal(410);
+        expect(status).to.be.an('number');
+        expect(status).to.equal(200);
 
-      expect(body).to.be.an('string');
-      expect(body).to.equal('delete');
+        expect(body).to.be.an('string');
+        expect(body).to.equal('index');
+      });
+    });
+  });
+
+  describe('PUT', function() {
+    it('returns response', function() {
+      event.Records[0].cf.request.method = 'PUT';
+      event.Records[0].cf.request.uri    = '/api/foo/bar/baz';
+
+      app.handler(event, null, function(undef, result) {
+        expect(result).to.be.an('object');
+
+        const {headers, status, body} = result;
+
+        expect(headers).to.be.an('array');
+
+        expect(headers[0]['content-type'].key).to.equal('Content-Type');
+        expect(headers[0]['content-type'].value).to.equal('text/html');
+
+        expect(status).to.be.an('number');
+        expect(status).to.equal(201);
+
+        expect(body).to.be.an('string');
+        expect(body).to.equal('create');
+      });
+    });
+  });
+
+  describe('PATCH', function() {
+    it('returns response', function() {
+      event.Records[0].cf.request.method = 'PATCH';
+      event.Records[0].cf.request.uri    = '/api/foo/bar/baz';
+
+      app.handler(event, null, function(undef, result) {
+        expect(result).to.be.an('object');
+
+        const {headers, status, body} = result;
+
+        expect(headers).to.be.an('array');
+
+        expect(headers[0]['content-type'].key).to.equal('Content-Type');
+        expect(headers[0]['content-type'].value).to.equal('text/html');
+
+        expect(status).to.be.an('number');
+        expect(status).to.equal(204);
+
+        expect(body).to.be.an('string');
+        expect(body).to.equal('update');
+      });
+    });
+  });
+
+  describe('DELETE', function() {
+    it('returns response', function() {
+      event.Records[0].cf.request.method = 'DELETE';
+      event.Records[0].cf.request.uri    = '/api/foo/bar/baz';
+
+      app.handler(event, null, function(undef, result) {
+        expect(result).to.be.an('object');
+
+        const {headers, status, body} = result;
+
+        expect(headers).to.be.an('array');
+
+        expect(headers[0]['content-type'].key).to.equal('Content-Type');
+        expect(headers[0]['content-type'].value).to.equal('text/html');
+
+        expect(status).to.be.an('number');
+        expect(status).to.equal(410);
+
+        expect(body).to.be.an('string');
+        expect(body).to.equal('delete');
+      });
+    });
+  });
+
+  describe('POST', function() {
+    it('returns response', function() {
+      event.Records[0].cf.request.method = 'POST';
+      event.Records[0].cf.request.uri    = '/api/foo/bar/baz';
+
+      app.handler(event, null, function(undef, result) {
+        expect(result).to.be.an('object');
+
+        const {headers, status, body} = result;
+
+        expect(headers).to.be.an('array');
+
+        expect(headers[0]['content-type'].key).to.equal('Content-Type');
+        expect(headers[0]['content-type'].value).to.equal('text/html');
+
+        expect(status).to.be.an('number');
+        expect(status).to.equal(200);
+
+        expect(body).to.be.an('string');
+        expect(body).to.equal('submit');
+      });
+    });
+  });
+
+  describe('CONNECT (middleware)', function() {
+    it('returns response', function() {
+      event.Records[0].cf.request.method = 'CONNECT';
+      event.Records[0].cf.request.uri    = '/api/foo/bar/baz';
+
+      app.handler(event, null, function(undef, result) {
+        expect(result).to.be.an('object');
+
+        const {headers, status, body} = result;
+
+        expect(headers).to.be.an('array');
+        expect(headers).to.be.empty;
+
+        expect(status).to.be.an('number');
+        expect(status).to.equal(405);
+
+        expect(body).to.be.undefined;
+      });
     });
   });
 });
 
-describe('POST /api/test', function() {
-  it('returns response', function() {
-    event.Records[0].cf.request.method = 'POST';
+describe('Test route /api/unknown', function() {
+  describe('GET', function() {
+    it('returns response', function() {
+      event.Records[0].cf.request.method = 'GET';
+      event.Records[0].cf.request.uri    = '/api/unknown';
 
-    app.handler(event, null, function(undef, result) {
-      expect(result).to.be.an('object');
+      app.handler(event, null, function(undef, result) {
+        expect(result).to.be.an('object');
 
-      const {headers, status, body} = result;
+        const {headers, status, body} = result;
 
-      expect(headers).to.be.an('array');
+        expect(headers).to.be.an('array');
+        expect(headers).to.be.empty;
 
-      expect(headers[0]['content-type'].key).to.equal('Content-Type');
-      expect(headers[0]['content-type'].value).to.equal('text/html');
+        expect(status).to.be.an('number');
+        expect(status).to.equal(404);
 
-      expect(status).to.be.an('number');
-      expect(status).to.equal(200);
-
-      expect(body).to.be.an('string');
-      expect(body).to.equal('submit');
-    });
-  });
-});
-
-describe('CONNECT /api/test (middleware)', function() {
-  it('returns response', function() {
-    event.Records[0].cf.request.method = 'CONNECT';
-
-    app.handler(event, null, function(undef, result) {
-      expect(result).to.be.an('object');
-
-      const {headers, status, body} = result;
-
-      expect(headers).to.be.an('array');
-      expect(headers).to.be.empty;
-
-      expect(status).to.be.an('number');
-      expect(status).to.equal(405);
-
-      expect(body).to.be.undefined;
-    });
-  });
-});
-
-describe('GET /api/ (root response)', function() {
-  it('returns response', function() {
-    event.Records[0].cf.request.method = 'GET';
-    event.Records[0].cf.request.uri    = '/api/';
-
-    app.handler(event, null, function(undef, result) {
-      expect(result).to.be.an('object');
-
-      const {headers, status, body} = result;
-
-      expect(headers).to.be.an('array');
-      expect(headers).to.be.empty;
-
-      expect(status).to.be.an('number');
-      expect(status).to.equal(501);
-
-      expect(body).to.be.undefined;
-    });
-  });
-});
-
-describe('GET /api/unknown (.. everything else)', function() {
-  it('returns response', function() {
-    event.Records[0].cf.request.method = 'GET';
-    event.Records[0].cf.request.uri    = '/api/unknown';
-
-    app.handler(event, null, function(undef, result) {
-      expect(result).to.be.an('object');
-
-      const {headers, status, body} = result;
-
-      expect(headers).to.be.an('array');
-      expect(headers).to.be.empty;
-
-      expect(status).to.be.an('number');
-      expect(status).to.equal(404);
-
-      expect(body).to.be.undefined;
+        expect(body).to.be.undefined;
+      });
     });
   });
 });

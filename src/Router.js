@@ -261,10 +261,14 @@ module.exports = class Router {
       const files = glob.sync('**/*.js', {cwd: routeDir});
 
       files.forEach(file => {
-        const {name} = path.parse(file);
-        const route  = require(`${routeDir}/${name}`);
+        const {dir, name} = path.parse(file);
 
-        route.path = `/${name.toLowerCase()}`;
+        const filePath = [dir, name].join('/');
+        const route = require(`${routeDir}/${filePath}`);
+
+        route.path = (
+          filePath[0] === '/' ? filePath : `/${filePath}`
+        ).toLowerCase();
 
         Route(this, route);
       });

@@ -1,7 +1,7 @@
 'use strict';
 
 // Load modules.
-const contentTypeHeader = require('../middleware/contentTypeHeader');
+const contentTypeHeader = require(`${process.cwd()}/tests/handler/middleware/contentTypeHeader`);
 
 /**
  * @export {Object}
@@ -10,35 +10,35 @@ module.exports = {
   middleware: contentTypeHeader,
 
   /**
-   * GET /api/test
+   * GET /api/<path>
    */
   index (req, res) {
     res.status(200).send('index');
   },
 
   /**
-   * PUT /api/test
+   * PUT /api/<path>
    */
   create (req, res) {
     res.status(201).send('create');
   },
 
   /**
-   * PATCH /api/test
+   * PATCH /api/<path>
    */
   update (req, res) {
     res.status(204).send('update');
   },
 
   /**
-   * DELETE /api/test
+   * DELETE /api/<path>
    */
   delete (req, res) {
     res.status(410).send('delete');
   },
 
   /**
-   * POST /api/test
+   * POST /api/<path>
    */
   submit (req, res) {
     res.status(200).send('submit');
