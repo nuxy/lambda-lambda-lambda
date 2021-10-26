@@ -1,6 +1,6 @@
 'use strict';
 
-const app   = require('../app/handler');
+const app   = require('../handler/app');
 const event = require('./event.json');
 const chai  = require('chai');
 
