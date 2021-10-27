@@ -295,7 +295,7 @@ module.exports = class Router {
    *
    * @return {Boolean}
    */
-   static isValidRoute(value) {
-    return (typeof value === 'function');
+  static isValidRoute(value) {
+    return (typeof value === 'function' && value.length >= 1 && value.length <= 3);
   }
 };
