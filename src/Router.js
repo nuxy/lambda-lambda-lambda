@@ -153,9 +153,15 @@ module.exports = class Router {
    *   });
    */
   default(route) {
-    if (this.match === false) {
-      this.stack.push(route);
-    }
+    this.use((req, res, next) => {
+
+      // Check at runtime.
+      if (this.match === false) {
+        route(req, res, next);
+      }
+
+      next();
+    });
   }
 
   /**
