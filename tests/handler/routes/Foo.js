@@ -1,7 +1,7 @@
 'use strict';
 
 // Load modules.
-const contentTypeHeader = require(`${process.cwd()}/tests/handler/middleware/contentTypeHeader`);
+const contentTypeHeader = require(`${process.cwd()}/tests/handler/middleware/ContentTypeHeader`);
 
 /**
  * @export {Object}
