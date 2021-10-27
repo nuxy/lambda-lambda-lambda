@@ -11,6 +11,9 @@ describe('Test route /api/', function() {
     event.Records[0].cf.request.method = 'GET';
     event.Records[0].cf.request.uri    = '/api/';
 
+    // Handle Content Negotiation.
+    event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
+
     app.handler(event, null, function(undef, result) {
       it('should return an object', function() {
         expect(result).to.be.an('object');
@@ -214,6 +217,9 @@ describe('Test route /api/foo/bar', function() {
     event.Records[0].cf.request.method = 'GET';
     event.Records[0].cf.request.uri    = '/api/foo/bar';
 
+    // Handle Content Negotiation.
+    event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
+
     app.handler(event, null, function(undef, result) {
       it('should return an object', function() {
         expect(result).to.be.an('object');
@@ -387,6 +393,9 @@ describe('Test route /api/foo/bar/baz', function() {
   describe('GET', function() {
     event.Records[0].cf.request.method = 'GET';
     event.Records[0].cf.request.uri    = '/api/foo/bar/baz';
+
+    // Handle Content Negotiation.
+    event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
 
     app.handler(event, null, function(undef, result) {
       it('should return an object', function() {
@@ -582,6 +591,36 @@ describe('Test route /api/unknown', function() {
       it('should not return body', function() {
         expect(body).to.be.undefined;
       });
+    });
+  });
+});
+
+describe('Test middleware contentNegotiation', function() {
+  event.Records[0].cf.request.method = 'GET';
+  event.Records[0].cf.request.uri    = '/api/foo';
+
+    // Handle Content Negotiation.
+    event.Records[0].cf.request.headers['accept'][0].value = 'text/html';
+
+  app.handler(event, null, function(undef, result) {
+    it('should return an object', function() {
+      expect(result).to.be.an('object');
+    });
+
+    const {headers, status, body} = result;
+
+    it('should not return headers', function() {
+      expect(headers).to.be.an('array');
+      expect(headers).to.be.empty;
+    });
+
+    it('should return status', function() {
+      expect(status).to.be.an('number');
+      expect(status).to.equal(415);
+    });
+
+    it('should not return body', function() {
+      expect(body).to.be.undefined;
     });
   });
 });

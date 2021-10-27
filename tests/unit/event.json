@@ -40,6 +40,12 @@
                 "key": "Cache-Control",
                 "value": "no-cache, cf-no-cache"
               }
+            ],
+            "accept": [
+              {
+                "key": "Accept",
+                "value": "text/html"
+              }
             ]
           },
           "method": "GET",
@@ -60,7 +66,7 @@
             }
           },
           "querystring": "",
-          "uri": "/api/test",
+          "uri": "/api",
           "body": {
             "action": "read-only",
             "data": "Zm9vPWJhciZiaXo9YmF6==",
