@@ -49,12 +49,20 @@ module.exports = class Router {
   response() {
     this.loadRoutes();
 
-    // Process stack items (Ordered).
     if (this.stack) {
+
+      // Re-order stack (middleware first).
+      this.stack.sort(function(a, b) {
+        return (a.length === 3) ? -1 : 1;
+      });
+
       let nextStack = false;
 
+      // Execute stack functions.
       this.stack.forEach((func, index) => {
         if (nextStack || index === 0) {
+          nextStack = false;
+
           func(this.req, this.res, () => {
             nextStack = true;
           });
