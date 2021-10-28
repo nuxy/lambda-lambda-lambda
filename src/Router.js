@@ -1,8 +1,8 @@
 'use strict';
 
-const fs   = require('fs');
-const glob = require('glob');
-const path = require('path');
+const fs      = require('fs');
+const glob    = require('glob');
+const {parse} = require('path');
 
 // Load modules.
 const Request  = require('./router/Request');
@@ -49,56 +49,53 @@ module.exports = class Router {
   response() {
     this.loadRoutes();
 
-    if (this.stack) {
+    // Re-order stack (middleware first).
+    this.stack.sort(function(a, b) {
+      return (a.length === 3) ? -1 : 1;
+    });
 
-      // Re-order stack (middleware first).
-      this.stack.sort(function(a, b) {
-        return (a.length === 3) ? -1 : 1;
-      });
+    let nextStack = false;
 
-      let nextStack = false;
+    // Execute stack functions.
+    this.stack.forEach((func, index) => {
+      if (nextStack || index === 0) {
+         nextStack = false;
 
-      // Execute stack functions.
-      this.stack.forEach((func, index) => {
-        if (nextStack || index === 0) {
-          nextStack = false;
-
-          func(this.req, this.res, () => {
-            nextStack = true;
-          });
-        }
-      });
-    }
+        func(this.req, this.res, () => {
+          nextStack = true;
+        });
+      }
+    });
 
     return this.res.data();
   }
 
   /**
-   * Handle the HTTP request (add to stack).
+   * Handle the Route/Middleware request (add to stack).
    *
    * @param {String} path
    *   Request URI.
    *
-   * @param {Function} route
-   *   Route function.
+   * @param {Function} func
+   *   Route/Middleware function.
    */
-  handle(path, route) {
+  handle(path, func) {
     const uri = `${this.prefix}${path}`;
 
-    if (uri && this.req.uri() === uri && Router.isValidRoute(route)) {
-      this.stack.push(route);
+    if (this.req.uri() === uri && Router.isValidFunc(func)) {
+      this.stack.push(func);
       this.match = true;
     }
   }
 
   /**
-   * Load the middleware / Request handler.
+   * Load the Route/Middleware handler.
    *
    * @param {Function|String} arg
-   *   Route function or Request URI.
+   *   Route/Middleware or Request URI.
    *
-   * @param {Function} route
-   *   Route function (optional).
+   * @param {Function} func
+   *   Route/Middleware function (optional).
    *
    * @example
    *   router.use(function(req, res, next) {
@@ -116,12 +113,12 @@ module.exports = class Router {
    *     res.status(200).send('Hello World');
    *   });
    */
-  use(arg, route) {
-    if (Router.isValidPath(arg) && Router.isValidRoute(route)) {
-      this.handle(arg, route);
+  use(arg, func) {
+    if (Router.isValidPath(arg) && Router.isValidFunc(func)) {
+      this.handle(arg, func);
     }
 
-    if (Router.isValidRoute(arg)) {
+    if (Router.isValidFunc(arg)) {
       this.stack.push(arg);
     }
   }
@@ -275,7 +272,7 @@ module.exports = class Router {
       const files = glob.sync('**/*.js', {cwd: routeDir});
 
       files.forEach(file => {
-        const {dir, name} = path.parse(file);
+        const {dir, name} = parse(file);
 
         const filePath = [dir, name].join('/');
         const route = require(`${routeDir}/${filePath}`);
@@ -302,14 +299,14 @@ module.exports = class Router {
   }
 
   /**
-   * Check if valid Route function.
+   * Check if valid Route/Middleware function.
    *
    * @param {Function} value
    *   Route function.
    *
    * @return {Boolean}
    */
-  static isValidRoute(value) {
+  static isValidFunc(value) {
     return (typeof value === 'function' && value.length >= 1 && value.length <= 3);
   }
 };
