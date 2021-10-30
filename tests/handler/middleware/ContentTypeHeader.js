@@ -6,6 +6,15 @@
 module.exports = (req, res, next) => {
 
   // Skip headers on empty response.
+  const json = res.json;
+  res.json = function(data) {
+    if (data) {
+      res.setHeader('Content-Type', 'application/json');
+    }
+
+    return json.call(this, data);
+  };
+
   const text = res.text;
   res.text = function(body) {
     if (body) {

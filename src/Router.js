@@ -80,9 +80,9 @@ module.exports = class Router {
    *   Route/Middleware function.
    */
   handle(path, func) {
-    const uri = `${this.prefix}${path}`;
+    let uri = `${this.prefix}${path}`;
 
-    if (this.req.uri() === uri && Router.isValidFunc(func)) {
+    if (this.req.uri().match(new RegExp(`^${uri}(\/[a-z0-9]+)?$`, 'i')) && Router.isValidFunc(func)) {
       this.stack.push(func);
       this.match = true;
     }

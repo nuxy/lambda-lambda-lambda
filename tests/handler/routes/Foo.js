@@ -1,14 +1,13 @@
 'use strict';
 
 // Load modules.
-const contentNegotiation = require(`${process.cwd()}/tests/handler/middleware/ContentNegotiation`);
-const contentTypeHeader  = require(`${process.cwd()}/tests/handler/middleware/ContentTypeHeader`);
+const contentTypeHeader = require(`${process.cwd()}/tests/handler/middleware/ContentTypeHeader`);
 
 /**
  * @export {Object}
  */
 module.exports = {
-  middleware: [contentNegotiation, contentTypeHeader],
+  middleware: contentTypeHeader,
 
   /**
    * GET /api/<path>

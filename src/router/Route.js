@@ -4,17 +4,9 @@
  * Handle routing operations for the given Route.
  */
 module.exports = (router, route) => {
+  let path = route.path;
 
-  // Add route-bound middleware, if available.
-  if (route.middleware) {
-    if (Array.isArray(route.middleware)) {
-      route.middleware.forEach(func => router.use(route.path, func));
-    } else {
-      router.use(route.path, route.middleware);
-    }
-  }
-
-  const methods = {
+  const methodMap = {
     index: 'get',
     create: 'put',
     update: 'patch',
@@ -22,12 +14,59 @@ module.exports = (router, route) => {
     submit: 'post'
   };
 
+  const isResource = !!route.resourceId;
+
+  // Add route-bound middleware, if available.
+  if (route.middleware) {
+    if (Array.isArray(route.middleware)) {
+      route.middleware.forEach(func => router.use(path, func));
+    } else {
+      router.use(path, route.middleware);
+    }
+  }
+
+  // Map Route-defined action -> Request method.
   for (let key in route) {
-    const method = methods[key] || key;
+
+    // Add resource ID to Route as argument.
+    const method = methodMap[key] || key;
+
+    if (typeof route[key] === 'function') {
+      if (isResource) {
+        setFuncName(route[key], 'resource');
+      } else {
+        setFuncName(route[key], 'route');
+      }
+    }
 
     // Execute the route-defined function.
     if (typeof router[method] === 'function') {
-      router[method](route.path, route[key]);
+      router[method](path, route[key]);
     }
   }
 };
+
+/**
+ * Return the last URI fragment.
+ *
+ * @param {String} path
+ *   Request URI.
+ *
+ * @return {String}
+ */
+function getUriFragment(path) {
+  return path && path.substring(path.lastIndexOf('/') + 1);
+}
+
+/**
+   * Set name for a given function (inline).
+   *
+   * @param {Function} func
+   *   Route function.
+   *
+   * @param {Function} value
+   *   Function name.
+   */
+function setFuncName(func, value) {
+  Object.defineProperty(func, 'name', {value});
+}
