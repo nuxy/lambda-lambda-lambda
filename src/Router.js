@@ -47,7 +47,7 @@ module.exports = class Router {
    * @return {Object}
    */
   response() {
-    this.loadRoutes();
+    loadRoutes(this);
 
     // Re-order stack (middleware first).
     this.stack.sort(function(a, b) {
@@ -82,7 +82,7 @@ module.exports = class Router {
   handle(path, func) {
     let uri = `${this.prefix}${path}`;
 
-    if (this.req.uri().match(new RegExp(`^${uri}(\/[a-z0-9]+)?$`, 'i')) && Router.isValidFunc(func)) {
+    if (Router.isValidRoute(this.req.uri(), uri) && Router.isValidFunc(func)) {
       this.stack.push(func);
       this.match = true;
     }
@@ -263,30 +263,6 @@ module.exports = class Router {
   }
 
   /**
-   * Load configured routes.
-   */
-  loadRoutes() {
-    const routeDir = `${module.parent.path}/routes`;
-
-    if (fs.existsSync(routeDir)) {
-      const files = glob.sync('**/*.js', {cwd: routeDir});
-
-      files.forEach(file => {
-        const {dir, name} = parse(file);
-
-        const filePath = [dir, name].join('/');
-        const route = require(`${routeDir}/${filePath}`);
-
-        route.path = (
-          filePath[0] === '/' ? filePath : `/${filePath}`
-        ).toLowerCase();
-
-        Route(this, route);
-      });
-    }
-  }
-
-  /**
    * Check if valid URI path.
    *
    * @param {String} value
@@ -309,4 +285,46 @@ module.exports = class Router {
   static isValidFunc(value) {
     return (typeof value === 'function' && value.length >= 1 && value.length <= 3);
   }
+
+  /**
+   * Check if valid Request/Route.
+   *
+   * @param {String} uri
+   *   Request URI.
+   *
+   * @param {String} path
+   *   Route path value.
+   *
+   * @return {Boolean}
+   */
+  static isValidRoute(uri, path) {
+    return (uri.match(new RegExp(`^${path}(\/[a-z0-9]+)?$`, 'i')));
+  }
 };
+
+/**
+ * Load routes from a pre-configured directory.
+ *
+ * @param {Router} router
+ *   Router instance.
+ */
+function loadRoutes(router) {
+  const routeDir = `${module.parent.path}/routes`;
+
+  if (fs.existsSync(routeDir)) {
+    const files = glob.sync('**/*.js', {cwd: routeDir});
+
+    files.forEach(file => {
+      const {dir, name} = parse(file);
+
+      const filePath = [dir, name].join('/');
+      const route = require(`${routeDir}/${filePath}`);
+
+      route.path = (
+        filePath[0] === '/' ? filePath : `/${filePath}`
+      ).toLowerCase();
+
+      Route(router, route);
+    });
+  }
+}
