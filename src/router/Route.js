@@ -32,7 +32,7 @@ module.exports = (router, route) => {
   for (let key in route) {
     const method = methodMap[key] || key;
 
-    if (typeof router[method] !== 'function' || typeof route[key] !== 'function') {
+    if (!isValidFunc(router[method]) || !isValidFunc(route[key])) {
       continue;
     }
 
