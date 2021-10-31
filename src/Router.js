@@ -9,7 +9,12 @@ const Request  = require('./router/Request');
 const Response = require('./router/Response');
 const Route    = require('./router/Route');
 
-const {isValidFunc, isValidPath, isValidRoute} = require('./router/Common');
+const {
+  isValidFunc,
+  isValidPath,
+  isValidRoute,
+  moduleParent
+} = require('./router/Common');
 
 /**
  * Provides HTTP request/response handling.
@@ -272,7 +277,7 @@ module.exports = class Router {
  *   Router instance.
  */
 function loadRoutes(router) {
-  const routeDir = `${module.parent.path}/routes`;
+  const routeDir = moduleParent() + '/routes';
 
   if (fs.existsSync(routeDir)) {
     const files = glob.sync('**/*.js', {cwd: routeDir});
