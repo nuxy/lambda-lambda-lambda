@@ -558,9 +558,11 @@ describe('Test route /api/foo/bar/baz', function() {
 });
 
 describe('Test resource /api/foo/bar/baz/qux/123456', function() {
+  const resourceId = '123456';
+
   describe('GET', function() {
     event.Records[0].cf.request.method = 'GET';
-    event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux/123456';
+    event.Records[0].cf.request.uri    = `/api/foo/bar/baz/qux/${resourceId}`;
 
     // Handle Content Negotiation.
     event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
@@ -574,8 +576,10 @@ describe('Test resource /api/foo/bar/baz/qux/123456', function() {
 
       it('should return headers', function() {
          expect(headers).to.be.an('array');
-         expect(headers[0]['content-type'].key).to.equal('Content-Type');
-         expect(headers[0]['content-type'].value).to.equal('application/json');
+         expect(headers[0]['x-request-id'].key).to.equal('X-Request-ID');
+         expect(headers[0]['x-request-id'].value).to.equal(resourceId);
+         expect(headers[1]['content-type'].key).to.equal('Content-Type');
+         expect(headers[1]['content-type'].value).to.equal('application/json');
       });
 
       it('should return status', function() {
@@ -592,7 +596,7 @@ describe('Test resource /api/foo/bar/baz/qux/123456', function() {
 
   describe('PUT', function() {
     event.Records[0].cf.request.method = 'PUT';
-    event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux/123456';
+    event.Records[0].cf.request.uri    = `/api/foo/bar/baz/qux/${resourceId}`;
 
     app.handler(event, null, function(undef, result) {
       it('should return an object', function() {
@@ -603,8 +607,10 @@ describe('Test resource /api/foo/bar/baz/qux/123456', function() {
 
       it('should return headers', function() {
          expect(headers).to.be.an('array');
-         expect(headers[0]['content-type'].key).to.equal('Content-Type');
-         expect(headers[0]['content-type'].value).to.equal('application/json');
+         expect(headers[0]['x-request-id'].key).to.equal('X-Request-ID');
+         expect(headers[0]['x-request-id'].value).to.equal(resourceId);
+         expect(headers[1]['content-type'].key).to.equal('Content-Type');
+         expect(headers[1]['content-type'].value).to.equal('application/json');
       });
 
       it('should return status', function() {
@@ -621,7 +627,7 @@ describe('Test resource /api/foo/bar/baz/qux/123456', function() {
 
   describe('PATCH', function() {
     event.Records[0].cf.request.method = 'PATCH';
-    event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux/123456';
+    event.Records[0].cf.request.uri    = `/api/foo/bar/baz/qux/${resourceId}`;
 
     app.handler(event, null, function(undef, result) {
       it('should return an object', function() {
@@ -632,8 +638,10 @@ describe('Test resource /api/foo/bar/baz/qux/123456', function() {
 
       it('should return headers', function() {
          expect(headers).to.be.an('array');
-         expect(headers[0]['content-type'].key).to.equal('Content-Type');
-         expect(headers[0]['content-type'].value).to.equal('application/json');
+         expect(headers[0]['x-request-id'].key).to.equal('X-Request-ID');
+         expect(headers[0]['x-request-id'].value).to.equal(resourceId);
+         expect(headers[1]['content-type'].key).to.equal('Content-Type');
+         expect(headers[1]['content-type'].value).to.equal('application/json');
       });
 
       it('should return status', function() {
@@ -650,7 +658,7 @@ describe('Test resource /api/foo/bar/baz/qux/123456', function() {
 
   describe('DELETE', function() {
     event.Records[0].cf.request.method = 'DELETE';
-    event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux/123456';
+    event.Records[0].cf.request.uri    = `/api/foo/bar/baz/qux/${resourceId}`;
 
     app.handler(event, null, function(undef, result) {
       it('should return an object', function() {
@@ -661,8 +669,10 @@ describe('Test resource /api/foo/bar/baz/qux/123456', function() {
 
       it('should return headers', function() {
          expect(headers).to.be.an('array');
-         expect(headers[0]['content-type'].key).to.equal('Content-Type');
-         expect(headers[0]['content-type'].value).to.equal('application/json');
+         expect(headers[0]['x-request-id'].key).to.equal('X-Request-ID');
+         expect(headers[0]['x-request-id'].value).to.equal(resourceId);
+         expect(headers[1]['content-type'].key).to.equal('Content-Type');
+         expect(headers[1]['content-type'].value).to.equal('application/json');
       });
 
       it('should return status', function() {
@@ -679,7 +689,7 @@ describe('Test resource /api/foo/bar/baz/qux/123456', function() {
 
   describe('CONNECT (middleware)', function() {
     event.Records[0].cf.request.method = 'CONNECT';
-    event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux/123456';
+    event.Records[0].cf.request.uri    = `/api/foo/bar/baz/qux/${resourceId}`;
 
     app.handler(event, null, function(undef, result) {
       it('should return an object', function() {

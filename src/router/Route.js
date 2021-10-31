@@ -17,7 +17,7 @@ module.exports = (router, route) => {
     submit: 'post'
   };
 
-  const isResource = !!route.resourceId;
+  const isResource = !!route.resource;
 
   // Add route-bound middleware, if available.
   if (route.middleware) {
@@ -30,33 +30,55 @@ module.exports = (router, route) => {
 
   // Map Route-defined action -> Request method.
   for (let key in route) {
-
-    // Add resource ID to Route as argument.
     const method = methodMap[key] || key;
 
-    if (isValidFunc(route[key])) {
-      if (isResource) {
-        setFuncName(route[key], 'resource');
-      } else {
-        setFuncName(route[key], 'route');
-      }
+    if (typeof router[method] !== 'function' || typeof route[key] !== 'function') {
+      continue;
     }
 
-    // Execute the route-defined function.
-    if (typeof router[method] === 'function') {
-      router[method](path, route[key]);
+    let entityType = 'route';
+
+    // Add resource ID to Route as argument.
+    if (isResource) {
+      const resourceId = getResourceId(router.req.uri(), `${router.prefix}${path}`);
+
+      if (!resourceId) {
+        continue;
+      }
+
+      const oldFunc = route[key];
+      route[key] = (req, res) => {
+        oldFunc(req, res, resourceId);
+      };
+
+      entityType = 'resource';
     }
+
+    setFuncName(route[key], `${entityType}:${key}`);
+
+    // Execute the route-defined function.
+    router[method](path, route[key]);
   }
 };
 
 /**
- * Return the last URI fragment.
+ * Return URI fragment, if Route is a resource.
  *
- * @param {String} path
+ * @param {String} uri
  *   Request URI.
  *
- * @return {String}
+ * @param {String} path
+ *   Route path value.
+ *
+ * @return {String|undefined}
+ *
+ * @example
+ *   router.resourceId('/api/test/abc123', '/api/test');
+ *   // abc123
  */
-function getUriFragment(path) {
-  return path && path.substring(path.lastIndexOf('/') + 1);
+function getResourceId(uri, path) {
+  const fragment = uri.replace(new RegExp(`^(?:${path}(?:\/([a-z0-9]+))?)$`, 'i'), '$1');
+  if (fragment !== uri) {
+    return fragment;
+  }
 }
