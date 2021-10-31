@@ -1,5 +1,8 @@
 'use strict';
 
+// Load modules.
+const {isValidFunc, setFuncName} = require('./Common');
+
 /**
  * Handle routing operations for the given Route.
  */
@@ -31,7 +34,7 @@ module.exports = (router, route) => {
     // Add resource ID to Route as argument.
     const method = methodMap[key] || key;
 
-    if (typeof route[key] === 'function') {
+    if (isValidFunc(route[key])) {
       if (isResource) {
         setFuncName(route[key], 'resource');
       } else {
@@ -56,17 +59,4 @@ module.exports = (router, route) => {
  */
 function getUriFragment(path) {
   return path && path.substring(path.lastIndexOf('/') + 1);
-}
-
-/**
-   * Set name for a given function (inline).
-   *
-   * @param {Function} func
-   *   Route function.
-   *
-   * @param {Function} value
-   *   Function name.
-   */
-function setFuncName(func, value) {
-  Object.defineProperty(func, 'name', {value});
 }

@@ -9,6 +9,8 @@ const Request  = require('./router/Request');
 const Response = require('./router/Response');
 const Route    = require('./router/Route');
 
+const {isValidFunc, isValidPath, isValidRoute} = require('./router/Common');
+
 /**
  * Provides HTTP request/response handling.
  */
@@ -82,7 +84,7 @@ module.exports = class Router {
   handle(path, func) {
     let uri = `${this.prefix}${path}`;
 
-    if (Router.isValidRoute(this.req.uri(), uri) && Router.isValidFunc(func)) {
+    if (isValidRoute(this.req.uri(), uri) && isValidFunc(func)) {
       this.stack.push(func);
       this.match = true;
     }
@@ -114,11 +116,11 @@ module.exports = class Router {
    *   });
    */
   use(arg, func) {
-    if (Router.isValidPath(arg) && Router.isValidFunc(func)) {
+    if (isValidPath(arg) && isValidFunc(func)) {
       this.handle(arg, func);
     }
 
-    if (Router.isValidFunc(arg)) {
+    if (isValidFunc(arg)) {
       this.stack.push(arg);
     }
   }
@@ -133,7 +135,7 @@ module.exports = class Router {
    *   router.setPrefix('/api');
    */
   setPrefix(value) {
-    if (Router.isValidPath(value)) {
+    if (isValidPath(value)) {
       this.prefix = value;
     }
   }
@@ -260,45 +262,6 @@ module.exports = class Router {
     if (this.req.method() === 'DELETE') {
       this.handle(path, route);
     }
-  }
-
-  /**
-   * Check if valid URI path.
-   *
-   * @param {String} value
-   *   URI path value.
-   *
-   * @return {Boolean}
-   */
-  static isValidPath(value) {
-    return /^\/([a-z0-9-_\/]+)?/.test(value);
-  }
-
-  /**
-   * Check if valid Route/Middleware function.
-   *
-   * @param {Function} value
-   *   Route function.
-   *
-   * @return {Boolean}
-   */
-  static isValidFunc(value) {
-    return (typeof value === 'function' && value.length >= 1 && value.length <= 3);
-  }
-
-  /**
-   * Check if valid Request/Route.
-   *
-   * @param {String} uri
-   *   Request URI.
-   *
-   * @param {String} path
-   *   Route path value.
-   *
-   * @return {Boolean}
-   */
-  static isValidRoute(uri, path) {
-    return (uri.match(new RegExp(`^${path}(\/[a-z0-9]+)?$`, 'i')));
   }
 };
 
