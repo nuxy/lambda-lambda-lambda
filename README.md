@@ -1,6 +1,6 @@
 # lambda-lambda-lambda
 
-AWS Lambda@Edge application routing handler.
+AWS Lambda@Edge serverless application router.
 
 ## Dependencies
 
