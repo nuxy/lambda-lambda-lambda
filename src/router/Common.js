@@ -12,7 +12,7 @@
  *   const result = isValidPath('/api/test');
  *   // true
  */
-module.exports.isValidPath = function(value) {
+exports.isValidPath = function(value) {
   return /^\/([a-z0-9-_\/]+)?/.test(value);
 };
 
@@ -28,7 +28,7 @@ module.exports.isValidPath = function(value) {
  *   const result = isValidFunc((req, res, next) => {});
  *   // true
  */
-module.exports.isValidFunc = function(value) {
+exports.isValidFunc = function(value) {
   return (typeof value === 'function' && value.length >= 1 && value.length <= 3);
 };
 
@@ -47,7 +47,7 @@ module.exports.isValidFunc = function(value) {
  *   const result = isValidRoute('/api/test/123456', '/api/test');
  *   // true
  */
-module.exports.isValidRoute = function(uri, path) {
+exports.isValidRoute = function(uri, path) {
   return (uri.match(new RegExp(`^${path}(\/[a-z0-9]+)?$`, 'i')));
 };
 
@@ -66,6 +66,21 @@ module.exports.isValidRoute = function(uri, path) {
  *   func.name
  *   // test
  */
-module.exports.setFuncName = function(func, value) {
+exports.setFuncName = function(func, value) {
   Object.defineProperty(func, 'name', {value});
+};
+
+/**
+ * Get executed module parent directory.
+ *
+ * @return {String}
+ *
+ * @example
+ *   const dir = moduleParent();
+ */
+exports.moduleParent = function() {
+  const moduleParents = Object.values(require.cache)
+    .filter((m) => m.children.includes(module));
+
+  return moduleParents[0].parent.path;
 };
