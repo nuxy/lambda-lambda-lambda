@@ -152,8 +152,10 @@ module.exports = class RouterRequest {
   /**
    * Check valid HTTP request parameters.
    *
-   * @param {String}
+   * @param {String} str
    *   Parameter (key/value) pairs.
+   *
+   * @return {Boolean}
    */
   static isParams(str) {
     return (Array.from(new URLSearchParams(str)).length > 0);
@@ -162,7 +164,7 @@ module.exports = class RouterRequest {
   /**
    * Check valid JSON string format.
    *
-   * @param {String}
+   * @param {String} str
    *   JSON string.
    *
    * @return {Boolean}
