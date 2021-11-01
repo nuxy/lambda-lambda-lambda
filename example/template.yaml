@@ -1,0 +1,81 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Description: Lambda@Edge functions
+
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  RestfulAPI:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Restful API
+      CodeUri: ./restfulAPI
+      Handler: app.handler
+      Runtime: nodejs12.x
+      AutoPublishAlias: Auto
+      Timeout: 5
+      Role: !GetAtt LambdaEdgeRole.Arn
+    Metadata:
+      BuildMethod: makefile
+
+  LambdaEdgeRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${AWS::StackName}-Example
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          Effect: Allow
+          Principal:
+            Service:
+              - lambda.amazonaws.com
+              - edgelambda.amazonaws.com
+          Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  CloudFrontConfig:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Origins:
+          -
+            Id: Example
+            DomainName: aws.amazon.com
+            CustomOriginConfig:
+              HTTPPort: 443
+              OriginProtocolPolicy: https-only
+        DefaultCacheBehavior:
+          TargetOriginId: Example
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: allow-all
+        CacheBehaviors:
+          -
+            TargetOriginId: Example
+            PathPattern: '/api/*'
+            AllowedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+              - PUT
+              - PATCH
+              - POST
+              - DELETE
+            ForwardedValues:
+              Headers:
+                - Accept
+              QueryString: false
+              Cookies:
+                Forward: none
+            LambdaFunctionAssociations:
+              -
+                EventType: origin-request
+                LambdaFunctionARN: !Ref RestfulAPI.Version
+                IncludeBody: true
+            ViewerProtocolPolicy: allow-all
