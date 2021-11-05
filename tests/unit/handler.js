@@ -19,7 +19,7 @@ describe('Test route /api/', function() {
       const {headers, status, body} = result;
 
       it('should not return headers', function() {
-        expect(headers).to.be.an('array');
+        expect(headers).to.be.an('object');
         expect(headers).to.be.empty;
       });
 
@@ -48,9 +48,9 @@ describe('Test route /api/foo', function() {
       const {headers, status, body} = result;
 
       it('should return headers', function() {
-        expect(headers).to.be.an('array');
-        expect(headers[0]['content-type'].key).to.equal('Content-Type');
-        expect(headers[0]['content-type'].value).to.equal('text/html');
+        expect(headers).to.be.an('object');
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('text/html');
       });
 
       it('should return status', function() {
@@ -77,9 +77,9 @@ describe('Test route /api/foo', function() {
       const {headers, status, body} = result;
 
       it('should return headers', function() {
-        expect(headers).to.be.an('array');
-        expect(headers[0]['content-type'].key).to.equal('Content-Type');
-        expect(headers[0]['content-type'].value).to.equal('text/html');
+        expect(headers).to.be.an('object');
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('text/html');
       });
 
       it('should return status', function() {
@@ -106,9 +106,9 @@ describe('Test route /api/foo', function() {
       const {headers, status, body} = result;
 
       it('should return headers', function() {
-        expect(headers).to.be.an('array');
-        expect(headers[0]['content-type'].key).to.equal('Content-Type');
-        expect(headers[0]['content-type'].value).to.equal('text/html');
+        expect(headers).to.be.an('object');
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('text/html');
       });
 
       it('should return status', function() {
@@ -135,9 +135,9 @@ describe('Test route /api/foo', function() {
       const {headers, status, body} = result;
 
       it('should return headers', function() {
-        expect(headers).to.be.an('array');
-        expect(headers[0]['content-type'].key).to.equal('Content-Type');
-        expect(headers[0]['content-type'].value).to.equal('text/html');
+        expect(headers).to.be.an('object');
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('text/html');
       });
 
       it('should return status', function() {
@@ -164,9 +164,9 @@ describe('Test route /api/foo', function() {
       const {headers, status, body} = result;
 
       it('should return headers', function() {
-        expect(headers).to.be.an('array');
-        expect(headers[0]['content-type'].key).to.equal('Content-Type');
-        expect(headers[0]['content-type'].value).to.equal('text/html');
+        expect(headers).to.be.an('object');
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('text/html');
       });
 
       it('should return status', function() {
@@ -193,7 +193,7 @@ describe('Test route /api/foo', function() {
       const {headers, status, body} = result;
 
       it('should not return headers', function() {
-        expect(headers).to.be.an('array');
+        expect(headers).to.be.an('object');
         expect(headers).to.be.empty;
       });
 
@@ -222,9 +222,9 @@ describe('Test route /api/foo/bar', function() {
       const {headers, status, body} = result;
 
       it('should return headers', function() {
-        expect(headers).to.be.an('array');
-        expect(headers[0]['content-type'].key).to.equal('Content-Type');
-        expect(headers[0]['content-type'].value).to.equal('text/html');
+        expect(headers).to.be.an('object');
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('text/html');
       });
 
       it('should return status', function() {
@@ -251,9 +251,9 @@ describe('Test route /api/foo/bar', function() {
       const {headers, status, body} = result;
 
       it('should return headers', function() {
-        expect(headers).to.be.an('array');
-        expect(headers[0]['content-type'].key).to.equal('Content-Type');
-        expect(headers[0]['content-type'].value).to.equal('text/html');
+        expect(headers).to.be.an('object');
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('text/html');
       });
 
       it('should return status', function() {
@@ -280,9 +280,9 @@ describe('Test route /api/foo/bar', function() {
       const {headers, status, body} = result;
 
       it('should return headers', function() {
-        expect(headers).to.be.an('array');
-        expect(headers[0]['content-type'].key).to.equal('Content-Type');
-        expect(headers[0]['content-type'].value).to.equal('text/html');
+        expect(headers).to.be.an('object');
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('text/html');
       });
 
       it('should return status', function() {
@@ -309,9 +309,9 @@ describe('Test route /api/foo/bar', function() {
       const {headers, status, body} = result;
 
       it('should return headers', function() {
-        expect(headers).to.be.an('array');
-        expect(headers[0]['content-type'].key).to.equal('Content-Type');
-        expect(headers[0]['content-type'].value).to.equal('text/html');
+        expect(headers).to.be.an('object');
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('text/html');
       });
 
       it('should return status', function() {
@@ -338,9 +338,9 @@ describe('Test route /api/foo/bar', function() {
       const {headers, status, body} = result;
 
       it('should return headers', function() {
-        expect(headers).to.be.an('array');
-        expect(headers[0]['content-type'].key).to.equal('Content-Type');
-        expect(headers[0]['content-type'].value).to.equal('text/html');
+        expect(headers).to.be.an('object');
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('text/html');
       });
 
       it('should return status', function() {
@@ -367,7 +367,7 @@ describe('Test route /api/foo/bar', function() {
       const {headers, status, body} = result;
 
       it('should not return headers', function() {
-        expect(headers).to.be.an('array');
+        expect(headers).to.be.an('object');
         expect(headers).to.be.empty;
       });
 
@@ -396,9 +396,9 @@ describe('Test route /api/foo/bar/baz', function() {
       const {headers, status, body} = result;
 
       it('should return headers', function() {
-        expect(headers).to.be.an('array');
-        expect(headers[0]['content-type'].key).to.equal('Content-Type');
-        expect(headers[0]['content-type'].value).to.equal('text/html');
+        expect(headers).to.be.an('object');
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('text/html');
       });
 
       it('should return status', function() {
@@ -425,9 +425,9 @@ describe('Test route /api/foo/bar/baz', function() {
       const {headers, status, body} = result;
 
       it('should return headers', function() {
-        expect(headers).to.be.an('array');
-        expect(headers[0]['content-type'].key).to.equal('Content-Type');
-        expect(headers[0]['content-type'].value).to.equal('text/html');
+        expect(headers).to.be.an('object');
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('text/html');
       });
 
       it('should return status', function() {
@@ -454,9 +454,9 @@ describe('Test route /api/foo/bar/baz', function() {
       const {headers, status, body} = result;
 
       it('should return headers', function() {
-        expect(headers).to.be.an('array');
-        expect(headers[0]['content-type'].key).to.equal('Content-Type');
-        expect(headers[0]['content-type'].value).to.equal('text/html');
+        expect(headers).to.be.an('object');
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('text/html');
       });
 
       it('should return status', function() {
@@ -483,9 +483,9 @@ describe('Test route /api/foo/bar/baz', function() {
       const {headers, status, body} = result;
 
       it('should return headers', function() {
-        expect(headers).to.be.an('array');
-        expect(headers[0]['content-type'].key).to.equal('Content-Type');
-        expect(headers[0]['content-type'].value).to.equal('text/html');
+        expect(headers).to.be.an('object');
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('text/html');
       });
 
       it('should return status', function() {
@@ -512,9 +512,9 @@ describe('Test route /api/foo/bar/baz', function() {
       const {headers, status, body} = result;
 
       it('should return headers', function() {
-        expect(headers).to.be.an('array');
-        expect(headers[0]['content-type'].key).to.equal('Content-Type');
-        expect(headers[0]['content-type'].value).to.equal('text/html');
+        expect(headers).to.be.an('object');
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('text/html');
       });
 
       it('should return status', function() {
@@ -541,7 +541,7 @@ describe('Test route /api/foo/bar/baz', function() {
       const {headers, status, body} = result;
 
       it('should not return headers', function() {
-        expect(headers).to.be.an('array');
+        expect(headers).to.be.an('object');
         expect(headers).to.be.empty;
       });
 
@@ -575,11 +575,11 @@ describe('Test resource /api/foo/bar/baz/qux/123456', function() {
       const {headers, status, body} = result;
 
       it('should return headers', function() {
-         expect(headers).to.be.an('array');
-         expect(headers[0]['x-request-id'].key).to.equal('X-Request-ID');
-         expect(headers[0]['x-request-id'].value).to.equal(resourceId);
-         expect(headers[1]['content-type'].key).to.equal('Content-Type');
-         expect(headers[1]['content-type'].value).to.equal('application/json');
+        expect(headers).to.be.an('object');
+        expect(headers['x-request-id'][0].key).to.equal('X-Request-ID');
+        expect(headers['x-request-id'][0].value).to.equal(resourceId);
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('application/json');
       });
 
       it('should return status', function() {
@@ -606,11 +606,11 @@ describe('Test resource /api/foo/bar/baz/qux/123456', function() {
       const {headers, status, body} = result;
 
       it('should return headers', function() {
-         expect(headers).to.be.an('array');
-         expect(headers[0]['x-request-id'].key).to.equal('X-Request-ID');
-         expect(headers[0]['x-request-id'].value).to.equal(resourceId);
-         expect(headers[1]['content-type'].key).to.equal('Content-Type');
-         expect(headers[1]['content-type'].value).to.equal('application/json');
+        expect(headers).to.be.an('object');
+        expect(headers['x-request-id'][0].key).to.equal('X-Request-ID');
+        expect(headers['x-request-id'][0].value).to.equal(resourceId);
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('application/json');
       });
 
       it('should return status', function() {
@@ -637,11 +637,11 @@ describe('Test resource /api/foo/bar/baz/qux/123456', function() {
       const {headers, status, body} = result;
 
       it('should return headers', function() {
-         expect(headers).to.be.an('array');
-         expect(headers[0]['x-request-id'].key).to.equal('X-Request-ID');
-         expect(headers[0]['x-request-id'].value).to.equal(resourceId);
-         expect(headers[1]['content-type'].key).to.equal('Content-Type');
-         expect(headers[1]['content-type'].value).to.equal('application/json');
+        expect(headers).to.be.an('object');
+        expect(headers['x-request-id'][0].key).to.equal('X-Request-ID');
+        expect(headers['x-request-id'][0].value).to.equal(resourceId);
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('application/json');
       });
 
       it('should return status', function() {
@@ -668,11 +668,11 @@ describe('Test resource /api/foo/bar/baz/qux/123456', function() {
       const {headers, status, body} = result;
 
       it('should return headers', function() {
-         expect(headers).to.be.an('array');
-         expect(headers[0]['x-request-id'].key).to.equal('X-Request-ID');
-         expect(headers[0]['x-request-id'].value).to.equal(resourceId);
-         expect(headers[1]['content-type'].key).to.equal('Content-Type');
-         expect(headers[1]['content-type'].value).to.equal('application/json');
+        expect(headers).to.be.an('object');
+        expect(headers['x-request-id'][0].key).to.equal('X-Request-ID');
+        expect(headers['x-request-id'][0].value).to.equal(resourceId);
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('application/json');
       });
 
       it('should return status', function() {
@@ -699,7 +699,7 @@ describe('Test resource /api/foo/bar/baz/qux/123456', function() {
       const {headers, status, body} = result;
 
       it('should not return headers', function() {
-        expect(headers).to.be.an('array');
+        expect(headers).to.be.an('object');
         expect(headers).to.be.empty;
       });
 
@@ -728,7 +728,7 @@ describe('Test route /api/unknown', function() {
       const {headers, status, body} = result;
 
       it('should not return headers', function() {
-        expect(headers).to.be.an('array');
+        expect(headers).to.be.an('object');
         expect(headers).to.be.empty;
       });
 

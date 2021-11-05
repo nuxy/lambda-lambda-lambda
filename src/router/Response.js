@@ -13,7 +13,7 @@ module.exports = class RouterResponse {
    */
   constructor(obj = {}) {
     this.obj = Object.assign({
-      headers: [],
+      headers: {},
       status: null
     }, obj);
   }
@@ -65,8 +65,8 @@ module.exports = class RouterResponse {
    */
   setHeader(key, value) {
     if (key && value) {
-      this.data().headers.push({
-        [key.toLowerCase()]: {key, value}
+      Object.assign(this.data().headers, {
+        [key.toLowerCase()]: [{key, value}]
       });
     }
   }
