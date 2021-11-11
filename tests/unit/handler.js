@@ -557,7 +557,7 @@ describe('Test route /api/foo/bar/baz', function() {
   });
 });
 
-describe('Test resource /api/foo/bar/baz/qux/123456', function() {
+describe('Test route/resource /api/foo/bar/baz/qux', function() {
   const resourceId = 'uuid-123456_AbC';
 
   describe('GET', function() {
