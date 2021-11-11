@@ -75,18 +75,19 @@ exports.handler = (event, context, callback) => {
 
 'use strict';
 
+// Load module.
+const contentTypeHeader = require('middleware/ContentTypeHeader');
+
 /**
  * @export {Object}
  */
 module.exports = {
-  middleware: [],
-  resource: false,
+  middleware: [contentTypeHeader],
 
   /**
    * GET /api/foo
    */
   index (req, res) {
-    res.setHeader('Content-Type', 'text/html');
     res.status(200).send('Lambda, Lambda, Lambda');
   },
 
@@ -131,7 +132,6 @@ module.exports = {
  * @export {Object}
  */
 module.exports = {
-  middleware: [],
   resource: true,
 
   /**
@@ -167,6 +167,58 @@ module.exports = {
    * POST /api/foo/bar/<resourceId>
    */
   submit (req, res, id) {
+    res.status(200).send();
+  }
+};
+
+```
+
+### Route/resource handler
+
+```javascript
+// .. sam-app/src/routes/foo.js
+
+'use strict';
+
+/**
+ * @export {Object}
+ */
+module.exports = {
+  resource: ['index'],
+
+  /**
+   * GET /api/foo/<resourceId>
+   */
+  index (req, res, id) {
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json({and: 'Omega Mu'});
+  },
+
+  /**
+   * PUT /api/foo
+   */
+  create (req, res) {
+    res.status(201).send();
+  },
+
+  /**
+   * PATCH /api/foo
+   */
+  update (req, res) {
+    res.status(204).send();
+  },
+
+  /**
+   * DELETE /api/foo
+   */
+  delete (req, res) {
+    res.status(410).send();
+  },
+
+  /**
+   * POST /api/foo
+   */
+  submit (req, res) {
     res.status(200).send();
   }
 };
