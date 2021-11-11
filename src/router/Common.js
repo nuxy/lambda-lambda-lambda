@@ -41,14 +41,21 @@ exports.isValidFunc = function(value) {
  * @param {String} path
  *   Route path value.
  *
+ * @param {Function} func
+ *   Route function.
+ *
  * @return {Boolean}
  *
  * @example
- *   const result = isValidRoute('/api/test/123456', '/api/test');
+ *   const result = isValidRoute('/api/test/123456', '/api/test', (req, res) => {}));
  *   // true
  */
-exports.isValidRoute = function(uri, path) {
-  return (uri.match(new RegExp(`^${path}(\/[a-z0-9]+)?$`, 'i')));
+exports.isValidRoute = function(uri, path, func) {
+  if (module.exports.isValidFunc(func) && !/^route:/.test(func.name)) {
+    return uri.match(new RegExp(`^${path}(\/[a-z0-9]+)?$`, 'i'));
+  }
+
+  return (uri === path);
 };
 
 /**

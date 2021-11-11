@@ -56,20 +56,20 @@ module.exports = class Router {
   response() {
     loadRoutes(this);
 
-    // Re-order stack (middleware first).
+    // Re-order stack items (middleware first).
     this.stack.sort(function(a, b) {
       return (a.length === 3) ? -1 : 1;
     });
 
-    let nextStack = false;
+    let nextStackItem = false;
 
     // Execute stack functions.
     this.stack.forEach((func, index) => {
-      if (nextStack || index === 0) {
-         nextStack = false;
+      if (nextStackItem || index === 0) {
+        nextStackItem = false;
 
         func(this.req, this.res, () => {
-          nextStack = true;
+          nextStackItem = true;
         });
       }
     });
@@ -89,7 +89,7 @@ module.exports = class Router {
   handle(path, func) {
     let uri = `${this.prefix}${path}`;
 
-    if (isValidRoute(this.req.uri(), uri) && isValidFunc(func)) {
+    if (isValidRoute(this.req.uri(), uri, func)) {
       this.stack.push(func);
       this.match = true;
     }
