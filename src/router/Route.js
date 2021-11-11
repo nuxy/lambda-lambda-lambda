@@ -42,16 +42,17 @@ module.exports = (router, route) => {
     if (isResource) {
       const resourceId = getResourceId(router.req.uri(), `${router.prefix}${path}`);
 
-      if (!resourceId) {
-        continue;
+      const v = route.resource;
+
+      // Support - Boolean | Array<methodMapKey>
+      if (resourceId && (v === true || (Array.isArray(v) && v.includes(key)))) {
+        const oldFunc = route[key];
+        route[key] = (req, res) => {
+          oldFunc(req, res, resourceId);
+        };
+
+        entityType = 'resource';
       }
-
-      const oldFunc = route[key];
-      route[key] = (req, res) => {
-        oldFunc(req, res, resourceId);
-      };
-
-      entityType = 'resource';
     }
 
     setFuncName(route[key], `${entityType}:${key}`);

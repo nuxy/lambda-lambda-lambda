@@ -9,7 +9,7 @@ const contentTypeHeader  = require(`${process.cwd()}/tests/handler/middleware/Co
  */
 module.exports = {
   middleware: [contentNegotiation, contentTypeHeader],
-  resource: true,
+  resource: ['index', 'update', 'delete'],
 
   /**
    * GET /api/<path>/<resourceId>
@@ -20,10 +20,9 @@ module.exports = {
   },
 
   /**
-   * PUT /api/<path>/<resourceId>
+   * PUT /api/<path>
    */
-  create (req, res, id) {
-    res.setHeader('X-Request-ID', id);
+  create (req, res) {
     res.status(201).json({create: true});
   },
 
@@ -44,10 +43,9 @@ module.exports = {
   },
 
   /**
-   * POST /api/<path>/<resourceId>
+   * POST /api/<path>
    */
-  submit (req, res, id) {
-    res.setHeader('X-Request-ID', id);
+  submit (req, res) {
     res.status(200).json({submit: true});
   }
 };

@@ -596,7 +596,7 @@ describe('Test resource /api/foo/bar/baz/qux/123456', function() {
 
   describe('PUT', function() {
     event.Records[0].cf.request.method = 'PUT';
-    event.Records[0].cf.request.uri    = `/api/foo/bar/baz/qux/${resourceId}`;
+    event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux';
 
     app.handler(event, null, function(undef, result) {
       it('should return an object', function() {
@@ -607,8 +607,7 @@ describe('Test resource /api/foo/bar/baz/qux/123456', function() {
 
       it('should return headers', function() {
         expect(headers).to.be.an('object');
-        expect(headers['x-request-id'][0].key).to.equal('X-Request-ID');
-        expect(headers['x-request-id'][0].value).to.equal(resourceId);
+        expect(headers['x-request-id']).to.be.undefined;
         expect(headers['content-type'][0].key).to.equal('Content-Type');
         expect(headers['content-type'][0].value).to.equal('application/json');
       });
@@ -683,6 +682,36 @@ describe('Test resource /api/foo/bar/baz/qux/123456', function() {
       it('should return body', function() {
         expect(body).to.be.an('string');
         expect(body).to.equal('{"delete":true}');
+      });
+    });
+  });
+
+  describe('POST', function() {
+    event.Records[0].cf.request.method = 'POST';
+    event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux';
+
+    app.handler(event, null, function(undef, result) {
+      it('should return an object', function() {
+        expect(result).to.be.an('object');
+      });
+
+      const {headers, status, body} = result;
+
+      it('should return headers', function() {
+        expect(headers).to.be.an('object');
+        expect(headers['x-request-id']).to.be.undefined;
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('application/json');
+      });
+
+      it('should return status', function() {
+        expect(status).to.be.an('number');
+        expect(status).to.equal(200);
+      });
+
+      it('should return body', function() {
+        expect(body).to.be.an('string');
+        expect(body).to.equal('{"submit":true}');
       });
     });
   });
