@@ -52,7 +52,7 @@ exports.isValidFunc = function(value) {
  */
 exports.isValidRoute = function(uri, path, func) {
   if (module.exports.isValidFunc(func) && !/^route:/.test(func.name)) {
-    return uri.match(new RegExp(`^${path}(\/[a-z0-9]+)?$`, 'i'));
+    return uri.match(new RegExp(`^${path}(\/[a-z0-9-_]+)?$`, 'i'));
   }
 
   return (uri === path);

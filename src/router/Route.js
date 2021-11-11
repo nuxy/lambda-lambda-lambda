@@ -78,7 +78,7 @@ module.exports = (router, route) => {
  *   // abc123
  */
 function getResourceId(uri, path) {
-  const fragment = uri.replace(new RegExp(`^(?:${path}(?:\/([a-z0-9]+))?)$`, 'i'), '$1');
+  const fragment = uri.replace(new RegExp(`^(?:${path}(?:\/([a-z0-9-_]+))?)$`, 'i'), '$1');
   if (fragment !== uri) {
     return fragment;
   }

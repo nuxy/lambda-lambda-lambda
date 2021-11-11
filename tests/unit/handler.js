@@ -558,7 +558,7 @@ describe('Test route /api/foo/bar/baz', function() {
 });
 
 describe('Test resource /api/foo/bar/baz/qux/123456', function() {
-  const resourceId = '123456';
+  const resourceId = 'uuid-123456_AbC';
 
   describe('GET', function() {
     event.Records[0].cf.request.method = 'GET';
