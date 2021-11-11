@@ -13,34 +13,34 @@ module.exports = {
    * GET /api/<path>
    */
   index (req, res) {
-    res.status(200).send('index');
+    res.status(200).send('foo:index');
   },
 
   /**
    * PUT /api/<path>
    */
   create (req, res) {
-    res.status(201).send('create');
+    res.status(201).send('foo:create');
   },
 
   /**
    * PATCH /api/<path>
    */
   update (req, res) {
-    res.status(204).send('update');
+    res.status(204).send('foo:update');
   },
 
   /**
    * DELETE /api/<path>
    */
   delete (req, res) {
-    res.status(410).send('delete');
+    res.status(410).send('foo:delete');
   },
 
   /**
    * POST /api/<path>
    */
   submit (req, res) {
-    res.status(200).send('submit');
+    res.status(200).send('foo:submit');
   }
 };

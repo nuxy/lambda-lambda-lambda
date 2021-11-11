@@ -60,7 +60,7 @@ describe('Test route /api/foo', function() {
 
       it('should return body', function() {
         expect(body).to.be.an('string');
-        expect(body).to.equal('index');
+        expect(body).to.equal('foo:index');
       });
     });
   });
@@ -89,7 +89,7 @@ describe('Test route /api/foo', function() {
 
       it('should return body', function() {
         expect(body).to.be.an('string');
-        expect(body).to.equal('create');
+        expect(body).to.equal('foo:create');
       });
     });
   });
@@ -118,7 +118,7 @@ describe('Test route /api/foo', function() {
 
       it('should return body', function() {
         expect(body).to.be.an('string');
-        expect(body).to.equal('update');
+        expect(body).to.equal('foo:update');
       });
     });
   });
@@ -147,7 +147,7 @@ describe('Test route /api/foo', function() {
 
       it('should return body', function() {
         expect(body).to.be.an('string');
-        expect(body).to.equal('delete');
+        expect(body).to.equal('foo:delete');
       });
     });
   });
@@ -176,7 +176,7 @@ describe('Test route /api/foo', function() {
 
       it('should return body', function() {
         expect(body).to.be.an('string');
-        expect(body).to.equal('submit');
+        expect(body).to.equal('foo:submit');
       });
     });
   });
@@ -234,7 +234,7 @@ describe('Test route /api/foo/bar', function() {
 
       it('should return body', function() {
         expect(body).to.be.an('string');
-        expect(body).to.equal('index');
+        expect(body).to.equal('foo/bar:index');
       });
     });
   });
@@ -263,7 +263,7 @@ describe('Test route /api/foo/bar', function() {
 
       it('should return body', function() {
         expect(body).to.be.an('string');
-        expect(body).to.equal('create');
+        expect(body).to.equal('foo/bar:create');
       });
     });
   });
@@ -292,7 +292,7 @@ describe('Test route /api/foo/bar', function() {
 
       it('should return body', function() {
         expect(body).to.be.an('string');
-        expect(body).to.equal('update');
+        expect(body).to.equal('foo/bar:update');
       });
     });
   });
@@ -321,7 +321,7 @@ describe('Test route /api/foo/bar', function() {
 
       it('should return body', function() {
         expect(body).to.be.an('string');
-        expect(body).to.equal('delete');
+        expect(body).to.equal('foo/bar:delete');
       });
     });
   });
@@ -350,7 +350,7 @@ describe('Test route /api/foo/bar', function() {
 
       it('should return body', function() {
         expect(body).to.be.an('string');
-        expect(body).to.equal('submit');
+        expect(body).to.equal('foo/bar:submit');
       });
     });
   });
@@ -408,7 +408,7 @@ describe('Test route /api/foo/bar/baz', function() {
 
       it('should return body', function() {
         expect(body).to.be.an('string');
-        expect(body).to.equal('index');
+        expect(body).to.equal('foo/bar/baz:index');
       });
     });
   });
@@ -437,7 +437,7 @@ describe('Test route /api/foo/bar/baz', function() {
 
       it('should return body', function() {
         expect(body).to.be.an('string');
-        expect(body).to.equal('create');
+        expect(body).to.equal('foo/bar/baz:create');
       });
     });
   });
@@ -466,7 +466,7 @@ describe('Test route /api/foo/bar/baz', function() {
 
       it('should return body', function() {
         expect(body).to.be.an('string');
-        expect(body).to.equal('update');
+        expect(body).to.equal('foo/bar/baz:update');
       });
     });
   });
@@ -495,7 +495,7 @@ describe('Test route /api/foo/bar/baz', function() {
 
       it('should return body', function() {
         expect(body).to.be.an('string');
-        expect(body).to.equal('delete');
+        expect(body).to.equal('foo/bar/baz:delete');
       });
     });
   });
@@ -524,7 +524,7 @@ describe('Test route /api/foo/bar/baz', function() {
 
       it('should return body', function() {
         expect(body).to.be.an('string');
-        expect(body).to.equal('submit');
+        expect(body).to.equal('foo/bar/baz:submit');
       });
     });
   });
