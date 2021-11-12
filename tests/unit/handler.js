@@ -607,9 +607,12 @@ describe('Test route/resource /api/foo/bar/baz/qux', function() {
 
       it('should return headers', function() {
         expect(headers).to.be.an('object');
-        expect(headers['x-request-id']).to.be.undefined;
         expect(headers['content-type'][0].key).to.equal('Content-Type');
         expect(headers['content-type'][0].value).to.equal('application/json');
+      });
+
+      it('should not return header', function() {
+        expect(headers['x-request-id']).to.be.undefined;
       });
 
       it('should return status', function() {
@@ -699,9 +702,12 @@ describe('Test route/resource /api/foo/bar/baz/qux', function() {
 
       it('should return headers', function() {
         expect(headers).to.be.an('object');
-        expect(headers['x-request-id']).to.be.undefined;
         expect(headers['content-type'][0].key).to.equal('Content-Type');
         expect(headers['content-type'][0].value).to.equal('application/json');
+      });
+
+      it('should not return header', function() {
+        expect(headers['x-request-id']).to.be.undefined;
       });
 
       it('should return status', function() {
