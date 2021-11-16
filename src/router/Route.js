@@ -5,6 +5,21 @@ const {isValidFunc, setFuncName} = require('./Common');
 
 /**
  * Handle routing operations for the given Route.
+ *
+ * @example
+ *   // .. sam-app/src/routes/foo.js
+ *   const routeConfig = {
+ *     middleware: [middlewareFunc1, middlewareFunc2],
+ *     resource:   true || ['index'],
+ *
+ *     index  (req, res, id) {},
+ *     create (req, res) {},
+ *     update (req, res) {},
+ *     delete (req, res) {},
+ *     submit (req, res) {}
+ *   };
+ *
+ *   module.exports = routeConfig;
  */
 module.exports = (router, route) => {
   let path = route.path;
