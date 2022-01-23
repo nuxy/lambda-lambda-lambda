@@ -3,6 +3,8 @@
 const Router = require('lambda-lambda-lambda');
 const config = require('./config.json');
 
+const accessControlHeaders = require(`./middleware/AccessControlHeaders`);
+
 /**
  * @see AWS::Serverless::Function
  */
@@ -16,6 +18,17 @@ exports.handler = (event, context, callback) => {
   router.use(function(req, res, next) {
     if (req.method() === 'CONNECT') {
       res.status(405).send();
+    } else {
+      next();
+    }
+  });
+
+  // Preflight OPTIONS.
+  router.use(function(req, res, next) {
+    if (req.method() === 'OPTIONS') {
+      accessControlHeaders(req, res, next);
+
+      res.status(200).send();
     } else {
       next();
     }
