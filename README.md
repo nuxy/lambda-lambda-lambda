@@ -8,9 +8,9 @@ AWS Lambda@Edge serverless application router.
 
 ## Features
 
-- ECMAScript 2015 (ES6) compatible.
 - Routes and URI resource support.
 - Local/Globally scoped middleware.
+- Request/Response handling API.
 - Lightweight/cost effective solution.
 
 ## Dependencies
@@ -250,6 +250,8 @@ A deployable application has been [provided](https://github.com/nuxy/lambda-lamb
 - [CloudFrontFullAccess](https://console.aws.amazon.com/iam/home#/policies/arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2FCloudFrontFullAccess)
 - [AWSCloudFormationFullAccess](https://console.aws.amazon.com/iam/home#/policies/arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2FAWSCloudFormationFullAccess)
 - [AWSLambda_FullAccess](https://console.aws.amazon.com/iam/home#/policies/arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2FAWSLambda_FullAccess)
+
+WARNING: The policies above are provided to ensure a successful application deployment.  It is recommended that you adjust these policies to meet the security requirements of your Lambda application.  They should NOT be used in a Production environment.
 
 ## Developers
 
