@@ -43,7 +43,7 @@ exports.handler = (event, context, callback) => {
   const {request, response} = event.Records[0].cf;
 
   const router = new Router(request, response);
-  router.setPrefix('/api');
+  router.setPrefix('/api'); // optional
 
   // Middleware (order is important).
   router.use(function(req, res, next) {
@@ -173,7 +173,7 @@ module.exports = {
 
 ```
 
-### Route/resource handler
+### Mixed Route/Resource handler
 
 ```javascript
 // .. sam-app/src/routes/foo.js
