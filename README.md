@@ -261,7 +261,7 @@ Run [ESLint](https://eslint.org/) on project sources:
 
     $ npm run lint
 
-Generate documentation using [ESDoc](https://esdoc.org):
+Generate documentation using [JSDoc](https://jsdoc.app):
 
     $ npm run gendoc
 
