@@ -1,3 +1,5 @@
+/** @module router/Common */
+
 'use strict';
 
 /**

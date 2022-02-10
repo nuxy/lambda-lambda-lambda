@@ -1,3 +1,5 @@
+/** @class router/Request */
+
 'use strict';
 
 /**

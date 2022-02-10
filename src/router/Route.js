@@ -1,3 +1,5 @@
+/** @module router/Route */
+
 'use strict';
 
 // Load modules.

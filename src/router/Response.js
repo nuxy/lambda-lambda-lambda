@@ -1,3 +1,5 @@
+/** @class router/Response */
+
 'use strict';
 
 /**
@@ -77,7 +79,7 @@ module.exports = class RouterResponse {
    * @param {Number} code
    *   HTTP status code.
    *
-   * @return {Object{Function}}
+   * @return {Object<Function>}
    *
    * @example
    *   res.setHeader('Content-Type', 'text/html');
