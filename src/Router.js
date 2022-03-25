@@ -6,16 +6,18 @@ const fs      = require('fs');
 const glob    = require('glob');
 const {parse} = require('path');
 
-// Load modules.
+// Local modules.
 const Request  = require('./router/Request');
 const Response = require('./router/Response');
 const Route    = require('./router/Route');
+const Stack    = require('./router/Stack');
 
 const {
   isValidFunc,
   isValidPath,
   isValidRoute,
-  moduleParent
+  moduleParent,
+  setFuncName
 } = require('./router/Common');
 
 /**
@@ -42,11 +44,11 @@ module.exports = class Router {
    *   };
    */
   constructor(request, response) {
-    this.req = new Request (request);
-    this.res = new Response(response);
+    this.req   = new Request (request);
+    this.res   = new Response(response);
+    this.stack = new Stack();
 
     this.prefix = '';
-    this.stack  = [];
     this.match  = false;
   }
 
@@ -58,23 +60,7 @@ module.exports = class Router {
   response() {
     loadRoutes(this);
 
-    // Re-order stack items (middleware first).
-    this.stack.sort(function(a, b) {
-      return (a.length === 3) ? -1 : 1;
-    });
-
-    let nextStackItem = false;
-
-    // Execute stack functions.
-    this.stack.forEach((func, index) => {
-      if (nextStackItem || index === 0) {
-        nextStackItem = false;
-
-        func(this.req, this.res, () => {
-          nextStackItem = true;
-        });
-      }
-    });
+    this.stack.exec(this.req, this.res);
 
     return this.res.data();
   }
@@ -92,13 +78,17 @@ module.exports = class Router {
     let uri = `${this.prefix}${path}`;
 
     if (isValidRoute(this.req.uri(), uri, func)) {
-      this.stack.push(func);
+      if (!func.name) {
+        setFuncName(func, 'route::undefined');
+      }
+
+      this.stack.add(func);
       this.match = true;
     }
   }
 
   /**
-   * Load the Route/Middleware handler.
+   * Load the Route (e.g. Middleware) handler.
    *
    * @param {Function|String} arg
    *   Route/Middleware or Request URI.
@@ -123,12 +113,21 @@ module.exports = class Router {
    *   });
    */
   use(arg, func) {
-    if (isValidPath(arg) && isValidFunc(func)) {
-      this.handle(arg, func);
-    }
 
+    // Route middleware handler.
+    if (isValidPath(arg) && isValidFunc(func)) {
+      setFuncName(func, `middleware:${arg}`);
+
+      this.handle(arg, func);
+    } else
+
+    // General middleware.
     if (isValidFunc(arg)) {
-      this.stack.push(arg);
+      if (arg.length === 3 && !arg.name) {
+        setFuncName(arg, 'middleware');
+      }
+
+      this.stack.add(arg);
     }
   }
 
@@ -159,7 +158,7 @@ module.exports = class Router {
    *   });
    */
   default(route) {
-    this.use((req, res, next) => {
+    const func = (req, res, next) => {
 
       // Check at runtime.
       if (this.match === false) {
@@ -167,7 +166,11 @@ module.exports = class Router {
       }
 
       next();
-    });
+    };
+
+    setFuncName(func, 'fallback');
+
+    this.use(func);
   }
 
   /**
