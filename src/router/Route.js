@@ -2,7 +2,7 @@
 
 'use strict';
 
-// Load modules.
+// Local modules.
 const {isValidFunc, setFuncName} = require('./Common');
 
 /**
@@ -91,7 +91,7 @@ module.exports = (router, route) => {
  * @return {String|undefined}
  *
  * @example
- *   router.resourceId('/api/test/abc123', '/api/test');
+ *   getResourceId('/api/test/abc123', '/api/test');
  *   // abc123
  */
 function getResourceId(uri, path) {
