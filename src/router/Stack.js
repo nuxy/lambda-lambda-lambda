@@ -2,7 +2,7 @@
 
 'use strict';
 
-// Local
+// Local modules.
 const {isValidFunc} = require('./Common');
 
 /**
@@ -23,8 +23,36 @@ module.exports = class RouterStack {
   /**
    * Add new function to stack items.
    *
+   * Stack function types
+   *  - middleware
+   *  - route:<method>
+   *  - resource:<method>
+   *  - fallback
+   *
    * @param {Function} func
    *   Route/middleware function.
+   *
+   * @example
+   *   const func1 = function(req, res, next) {
+   *     if (req.method() === 'POST') {
+   *       res.status(405).send();
+   *     } else {
+   *       next();
+   *     }
+   *   };
+   *
+   *   setFuncName(func1, 'middleware');
+   *   stack.add(func1);
+   *
+   *     ..
+   *
+   *   const func2 = function(req, res) {
+   *     res.setHeader('Content-Type', 'text/html');
+   *     res.status(200).send('Hello World');
+   *   };
+   *
+   *   setFuncName(func2, 'route:get');
+   *   stack.add(func2);
    */
   add(func) {
     if (isValidFunc(func)) {
@@ -59,6 +87,12 @@ module.exports = class RouterStack {
    *
    * @param {RouterResponse} res
    *   Response instance.
+   *
+   * @example
+   *   stack.exec(req, res);
+   *
+   *   // updated instance
+   *   res.data();
    */
   exec(req, res) {
     const funcs = [].concat(this.middleware, this.routes, this.resources, [this.fallback]);
