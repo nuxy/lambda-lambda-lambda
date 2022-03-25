@@ -28,6 +28,8 @@ Install package dependencies using [NPM](https://npmjs.com).
 
 ### Lambda function
 
+Unless your application requires [complex routing](#complex-routing), route handlers can be defined within the [Lambda function scope](https://docs.aws.amazon.com/lambda/latest/operatorguide/global-scope.html).
+
 ```javascript
 // .. sam-app/src/app.js
 
@@ -106,7 +108,9 @@ exports.handler = (event, context, callback) => {
 | `res.status(code).send(body)` | Send the HTTP response as text. |
 | `res.status(code).json(data)` | Send the HTTP response as JSON. |
 
-### Route handler
+### Complex routing
+
+#### Route handler
 
 ```javascript
 // .. sam-app/src/routes/foo.js
@@ -159,7 +163,7 @@ module.exports = {
 };
 ```
 
-### Resource handler
+#### Resource handler
 
 ```javascript
 // .. sam-app/src/routes/foo/bar.js
@@ -175,7 +179,7 @@ module.exports = {
   /**
    * GET /api/foo/bar/<resourceId>
    */
-  index (req, res, id) {
+  get (req, res, id) {
     res.setHeader('Content-Type', 'application/json');
     res.status(200).json({and: 'Omega Mu'});
   },
@@ -183,14 +187,14 @@ module.exports = {
   /**
    * PUT /api/foo/bar/<resourceId>
    */
-  create (req, res, id) {
+  put (req, res, id) {
     res.status(201).send();
   },
 
   /**
    * PATCH /api/foo/bar/<resourceId>
    */
-  update (req, res, id) {
+  patch (req, res, id) {
     res.status(204).send();
   },
 
@@ -204,14 +208,14 @@ module.exports = {
   /**
    * POST /api/foo/bar/<resourceId>
    */
-  submit (req, res, id) {
+  post (req, res, id) {
     res.status(200).send();
   }
 };
 
 ```
 
-### Mixed Route/Resource handler
+#### Mixed Route/Resource handler
 
 ```javascript
 // .. sam-app/src/routes/foo.js
@@ -222,12 +226,20 @@ module.exports = {
  * @export {Object}
  */
 module.exports = {
-  resource: ['index'],
+  resource: ['get', 'put', 'patch', 'delete'],
+
+  /**
+   * GET /api/foo
+   */
+  index (req, res) {
+    res.setHeader('Content-Type', 'text/html');
+    res.status(200).send('Lambda, Lambda, Lambda');
+  },
 
   /**
    * GET /api/foo/<resourceId>
    */
-  index (req, res, id) {
+  get (req, res, id) {
     res.setHeader('Content-Type', 'application/json');
     res.status(200).json({and: 'Omega Mu'});
   },
@@ -240,9 +252,23 @@ module.exports = {
   },
 
   /**
+   * PUT /api/foo/<resourceId>
+   */
+  put (req, res, id) {
+    res.status(201).send();
+  },
+
+  /**
    * PATCH /api/foo
    */
   update (req, res) {
+    res.status(204).send();
+  },
+
+  /**
+   * PATCH /api/foo/<resourceId>
+   */
+  patch (req, res, id) {
     res.status(204).send();
   },
 
@@ -254,9 +280,9 @@ module.exports = {
   },
 
   /**
-   * POST /api/foo
+   * POST /api/foo/<resourceId>
    */
-  submit (req, res) {
+  submit (req, res, id) {
     res.status(200).send();
   }
 };

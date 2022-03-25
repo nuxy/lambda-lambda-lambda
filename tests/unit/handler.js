@@ -560,7 +560,43 @@ describe('Test route /api/foo/bar/baz', function() {
 describe('Test route/resource /api/foo/bar/baz/qux', function() {
   const resourceId = 'uuid-123456_AbC';
 
-  describe('GET', function() {
+  describe('GET (route)', function() {
+    event.Records[0].cf.request.method = 'GET';
+    event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux';
+
+    // Handle Content Negotiation.
+    event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
+
+    app.handler(event, null, function(undef, result) {
+      it('should return an object', function() {
+        expect(result).to.be.an('object');
+      });
+
+      const {headers, status, body} = result;
+
+      it('should return headers', function() {
+        expect(headers).to.be.an('object');
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('application/json');
+      });
+
+      it('should not return header', function() {
+        expect(headers['x-request-id']).to.be.undefined;
+      });
+
+      it('should return status', function() {
+        expect(status).to.be.an('number');
+        expect(status).to.equal(200);
+      });
+
+      it('should return body', function() {
+        expect(body).to.be.an('string');
+        expect(body).to.equal('{"index":true}');
+      });
+    });
+  });
+
+  describe('GET (resource)', function() {
     event.Records[0].cf.request.method = 'GET';
     event.Records[0].cf.request.uri    = `/api/foo/bar/baz/qux/${resourceId}`;
 
@@ -589,12 +625,12 @@ describe('Test route/resource /api/foo/bar/baz/qux', function() {
 
       it('should return body', function() {
         expect(body).to.be.an('string');
-        expect(body).to.equal('{"index":true}');
+        expect(body).to.equal('{"get":true}');
       });
     });
   });
 
-  describe('PUT', function() {
+  describe('PUT (route)', function() {
     event.Records[0].cf.request.method = 'PUT';
     event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux';
 
@@ -627,9 +663,76 @@ describe('Test route/resource /api/foo/bar/baz/qux', function() {
     });
   });
 
-  describe('PATCH', function() {
+  describe('PUT (resource)', function() {
+    event.Records[0].cf.request.method = 'PUT';
+    event.Records[0].cf.request.uri    = `/api/foo/bar/baz/qux/${resourceId}`;
+
+    app.handler(event, null, function(undef, result) {
+      it('should return an object', function() {
+        expect(result).to.be.an('object');
+      });
+
+      const {headers, status, body} = result;
+
+      it('should return headers', function() {
+        expect(headers).to.be.an('object');
+        expect(headers['x-request-id'][0].key).to.equal('X-Request-ID');
+        expect(headers['x-request-id'][0].value).to.equal(resourceId);
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('application/json');
+      });
+
+      it('should return status', function() {
+        expect(status).to.be.an('number');
+        expect(status).to.equal(201);
+      });
+
+      it('should return body', function() {
+        expect(body).to.be.an('string');
+        expect(body).to.equal('{"put":true}');
+      });
+    });
+  });
+
+  describe('PATCH (route)', function() {
+    event.Records[0].cf.request.method = 'PATCH';
+    event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux';
+
+    app.handler(event, null, function(undef, result) {
+      it('should return an object', function() {
+        expect(result).to.be.an('object');
+      });
+
+      const {headers, status, body} = result;
+
+      it('should return headers', function() {
+        expect(headers).to.be.an('object');
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('application/json');
+      });
+
+      it('should not return header', function() {
+        expect(headers['x-request-id']).to.be.undefined;
+      });
+
+      it('should return status', function() {
+        expect(status).to.be.an('number');
+        expect(status).to.equal(204);
+      });
+
+      it('should return body', function() {
+        expect(body).to.be.an('string');
+        expect(body).to.equal('{"update":true}');
+      });
+    });
+  });
+
+  describe('PATCH (resource)', function() {
     event.Records[0].cf.request.method = 'PATCH';
     event.Records[0].cf.request.uri    = `/api/foo/bar/baz/qux/${resourceId}`;
+
+    // Handle Content Negotiation.
+    event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
 
     app.handler(event, null, function(undef, result) {
       it('should return an object', function() {
@@ -653,12 +756,12 @@ describe('Test route/resource /api/foo/bar/baz/qux', function() {
 
       it('should return body', function() {
         expect(body).to.be.an('string');
-        expect(body).to.equal('{"update":true}');
+        expect(body).to.equal('{"patch":true}');
       });
     });
   });
 
-  describe('DELETE', function() {
+  describe('DELETE (resource)', function() {
     event.Records[0].cf.request.method = 'DELETE';
     event.Records[0].cf.request.uri    = `/api/foo/bar/baz/qux/${resourceId}`;
 
@@ -689,7 +792,7 @@ describe('Test route/resource /api/foo/bar/baz/qux', function() {
     });
   });
 
-  describe('POST', function() {
+  describe('POST (route)', function() {
     event.Records[0].cf.request.method = 'POST';
     event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux';
 
@@ -718,6 +821,37 @@ describe('Test route/resource /api/foo/bar/baz/qux', function() {
       it('should return body', function() {
         expect(body).to.be.an('string');
         expect(body).to.equal('{"submit":true}');
+      });
+    });
+  });
+
+  describe('POST (resource)', function() {
+    event.Records[0].cf.request.method = 'POST';
+    event.Records[0].cf.request.uri    = `/api/foo/bar/baz/qux/${resourceId}`;
+
+    app.handler(event, null, function(undef, result) {
+      it('should return an object', function() {
+        expect(result).to.be.an('object');
+      });
+
+      const {headers, status, body} = result;
+
+      it('should return headers', function() {
+        expect(headers).to.be.an('object');
+        expect(headers['x-request-id'][0].key).to.equal('X-Request-ID');
+        expect(headers['x-request-id'][0].value).to.equal(resourceId);
+        expect(headers['content-type'][0].key).to.equal('Content-Type');
+        expect(headers['content-type'][0].value).to.equal('application/json');
+      });
+
+      it('should return status', function() {
+        expect(status).to.be.an('number');
+        expect(status).to.equal(200);
+      });
+
+      it('should return body', function() {
+        expect(body).to.be.an('string');
+        expect(body).to.equal('{"post":true}');
       });
     });
   });

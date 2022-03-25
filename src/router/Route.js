@@ -12,13 +12,17 @@ const {isValidFunc, setFuncName} = require('./Common');
  *   // .. sam-app/src/routes/foo.js
  *   const routeConfig = {
  *     middleware: [middlewareFunc1, middlewareFunc2],
- *     resource:   true || ['index'],
+ *     resource: true || ['get', 'put', 'patch', 'submit'],
  *
- *     index  (req, res, id) {},
+ *     index  (req, res) {},
+ *     get    (req, res, id) {},
  *     create (req, res) {},
+ *     put    (req, res, id) {},
  *     update (req, res) {},
- *     delete (req, res) {},
- *     submit (req, res) {}
+ *     patch  (req, res, id) {},
+ *     post   (req, res) {},
+ *     submit (req, res, id) {},
+ *     delete (req, res) {}
  *   };
  *
  *   module.exports = routeConfig;
@@ -55,14 +59,12 @@ module.exports = (router, route) => {
 
     let entityType = 'route';
 
-    // Add resource ID to Route as argument.
-    if (isResource) {
+    // Support - Boolean | Array<methodMapKey>
+    if (isResource && (route.resource === true || (Array.isArray(route.resource) && route.resource.includes(key)))) {
       const resourceId = getResourceId(router.req.uri(), `${router.prefix}${path}`);
 
-      const v = route.resource;
-
-      // Support - Boolean | Array<methodMapKey>
-      if (resourceId && (v === true || (Array.isArray(v) && v.includes(key)))) {
+      // Add resource ID to Route as argument.
+      if (resourceId) {
         const oldFunc = route[key];
         route[key] = (req, res) => {
           oldFunc(req, res, resourceId);

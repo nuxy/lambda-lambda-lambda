@@ -9,14 +9,21 @@ const contentTypeHeader  = require(`${process.cwd()}/tests/handler/middleware/Co
  */
 module.exports = {
   middleware: [contentNegotiation, contentTypeHeader],
-  resource: ['index', 'update', 'delete'],
+  resource: ['get', 'put', 'patch', 'delete', 'post'],
+
+  /**
+   * GET /api/<path>
+   */
+  index (req, res) {
+    res.status(200).json({index: true});
+  },
 
   /**
    * GET /api/<path>/<resourceId>
    */
-  index (req, res, id) {
+  get (req, res, id) {
     res.setHeader('X-Request-ID', id);
-    res.status(200).json({index: true});
+    res.status(200).json({get: true});
   },
 
   /**
@@ -27,11 +34,26 @@ module.exports = {
   },
 
   /**
+   * PUT /api/<path>/<resourceId>
+   */
+  put (req, res, id) {
+    res.setHeader('X-Request-ID', id);
+    res.status(201).json({put: true});
+  },
+
+  /**
+   * PATCH /api/<path>
+   */
+  update (req, res) {
+    res.status(204).json({update: true});
+  },
+
+  /**
    * PATCH /api/<path>/<resourceId>
    */
-  update (req, res, id) {
+  patch (req, res, id) {
     res.setHeader('X-Request-ID', id);
-    res.status(204).json({update: true});
+    res.status(204).json({patch: true});
   },
 
   /**
@@ -47,5 +69,13 @@ module.exports = {
    */
   submit (req, res) {
     res.status(200).json({submit: true});
+  },
+
+  /**
+   * POST /api/<path>/<resourceId>
+   */
+  post (req, res, id) {
+    res.setHeader('X-Request-ID', id);
+    res.status(200).json({post: true});
   }
 };
