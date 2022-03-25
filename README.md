@@ -226,7 +226,7 @@ module.exports = {
  * @export {Object}
  */
 module.exports = {
-  resource: ['get', 'put', 'patch', 'delete'],
+  resource: ['get', 'put', 'patch', 'submit'],
 
   /**
    * GET /api/foo
