@@ -57,6 +57,7 @@ module.exports = (router, route) => {
       continue;
     }
 
+    let routeFunc = route[key];
     let entityType = 'route';
 
     // Support - Boolean | Array<methodMapKey>
@@ -65,8 +66,8 @@ module.exports = (router, route) => {
 
       // Add resource ID to Route as argument.
       if (resourceId) {
-        const oldFunc = route[key];
-        route[key] = (req, res) => {
+        const oldFunc = routeFunc;
+        routeFunc = (req, res) => {
           oldFunc(req, res, resourceId);
         };
 
@@ -74,10 +75,10 @@ module.exports = (router, route) => {
       }
     }
 
-    setFuncName(route[key], `${entityType}:${key}`);
+    setFuncName(routeFunc, `${entityType}:${key}`);
 
     // Execute the route-defined function.
-    router[method](path, route[key]);
+    router[method](path, routeFunc);
   }
 };
 
@@ -101,4 +102,5 @@ function getResourceId(uri, path) {
   if (fragment !== uri) {
     return fragment;
   }
+  return null;
 }
