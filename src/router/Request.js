@@ -32,7 +32,7 @@ module.exports = class RouterRequest {
    * @param {String} name
    *   HTTP header name.
    *
-   * @return {Boolean}
+   * @return {String|undefined}
    *
    * @example
    *   const value = req.header('Content-Type');
@@ -43,7 +43,7 @@ module.exports = class RouterRequest {
 
     let value;
     Object.keys(headers).forEach(function(key) {
-      if (key === name.toLowerCase()) {
+      if (name && key === name.toLowerCase()) {
         value = headers[key][0].value;
       }
     });
@@ -160,7 +160,9 @@ module.exports = class RouterRequest {
    * @return {Boolean}
    */
   static isParams(str) {
-    return (Array.from(new URLSearchParams(str)).length > 0);
+    const values = Array.from(new URLSearchParams(str));
+
+    return (values.length > 0 && values[0][0] !== str);
   }
 
   /**
