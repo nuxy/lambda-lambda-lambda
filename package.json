@@ -28,14 +28,14 @@
   "author": "Marc S. Brooks <devel@mbrooks.info> (https://mbrooks.info)",
   "license": "MIT",
   "dependencies": {
-    "glob": "^7.2.0"
+    "glob": "^7.2.3"
   },
   "devDependencies": {
-    "aws-sdk": "^2.815.0",
-    "chai": "^4.2.0",
-    "eslint": "^7.15.0",
+    "aws-sdk": "^2.1136.0",
+    "chai": "^4.3.6",
+    "eslint": "^7.32.0",
     "jsdoc": "^3.6.10",
-    "mocha": "^9.2.0"
+    "mocha": "^9.2.2"
   },
   "engines": {
     "node": ">=12.0.0"
