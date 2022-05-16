@@ -1,8 +1,8 @@
 'use strict';
 
 // Load modules.
-const contentNegotiation = require(`${process.cwd()}/tests/handler/middleware/ContentNegotiation`);
-const contentTypeHeader  = require(`${process.cwd()}/tests/handler/middleware/ContentTypeHeader`);
+const contentNegotiation = require(`${process.cwd()}/test/e2e/handler/middleware/ContentNegotiation`);
+const contentTypeHeader  = require(`${process.cwd()}/test/e2e/handler/middleware/ContentTypeHeader`);
 
 /**
  * @export {Object}
