@@ -1,5 +1,3 @@
-/** @class router/Stack */
-
 'use strict';
 
 // Local modules.
@@ -8,7 +6,7 @@ const {isValidFunc} = require('./Common');
 /**
  * Provides Stack item handler and methods.
  */
-module.exports = class RouterStack {
+class RouterStack {
 
   /**
    * Create new stack instance.
@@ -110,3 +108,5 @@ module.exports = class RouterStack {
     });
   }
 };
+
+module.exports = RouterStack;

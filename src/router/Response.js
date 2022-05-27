@@ -1,5 +1,3 @@
-/** @class router/Response */
-
 'use strict';
 
 /**
@@ -7,7 +5,7 @@
  *
  * @see https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-event-structure.html#example-origin-response
  */
-module.exports = class RouterResponse {
+class RouterResponse {
 
   /**
    * @param {Object|undefined} obj
@@ -106,3 +104,5 @@ module.exports = class RouterResponse {
     };
   }
 };
+
+module.exports = RouterResponse;

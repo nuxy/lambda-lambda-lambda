@@ -1,5 +1,3 @@
-/** @class Router */
-
 'use strict';
 
 const fs      = require('fs');
@@ -23,7 +21,7 @@ const {
 /**
  * Provides HTTP request/response handling.
  */
-module.exports = class Router {
+class Router {
 
   /**
    * @param {Object} request
@@ -301,3 +299,5 @@ function loadRoutes(router) {
     });
   }
 }
+
+module.exports = Router;
