@@ -72,6 +72,8 @@ exports.handler = (event, context, callback) => {
 
 ### Common methods
 
+The following methods are supported based on the class context.  For further information please refer to the [JSDoc generated documentation](#cli-options) which includes method `arguments`/`return` types and general usage examples.
+
 #### Router
 
 | Method                      | Description                               |
@@ -86,7 +88,7 @@ exports.handler = (event, context, callback) => {
 | `router.default(func)`      | Set router fallback (default route).      |
 | `router.response()`         | Return the AWS response object.           |
 
-#### Request
+#### router/Request
 
 | Method              | Description                                       |
 |---------------------|---------------------------------------------------|
@@ -100,7 +102,7 @@ exports.handler = (event, context, callback) => {
 | `req.queryString()` | Return the query string, if any, in the request.  |
 | `req.body()`        | Return the base64-encoded body data.              |
 
-#### Response
+#### router/Response
 
 | Method                        | Description                     |
 |-------------------------------|---------------------------------|
@@ -108,7 +110,24 @@ exports.handler = (event, context, callback) => {
 | `res.status(code).send(body)` | Send the HTTP response as text. |
 | `res.status(code).json(data)` | Send the HTTP response as JSON. |
 
+#### router/Stack
+
+| Method            | Description                                     |
+|-------------------|-------------------------------------------------|
+| `stack.add(func)` | Add new function to stack items.                |
+| `stack.exec()`    | Execute stored functions (ordered by priority). |
+
 ### Complex routing
+
+When constructing a routing handler the following methods/aliases are supported.  While they can be used interchangeably they must define either a [Route](#route-handler) or [Resource](#resource-handler) handler, but not both.
+
+| Handler Method | Alias  |
+|----------------|--------|
+| get            | index  |
+| post           | submit |
+| put            | create |
+| patch          | update |
+| delete         | N/A    |
 
 #### Route handler
 
@@ -301,7 +320,7 @@ module.exports = {
 module.exports = (req, res, next) => {
   res.setHeader('Content-Type', 'text/html');
 
-  next();
+  next(); // Run subsequent handler.
 };
 ```
 
