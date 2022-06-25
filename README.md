@@ -110,13 +110,6 @@ The following methods are supported based on the class context.  For further inf
 | `res.status(code).send(body)` | Send the HTTP response as text. |
 | `res.status(code).json(data)` | Send the HTTP response as JSON. |
 
-#### router/Stack
-
-| Method            | Description                                     |
-|-------------------|-------------------------------------------------|
-| `stack.add(func)` | Add new function to stack items.                |
-| `stack.exec()`    | Execute stored functions (ordered by priority). |
-
 ### Complex routing
 
 When constructing a routing handler the following methods/aliases are supported.  While they can be used interchangeably they must define either a [Route](#route-handler) or [Resource](#resource-handler) handler, but not both.
@@ -309,6 +302,8 @@ module.exports = {
 
 ### Middleware
 
+#### Content-Type
+
 ```javascript
 // .. sam-app/src/middleware/ContentTypeHeader.js
 
@@ -321,6 +316,35 @@ module.exports = (req, res, next) => {
   res.setHeader('Content-Type', 'text/html');
 
   next(); // Run subsequent handler.
+};
+```
+
+#### Access-Control
+
+```javascript
+// .. sam-app/src/middleware/AccessControlHeaders.js
+
+'use strict';
+
+/**
+ * Middleware to send Access-Control-* headers.
+ */
+module.exports = (req, res, next) => {
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Headers', 'Accept,Content-Type');
+  res.setHeader('Access-Control-Allow-Methods', 'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT');
+  
+  // Set CORS restrictions.
+  res.setHeader('Access-Control-Allow-Origin',
+    (config.development === true) ? 'http://localhost:9000' : 'https://domain.com'
+  );
+
+  // Handle preflight requests.
+  if (req.method() === 'OPTIONS') {
+    res.status(204).send();
+  } else {
+    next(); // Run subsequent handler.
+  }
 };
 ```
 
