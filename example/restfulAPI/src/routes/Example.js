@@ -7,6 +7,7 @@ const contentTypeHeader = require('../middleware/ContentTypeHeader');
  */
 module.exports = {
   middleware: contentTypeHeader,
+  resource: ['create', 'update', 'delete'],
 
   /**
    * GET /api/example
@@ -16,23 +17,23 @@ module.exports = {
   },
 
   /**
-   * PUT /api/example
+   * PUT /api/example/<resourceId>
    */
-  create (req, res) {
+  create (req, res, id) {
     res.status(201).send('create');
   },
 
   /**
-   * PATCH /api/example
+   * PATCH /api/example/<resourceId>
    */
-  update (req, res) {
+  update (req, res, id) {
     res.status(204).send('update');
   },
 
   /**
-   * DELETE /api/example
+   * DELETE /api/example/<resourceId>
    */
-  delete (req, res) {
+  delete (req, res, id) {
     res.status(410).send('delete');
   },
 
