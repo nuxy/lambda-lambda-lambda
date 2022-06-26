@@ -23,16 +23,7 @@ exports.handler = (event, context, callback) => {
     }
   });
 
-  // Preflight OPTIONS.
-  router.use(function(req, res, next) {
-    if (req.method() === 'OPTIONS') {
-      accessControlHeaders(req, res, next);
-
-      res.status(200).send();
-    } else {
-      next();
-    }
-  });
+  router.use(accessControlHeaders);
 
   // Send root response.
   router.get('/', function(req, res) {
