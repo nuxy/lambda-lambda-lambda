@@ -136,7 +136,7 @@ const contentTypeHeader = require('middleware/ContentTypeHeader');
  * @export {Object}
  */
 module.exports = {
-  middleware: [contentTypeHeader],
+  middleware: [contentTypeHeader], // Locally scoped.
 
   /**
    * GET /api/foo
@@ -344,6 +344,30 @@ module.exports = (req, res, next) => {
     res.status(204).send();
   } else {
     next(); // Run subsequent handler.
+  }
+};
+```
+
+#### Basic Authentication
+
+```javascript
+// .. sam-app/src/middleware/BasicAuthHandler.js
+
+'use strict';
+
+/**
+ * Middleware to prompt Basic Authentication.
+ */
+module.exports = (req, res, next) => {
+  const username = "private";
+  const password = "password";
+  const authStr  = 'Basic ' + Buffer.from(`${username}:${password}`).toString('base64');
+
+  if (req.header('Authorization') !== authStr) {
+    res.setHeader('WWW-Authenticate', 'Basic');
+    res.status(401).send('Unauthorized');
+  } else {
+    next();
   }
 };
 ```

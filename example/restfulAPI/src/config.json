@@ -6,5 +6,9 @@
   "router": {
     "prefix": "/api"
   },
+  "basicAuth": {
+    "username": "private",
+    "password": "password"
+  },
   "development": true
 }

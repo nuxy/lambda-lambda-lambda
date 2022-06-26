@@ -70,6 +70,7 @@ Resources:
             ForwardedValues:
               Headers:
                 - Accept
+                - Authorization
               QueryString: false
               Cookies:
                 Forward: none
