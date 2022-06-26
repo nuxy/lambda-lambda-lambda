@@ -106,7 +106,7 @@ The following methods are supported based on the class context.  For further inf
 
 | Method                        | Description                     |
 |-------------------------------|---------------------------------|
-| `res.setHeader(path)`         | Set HTTP response header.       |
+| `res.setHeader(name, value)`  | Set HTTP response header.       |
 | `res.status(code).send(body)` | Send the HTTP response as text. |
 | `res.status(code).json(data)` | Send the HTTP response as JSON. |
 
@@ -333,7 +333,7 @@ module.exports = (req, res, next) => {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Headers', 'Accept,Content-Type');
   res.setHeader('Access-Control-Allow-Methods', 'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT');
-  
+
   // Set CORS restrictions.
   res.setHeader('Access-Control-Allow-Origin',
     (config.development === true) ? 'http://localhost:9000' : 'https://domain.com'
