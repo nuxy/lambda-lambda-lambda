@@ -7,7 +7,7 @@ const contentTypeHeader = require('../../middleware/ContentTypeHeader');
  * @export {Object}
  */
 module.exports = {
-  middleware: [authHandler, contentTypeHeader],
+  middleware: [basicAuthHandler, contentTypeHeader],
   resource: ['create', 'update', 'delete'],
 
   /**
