@@ -367,14 +367,22 @@ module.exports = (req, res, next) => {
     res.setHeader('WWW-Authenticate', 'Basic');
     res.status(401).send('Unauthorized');
   } else {
-    next();
+    next(); // Run subsequent handler.
   }
 };
 ```
 
 ## App Example
 
-A deployable application has been [provided](https://github.com/nuxy/lambda-lambda-lambda/tree/master/example) with this package.  In order to successfully deploy you must have [set-up your AWS Config](https://docs.aws.amazon.com/config/latest/developerguide/gs-cli.html) and have [created an IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html) with the following [policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage.html):
+A [RestfulAPI application example](https://github.com/nuxy/lambda-lambda-lambda/tree/master/example) has been provided with this package that can either be **run locally in Docker** or **deployed to AWS Lambda**.
+
+### Running in Docker
+
+When launching [VS Code](https://code.visualstudio.com) you will be prompted to "Open as Container".  Once launched, the application can be accessed at: http://localhost:3000/api/example
+
+### Deploying to AWS
+
+In order to successfully deploy you must have [set-up your AWS Config](https://docs.aws.amazon.com/config/latest/developerguide/gs-cli.html) and have [created an IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html) with the following [policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage.html):
 
 - [IAMFullAccess](https://console.aws.amazon.com/iam/home#/policies/arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2FIAMFullAccess)
 - [AmazonS3FullAccess](https://console.aws.amazon.com/iam/home#/policies/arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2FAmazonS3FullAccess)
