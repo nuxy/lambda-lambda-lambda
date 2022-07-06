@@ -80,25 +80,45 @@ class RouterResponse {
    * @return {Object<Function>}
    *
    * @example
-   *   res.setHeader('Content-Type', 'text/html');
-   *   res.status(200).send('Hello World');
-   *
+   *   res.setHeader('Content-Type', 'mime/type');
+   *   res.status(200).send(value);
    *     ..
    *
    *   res.setHeader('Content-Type', 'application/json');
    *   res.status(200).json({hello: 'world'});
+   *     ..
+   *
+   *   res.setHeader('Content-Type', 'text/html');
+   *   res.status(200).text('Hello World');
+   *     ..
+   *
+   *   res.setHeader('Content-Type', 'image/jpeg');
+   *   res.setHeader('Content-Length', buffer.byteLength.toString());
+   *   res.status(200).data(buffer);
    */
   status(code) {
     this.data().status = code;
 
     // Chain response methods.
     return {
-      json: (data = {}) => {
-        this.data().body = this.json(data);
+      data: buffer => {
+        this.data().body = buffer;
       },
-      send: body => {
-        if (body) {
-          this.data().body = this.text(body);
+      json: (obj = {}) => {
+        this.data().body = this.json(obj);
+      },
+      text: str => {
+        this.data().body = this.text(str);
+      },
+
+      // Determine argument type.
+      send: arg => {
+        if (Buffer.isBuffer(arg)) {
+          this.status(code).data(arg);
+        } else if (Array.isArray(arg) || typeof arg === 'object') {
+          this.status(code).json(arg);
+        } else if (arg) {
+          this.status(code).text(arg);
         }
       }
     };

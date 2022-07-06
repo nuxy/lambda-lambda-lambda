@@ -57,35 +57,98 @@ describe('Response module', function() {
     describe('status', function() {
       describe('.send', function() {
         const code = 123;
-        const text = 'foo-bar';
+
+        describe('buffer (argument)', function() {
+          const arg = Buffer.from('foo-bar');
+
+          const response = new Response(event.Records[0].cf.response);
+          response.status(code).send(arg);
+
+          it('should return status', function() {
+            expect(response.data().status).to.equal(code);
+          });
+
+          it('should return body', function() {
+            expect(Buffer.isBuffer(response.data().body)).to.be.true;
+          });
+        });
+
+        describe('json (argument)', function() {
+          const arg = {foo: 'bar'};
+
+          const response = new Response(event.Records[0].cf.response);
+          response.status(code).send(arg);
+
+          it('should return status', function() {
+            expect(response.data().status).to.equal(code);
+          });
+
+          it('should return body', function() {
+            expect(response.data().body).to.equal(JSON.stringify(arg));
+          });
+        });
+
+        describe('text (argument)', function() {
+          const arg = 'foo-bar';
+
+          const response = new Response(event.Records[0].cf.response);
+          response.status(code).send(arg);
+
+          it('should return status', function() {
+            expect(response.data().status).to.equal(code);
+          });
+
+          it('should return body', function() {
+            expect(response.data().body).to.equal(arg);
+          });
+        });
+      });
+
+      describe('.data', function() {
+        const code = 456;
+        const arg  = Buffer.from('foo-bar');
 
         const response = new Response(event.Records[0].cf.response);
-
-        response.status(code).send(text);
+        response.status(code).data(arg);
 
         it('should return status', function() {
           expect(response.data().status).to.equal(code);
         });
 
         it('should return body', function() {
-          expect(response.data().body).to.equal(text);
+          expect(Buffer.isBuffer(response.data().body)).to.be.true;
         });
       });
 
       describe('.json', function() {
         const code = 456;
-        const data = {foo: 'bar'};
+        const arg  = {foo: 'bar'};
 
         const response = new Response(event.Records[0].cf.response);
-
-        response.status(code).json(data);
+        response.status(code).json(arg);
 
         it('should return status', function() {
           expect(response.data().status).to.equal(code);
         });
 
         it('should return body', function() {
-          expect(response.data().body).to.equal(JSON.stringify(data));
+          expect(response.data().body).to.equal(JSON.stringify(arg));
+        });
+      });
+
+      describe('.text', function() {
+        const code = 456;
+        const arg  = 'foo-bar';
+
+        const response = new Response(event.Records[0].cf.response);
+        response.status(code).text(arg);
+
+        it('should return status', function() {
+          expect(response.data().status).to.equal(code);
+        });
+
+        it('should return body', function() {
+          expect(response.data().body).to.equal(arg);
         });
       });
     });
