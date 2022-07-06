@@ -107,7 +107,7 @@ The following methods are supported based on the class context.  For further inf
 | Method                          | Description                     |
 |---------------------------------|---------------------------------|
 | `res.setHeader(name, value)`    | Set HTTP response header.       |
-| `res.status(code).send(body)`   | Send the HTTP response (buffer|json|text). |
+| `res.status(code).send(body)`   | Send the HTTP response (`Array`, `Buffer`, `Object`, `String`). |
 | `res.status(code).data(buffer)` | Send binary data with HTTP response. |
 | `res.status(code).json(obj)`    | Send the HTTP response as JSON. |
 | `res.status(code).text(str)`    | Send the HTTP response as text. |
