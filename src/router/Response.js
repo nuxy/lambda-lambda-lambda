@@ -93,7 +93,6 @@ class RouterResponse {
    *     ..
    *
    *   res.setHeader('Content-Type', 'image/jpeg');
-   *   res.setHeader('Content-Length', buffer.byteLength.toString());
    *   res.status(200).data(buffer);
    */
   status(code) {
@@ -102,7 +101,7 @@ class RouterResponse {
     // Chain response methods.
     return {
       data: buffer => {
-        this.data().body = buffer;
+        this.data().body = buffer.toString('binary');
       },
       json: (obj = {}) => {
         this.data().body = this.json(obj);

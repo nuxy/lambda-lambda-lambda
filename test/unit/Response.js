@@ -59,7 +59,8 @@ describe('Response module', function() {
         const code = 123;
 
         describe('buffer (argument)', function() {
-          const arg = Buffer.from('foo-bar');
+          const data = 'foo-bar';
+          const arg  = Buffer.from(data);
 
           const response = new Response(event.Records[0].cf.response);
           response.status(code).send(arg);
@@ -69,7 +70,7 @@ describe('Response module', function() {
           });
 
           it('should return body', function() {
-            expect(Buffer.isBuffer(response.data().body)).to.be.true;
+            expect(response.data().body === data).to.be.true;
           });
         });
 
@@ -106,7 +107,8 @@ describe('Response module', function() {
 
       describe('.data', function() {
         const code = 456;
-        const arg  = Buffer.from('foo-bar');
+        const data = 'foo-bar';
+        const arg  = Buffer.from(data);
 
         const response = new Response(event.Records[0].cf.response);
         response.status(code).data(arg);
@@ -116,7 +118,7 @@ describe('Response module', function() {
         });
 
         it('should return body', function() {
-          expect(Buffer.isBuffer(response.data().body)).to.be.true;
+          expect(response.data().body === data).to.be.true;
         });
       });
 
