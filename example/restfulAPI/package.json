@@ -1,10 +1,10 @@
 {
   "name": "restful-api",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "description": "Lambda-driven Restful API handler.",
   "main": "app.js",
   "dependencies": {
-    "lambda-lambda-lambda": "^0.1.5"
+    "lambda-lambda-lambda": "^0.2.0"
   },
   "engines": {
     "node": ">=12.0.0"
