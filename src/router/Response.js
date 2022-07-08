@@ -92,7 +92,7 @@ class RouterResponse {
    *   res.status(200).text('Hello World');
    *     ..
    *
-   *   res.setHeader('Content-Type', 'image/jpeg');
+   *   res.setHeader('Content-Type', 'image/jpeg; charset=utf-8');
    *   res.status(200).data(buffer);
    */
   status(code) {
@@ -101,13 +101,16 @@ class RouterResponse {
     // Chain response methods.
     return {
       data: buffer => {
-        this.data().body = buffer.toString('binary');
+        this.data().body = buffer.toString('base64');
+        this.data().bodyEncoding = 'base64';
       },
       json: (obj = {}) => {
         this.data().body = this.json(obj);
+        this.data().bodyEncoding = 'text';
       },
       text: str => {
         this.data().body = this.text(str);
+        this.data().bodyEncoding = 'text';
       },
 
       // Determine argument type.

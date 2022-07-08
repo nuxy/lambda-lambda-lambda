@@ -60,7 +60,7 @@ describe('Response module', function() {
 
         describe('buffer (argument)', function() {
           const data = 'foo-bar';
-          const arg  = Buffer.from(data);
+          const arg  = Buffer.from(data).toString('base64');
 
           const response = new Response(event.Records[0].cf.response);
           response.status(code).send(arg);
@@ -70,7 +70,13 @@ describe('Response module', function() {
           });
 
           it('should return body', function() {
-            expect(response.data().body === data).to.be.true;
+            expect(
+              Buffer.from(response.data().body, 'base64').toString('ascii')
+            ).to.equal(data);
+          });
+
+          it('should return encoding', function() {
+            expect(response.data().bodyEncoding).to.equal('base64');
           });
         });
 
@@ -87,6 +93,10 @@ describe('Response module', function() {
           it('should return body', function() {
             expect(response.data().body).to.equal(JSON.stringify(arg));
           });
+
+          it('should return encoding', function() {
+            expect(response.data().bodyEncoding).to.equal('text');
+          });
         });
 
         describe('text (argument)', function() {
@@ -102,13 +112,17 @@ describe('Response module', function() {
           it('should return body', function() {
             expect(response.data().body).to.equal(arg);
           });
+
+          it('should return encoding', function() {
+            expect(response.data().bodyEncoding).to.equal('text');
+          });
         });
       });
 
       describe('.data', function() {
         const code = 456;
         const data = 'foo-bar';
-        const arg  = Buffer.from(data);
+        const arg  = Buffer.from(data).toString('base64');
 
         const response = new Response(event.Records[0].cf.response);
         response.status(code).data(arg);
@@ -118,7 +132,13 @@ describe('Response module', function() {
         });
 
         it('should return body', function() {
-          expect(response.data().body === data).to.be.true;
+          expect(
+            Buffer.from(response.data().body, 'base64').toString('ascii')
+          ).to.equal(data);
+        });
+
+        it('should return encoding', function() {
+          expect(response.data().bodyEncoding).to.equal('base64');
         });
       });
 
@@ -136,6 +156,10 @@ describe('Response module', function() {
         it('should return body', function() {
           expect(response.data().body).to.equal(JSON.stringify(arg));
         });
+
+        it('should return encoding', function() {
+          expect(response.data().bodyEncoding).to.equal('text');
+        });
       });
 
       describe('.text', function() {
@@ -151,6 +175,10 @@ describe('Response module', function() {
 
         it('should return body', function() {
           expect(response.data().body).to.equal(arg);
+        });
+
+        it('should return encoding', function() {
+          expect(response.data().bodyEncoding).to.equal('text');
         });
       });
     });
