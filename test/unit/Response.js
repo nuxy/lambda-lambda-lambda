@@ -60,7 +60,7 @@ describe('Response module', function() {
 
         describe('buffer (argument)', function() {
           const data = 'foo-bar';
-          const arg  = Buffer.from(data).toString('base64');
+          const arg  = Buffer.from(data);
 
           const response = new Response(event.Records[0].cf.response);
           response.status(code).send(arg);
@@ -122,7 +122,7 @@ describe('Response module', function() {
       describe('.data', function() {
         const code = 456;
         const data = 'foo-bar';
-        const arg  = Buffer.from(data).toString('base64');
+        const arg  = Buffer.from(data);
 
         const response = new Response(event.Records[0].cf.response);
         response.status(code).data(arg);
