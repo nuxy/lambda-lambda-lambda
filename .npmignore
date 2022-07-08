@@ -1,4 +1,6 @@
 .devcontainer
+.eslintrc
+.travis.yml
 .vscode
 doc
 example
