@@ -1,3 +1,12 @@
+/**
+ *  lambda-lambda-lambda
+ *  AWS Lambda@Edge serverless application router.
+ *
+ *  Copyright 2021-2022, Marc S. Brooks (https://mbrooks.info)
+ *  Licensed under the MIT license:
+ *  http://www.opensource.org/licenses/mit-license.php
+ */
+
 'use strict';
 
 // Local modules.
