@@ -1,7 +1,7 @@
 const http = require('http');
 const url  = require('url');
 
-// Local modules
+// Local modules.
 const {handler} = require('../example/restfulAPI/src/app');
 
 /**
@@ -26,7 +26,7 @@ http.createServer(function(req, res) {
           cf: {
             request: {
               clientIp: res.socket.remoteAddress,
-              headers: formatHeaders(res.getHeaders()).toEdge(),
+              headers: formatHeaders(req.headers).toEdge(),
               method: req.method,
               querystring: req.path,
               uri: url.parse(req.url).pathname,
@@ -39,7 +39,7 @@ http.createServer(function(req, res) {
       ]
     };
 
-    // .. and callback() handler.
+    // .. and callback() application handler.
     const callback = function(request, response) {
       const headers = formatHeaders(response.headers).toNode();
       headers.map(header => res.setHeader(header.key, header.value));
@@ -75,16 +75,19 @@ function encodeBody(str) {
  */
 function formatHeaders(obj) {
   return {
+
+    // Request format.
     toEdge: function() {
-      return Object.keys(obj).map(function(key) {
-        return [
-          {
-            key,
-            value: obj[key][key]
-          }
-        ];
+      Object.keys(obj).forEach(function(key) {
+        obj[key] = [{
+          key,
+          value: obj[key]
+        }];
       });
+      return obj;
     },
+
+    // Response format.
     toNode: function() {
       return Object.keys(obj).map(function(key) {
         return {
