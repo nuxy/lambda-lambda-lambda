@@ -44,8 +44,16 @@ http.createServer(function(req, res) {
       const headers = formatHeaders(response.headers).toNode();
       headers.map(header => res.setHeader(header.key, header.value));
 
-      res.statusCode = response.status;
-      res.end(response.body);
+      let {body, bodyEncoding, status} = response;
+
+      // Override Edge required media encoding.
+      if (bodyEncoding === 'base64') {
+        body = Buffer.from(body, 'base64');
+      }
+
+      res.statusCode = status;
+
+      res.end(body);
     };
 
     // Run lambda-lambda-lambda
