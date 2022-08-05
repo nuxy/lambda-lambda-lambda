@@ -11,7 +11,7 @@
 - [Routes](#route-handler) and URI [Resource](#resource-handler) support.
 - Local/Globally scoped [Middleware](#middleware).
 - Request/Response handling [API](#common-methods).
-- Lightweight/cost effective solution.
+- Lightweight, pay-per use solution.
 
 ## Dependencies
 
@@ -45,14 +45,14 @@ exports.handler = (event, context, callback) => {
   const {request, response} = event.Records[0].cf;
 
   const router = new Router(request, response);
-  router.setPrefix('/api'); // optional
+  router.setPrefix('/api'); // optional, default /
 
   // Middleware (order is important).
   router.use(function(req, res, next) {
     if (req.method() === 'CONNECT') {
       res.status(405).send();
     } else {
-      next();
+      next(); // Run subsequent handler
     }
   });
 
