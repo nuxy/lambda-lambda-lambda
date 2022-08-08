@@ -56,7 +56,6 @@ class Router {
     this.stack = new Stack();
 
     this.prefix = '';
-    this.match  = false;
   }
 
   /**
