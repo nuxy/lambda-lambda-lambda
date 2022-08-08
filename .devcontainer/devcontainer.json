@@ -3,5 +3,6 @@
   "image": "node",
   "forwardPorts": [3000],
   "updateContentCommand": "npm install --prefix ${containerWorkspaceFolder}/example/restfulAPI >/dev/null",
-  "postCreateCommand": "npm install -g pm2 && pm2 start ${containerWorkspaceFolder}/.devcontainer/ecosystem.config.js"
+  "postCreateCommand": "npm install -g pm2",
+  "postStartCommand": "pm2 start ${containerWorkspaceFolder}/.devcontainer/ecosystem.config.js"
 }
