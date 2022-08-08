@@ -210,6 +210,35 @@ describe('Route handler', function() {
     });
   });
 
+  describe('Route /api/foo/unknown', function() {
+    describe('GET', function() {
+      event.Records[0].cf.request.method = 'GET';
+      event.Records[0].cf.request.uri    = '/api/foo/unknown';
+
+      app.handler(event, null, function(undef, result) {
+        it('should return an object', function() {
+          expect(result).to.be.an('object');
+        });
+
+        const {headers, status, body} = result;
+
+        it('should not return headers', function() {
+          expect(headers).to.be.an('object');
+          expect(headers).to.be.empty;
+        });
+
+        it('should return status', function() {
+          expect(status).to.be.an('number');
+          expect(status).to.equal(404);
+        });
+
+        it('should not return body', function() {
+          expect(body).to.be.undefined;
+        });
+      });
+    });
+  });
+
   describe('Route /api/foo/bar', function() {
     describe('GET', function() {
       event.Records[0].cf.request.method = 'GET';
@@ -384,6 +413,35 @@ describe('Route handler', function() {
     });
   });
 
+  describe('Route /api/foo/bar/unknown', function() {
+    describe('GET', function() {
+      event.Records[0].cf.request.method = 'GET';
+      event.Records[0].cf.request.uri    = '/api/foo/bar/unknown';
+
+      app.handler(event, null, function(undef, result) {
+        it('should return an object', function() {
+          expect(result).to.be.an('object');
+        });
+
+        const {headers, status, body} = result;
+
+        it('should not return headers', function() {
+          expect(headers).to.be.an('object');
+          expect(headers).to.be.empty;
+        });
+
+        it('should return status', function() {
+          expect(status).to.be.an('number');
+          expect(status).to.equal(404);
+        });
+
+        it('should not return body', function() {
+          expect(body).to.be.undefined;
+        });
+      });
+    });
+  });
+
   describe('Route /api/foo/bar/baz', function() {
     describe('GET', function() {
       event.Records[0].cf.request.method = 'GET';
@@ -549,6 +607,35 @@ describe('Route handler', function() {
         it('should return status', function() {
           expect(status).to.be.an('number');
           expect(status).to.equal(405);
+        });
+
+        it('should not return body', function() {
+          expect(body).to.be.undefined;
+        });
+      });
+    });
+  });
+
+  describe('Route /api/foo/bar/baz/unknown', function() {
+    describe('GET', function() {
+      event.Records[0].cf.request.method = 'GET';
+      event.Records[0].cf.request.uri    = '/api/foo/bar/baz/unknown';
+
+      app.handler(event, null, function(undef, result) {
+        it('should return an object', function() {
+          expect(result).to.be.an('object');
+        });
+
+        const {headers, status, body} = result;
+
+        it('should not return headers', function() {
+          expect(headers).to.be.an('object');
+          expect(headers).to.be.empty;
+        });
+
+        it('should return status', function() {
+          expect(status).to.be.an('number');
+          expect(status).to.equal(404);
         });
 
         it('should not return body', function() {

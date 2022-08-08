@@ -90,7 +90,6 @@ class Router {
       }
 
       this.stack.add(func);
-      this.match = true;
     }
   }
 
@@ -166,13 +165,7 @@ class Router {
    */
   default(route) {
     const func = (req, res, next) => {
-
-      // Check at runtime.
-      if (this.match === false) {
-        route(req, res, next);
-      }
-
-      next();
+      route(req, res, next);
     };
 
     setFuncName(func, 'fallback');
