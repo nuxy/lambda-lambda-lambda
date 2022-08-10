@@ -2,6 +2,7 @@
 
 const event = require('../event.json');
 const chai  = require('chai');
+const clone = require('clone');
 
 const expect = chai.expect;
 
@@ -41,12 +42,54 @@ describe('Request module', function() {
     });
 
     describe('param', function() {
-      const request = new Request(event.Records[0].cf.request);
+      const obj = clone(event.Records[0].cf.request);
 
-      const result = request.param();
+      describe('queryString', function() {
 
-      it('should return value', function() {
-        expect(result).to.deep.equal({foo: 'bar', biz: 'baz'});
+        // Alter cloned request.
+        obj.querystring = 'foo=bar&biz=baz';
+
+        const request = new Request(obj);
+
+        describe('param()', function() {
+          it('should return object', function() {
+            const result = request.param();
+
+            expect(result).to.deep.equal({foo: 'bar', biz: 'baz'});
+          });
+        });
+
+        describe('param(argument)', function() {
+          it('should return value', function() {
+            const result = request.param('foo');
+
+            expect(result).to.equal('bar');
+          });
+        });
+      });
+
+      describe('body', function() {
+
+        // Alter cloned request.
+        obj.body = 'Zm9vPWJhciZiaXo9YmF6==';
+
+        const request = new Request(obj);
+
+        describe('param()', function() {
+          it('should return object', function() {
+            const result = request.param();
+
+            expect(result).to.deep.equal({foo: 'bar', biz: 'baz'});
+          });
+        });
+
+        describe('param(argument)', function() {
+          it('should return value', function() {
+            const result = request.param('biz');
+
+            expect(result).to.equal('baz');
+          });
+        });
       });
     });
 
@@ -61,12 +104,17 @@ describe('Request module', function() {
     });
 
     describe('queryString', function() {
-      const request = new Request(event.Records[0].cf.request);
+      const obj = clone(event.Records[0].cf.request);
+
+      // Alter cloned request.
+      obj.querystring = 'foo=bar&biz=baz';
+
+      const request = new Request(obj);
 
       const result = request.queryString();
 
       it('should return value', function() {
-        expect(result).to.equal('');
+        expect(result).to.equal(obj.querystring);
       });
     });
 
@@ -114,6 +162,14 @@ describe('Request module', function() {
   describe('Static methods', function() {
     describe('parseBody', function() {
       const result = Request.parseBody('Zm9vPWJhciZiaXo9YmF6==');
+
+      it('should return value', function() {
+        expect(result).to.deep.equal({foo: 'bar', biz: 'baz'});
+      });
+    });
+
+    describe('parseParams', function() {
+      const result = Request.parseParams('foo=bar&biz=baz');
 
       it('should return value', function() {
         expect(result).to.deep.equal({foo: 'bar', biz: 'baz'});

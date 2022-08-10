@@ -98,8 +98,8 @@ The following methods are supported based on the class context.  For further inf
 | `req.method()`      | Return the HTTP method of the request.            |
 | `req.uri()`         | Return the relative path of the requested object. |
 | `req.clientIp()`    | Return the HTTP client IP (remote address).       |
-| `req.param()`       | Return the HTTP base64 body data as object.       |
-| `req.queryString()` | Return the query string, if any, in the request.  |
+| `req.param(name)`   | Return the HTTP request parameters or name/value. |
+| `req.queryString()` | Return the serialized query parameters.           |
 | `req.body()`        | Return the base64-encoded body data.              |
 
 #### router/Response

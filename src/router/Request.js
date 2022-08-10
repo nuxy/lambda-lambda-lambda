@@ -74,12 +74,30 @@ class RouterRequest {
   }
 
   /**
-   * Return the HTTP base64 body data as object.
+   * Return the HTTP request parameters or name/value.
    *
-   * @return {Object}
+   * @param {String} name
+   *   Parameter name (optional).
+   *
+   * @return {String|Object}
+   *
+   * @example
+   *   const params = req.param();
+   *   // {name: 'value'}
+   *
+   *   const value = req.param('name');
+   *   // value
    */
-  param() {
-    return RouterRequest.parseBody(this.data().body.data);
+  param(name) {
+    let obj = {};
+
+    if (this.queryString()) {
+      obj = RouterRequest.parseParams(this.queryString());
+    } else if (this.body()) {
+      obj = RouterRequest.parseBody(this.body());
+    }
+
+    return obj[name] || obj;
   }
 
   /**
@@ -92,7 +110,7 @@ class RouterRequest {
   }
 
   /**
-   * Return the query string, if any, in the request.
+   * Return the serialized query parameters.
    *
    * @return {String}
    */
@@ -154,15 +172,27 @@ class RouterRequest {
     }
 
     if (RouterRequest.isParams(body)) {
-      return Object.fromEntries(new URLSearchParams(body));
+      return RouterRequest.parseParams(body);
     }
+  }
+
+  /**
+   * Convert serialized query string to object.
+   *
+   * @param {String} str
+   *   Parameter name/value pairs.
+   *
+   * @return {Object}
+   */
+  static parseParams(str) {
+    return Object.fromEntries(new URLSearchParams(str));
   }
 
   /**
    * Check valid HTTP request parameters.
    *
    * @param {String} str
-   *   Parameter (key/value) pairs.
+   *   Parameter name/value pairs.
    *
    * @return {Boolean}
    */
