@@ -37,7 +37,7 @@ http.createServer(function(req, res) {
               clientIp: res.socket.remoteAddress,
               headers: formatHeaders(req.headers).toEdge(),
               method: req.method,
-              querystring: req.path,
+              querystring: url.parse(req.url).query,
               uri: url.parse(req.url).pathname,
               body: {
                 data: body
