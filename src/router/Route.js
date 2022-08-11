@@ -37,7 +37,7 @@ const {isValidFunc, setFuncName} = require('./Common');
  *   module.exports = routeConfig;
  */
 module.exports = (router, route) => {
-  let path = route.path;
+  const path = route.path;
 
   const methodMap = {
     index: 'get',
