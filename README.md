@@ -11,7 +11,8 @@
 - [Routes](#route-handler) and URI [Resource](#resource-handler) support.
 - Local/Globally scoped [Middleware](#middleware).
 - Request/Response handling [API](#common-methods).
-- Lightweight, pay-per use solution.
+- Lightweight (**no dependencies**).
+- [Pay-per-use](https://aws.amazon.com/lambda/pricing) pricing solution.
 
 ## Dependencies
 

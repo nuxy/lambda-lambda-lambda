@@ -9,9 +9,8 @@
 
 'use strict';
 
-const fs      = require('fs');
-const glob    = require('glob');
-const {parse} = require('path');
+const fs   = require('fs');
+const path = require('path');
 
 // Local modules.
 const Request  = require('./router/Request');
@@ -284,10 +283,11 @@ function loadRoutes(router) {
   const routeDir = moduleParent() + '/routes';
 
   if (fs.existsSync(routeDir)) {
-    const files = glob.sync('**/*.js', {cwd: routeDir});
+    const files = getRoutes(routeDir);
 
     files.forEach(file => {
-      const {dir, name} = parse(file);
+      file = path.relative(routeDir, file);
+      const {dir, name} = path.parse(file);
 
       const filePath = [dir, name].join('/');
       const route = require(`${routeDir}/${filePath}`);
@@ -299,6 +299,33 @@ function loadRoutes(router) {
       Route(router, route);
     });
   }
+}
+
+/**
+ * Return list of route files for a given directory.
+ *
+ * @param {String} dir
+ *   Files directory.
+ *
+ * @param {Array} files
+ *   List of files (optional).
+ *
+ * @return {Array<String>}
+ */
+function getRoutes(dir, files = []) {
+  fs.readdirSync(dir).forEach(function(file) {
+    const filePath = path.join(dir, file);
+
+    if (fs.lstatSync(filePath).isDirectory()) {
+
+      // Perform recursive traversal.
+      getRoutes(filePath, files);
+    } else if (path.extname(filePath) === '.js') {
+      files.push(filePath);
+    }
+  });
+
+  return files;
 }
 
 module.exports = Router;

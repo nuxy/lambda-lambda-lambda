@@ -27,9 +27,6 @@
   "homepage": "https://github.com/nuxy/lambda-lambda-lambda#readme",
   "author": "Marc S. Brooks <devel@mbrooks.info> (https://mbrooks.info)",
   "license": "MIT",
-  "dependencies": {
-    "glob": "^7.2.3"
-  },
   "devDependencies": {
     "aws-sdk": "^2.1190.0",
     "chai": "^4.3.6",
