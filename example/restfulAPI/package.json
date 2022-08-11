@@ -4,7 +4,7 @@
   "description": "Lambda-driven Restful API handler.",
   "main": "app.js",
   "dependencies": {
-    "lambda-lambda-lambda": "^0.2.3"
+    "lambda-lambda-lambda": "file:../../."
   },
   "engines": {
     "node": ">=12.0.0"
