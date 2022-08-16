@@ -417,6 +417,12 @@ Run [Mocha](https://mochajs.org) integration tests:
 
 - [Restrictions on edge functions](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/edge-functions-restrictions.html)
 
+## Motivation
+
+I was looking for a **light-weight API driven routing system** (limited dependencies, easy to audit) **that didn't require API Gateway** integration ([Lambda/CloudFront](https://aws.amazon.com/lambda/edge) only) but **could be distributed globally** for cheap. And finally, I wanted a **unopionionated way to consolidate app code** and dependencies to a **single Lambda/CloudFront behavior**.
+
+Well, my search came short _so I wrote this_.
+
 ## Contributions
 
 If you fix a bug, or have a code you want to contribute, please send a pull-request with your changes. (Note: Before committing your code please ensure that you are following the [Node.js style guide](https://github.com/felixge/node-style-guide))
