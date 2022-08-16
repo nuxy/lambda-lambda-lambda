@@ -145,7 +145,7 @@ class Router {
    *   router.setPrefix('/api');
    */
   setPrefix(value) {
-    if (isValidPath(value)) {
+    if (isValidPath(value) && value !== '/') {
       this.prefix = value;
     }
   }
