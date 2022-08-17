@@ -11,7 +11,7 @@ const http = require('http');
 const url  = require('url');
 
 // Local modules.
-const {handler} = require('../example/restfulAPI/src/app');
+const {handler} = require('../restfulApiHandler/src/app');
 
 /**
  * Init Lambda@Edge script environment.

@@ -1,7 +1,6 @@
 {
   "origin": {
-    "siteUrl": "https://domain.com",
-    "devUrl": "http://localhost:9000"
+    "siteUrl": "https://domain.com"
   },
   "router": {
     "prefix": "/api"

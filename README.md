@@ -375,19 +375,9 @@ module.exports = (req, res, next) => {
 };
 ```
 
-## App Example
+## AWS requirements
 
-A [restfulAPI](https://github.com/nuxy/lambda-lambda-lambda/tree/master/example) has been provided with this package that can either be run locally in a [Docker container](https://code.visualstudio.com/docs/remote/containers) or deployed to [Lambda@Edge using SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-deploy.html).
-
-### Running in Docker
-
-When launching [VS Code](https://code.visualstudio.com) you will be prompted to "Open as Container".  Once launched, the application can be accessed at: http://localhost:3000/api/example
-
-### Deploying to AWS
-
-    $ cd example & ./deploy
-
-In order to successfully deploy you must have [set-up your AWS Config](https://docs.aws.amazon.com/config/latest/developerguide/gs-cli.html) and have [created an IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html) with the following [policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage.html):
+In order to successfully deploy your application you must have [set-up your AWS Config](https://docs.aws.amazon.com/config/latest/developerguide/gs-cli.html) and have [created an IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html) with the following [policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage.html):
 
 - [IAMFullAccess](https://console.aws.amazon.com/iam/home#/policies/arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2FIAMFullAccess)
 - [AmazonS3FullAccess](https://console.aws.amazon.com/iam/home#/policies/arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2FAmazonS3FullAccess)

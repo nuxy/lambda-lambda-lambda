@@ -1,0 +1,12 @@
+{
+  "name": "restfulApiHandler",
+  "version": "0.0.1",
+  "description": "Handler example with preconfigured routes and middleware.",
+  "main": "app.js",
+  "dependencies": {
+    "lambda-lambda-lambda": "latest"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}
