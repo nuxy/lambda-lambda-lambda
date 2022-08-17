@@ -19,6 +19,15 @@
 - [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
 - [Node.js](https://nodejs.org)
 
+## Getting started
+
+The easiest way to build a new application, without the need to [manually install](#installation) this package, is to use the [Lambda Lambda Lambda VS Code extension](https://marketplace.visualstudio.com/items?itemName=Nuxy.vscode-lambda-lambda-lambda) which allows you to:
+
+- Scaffold app sources and dependencies.
+- Run it locally (in [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers))
+- Test code changes in realtime.
+- Deploy app sources to AWS.
+
 ## Installation
 
 Install package dependencies using [NPM](https://npmjs.com).
