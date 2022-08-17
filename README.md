@@ -27,9 +27,7 @@ Install package dependencies using [NPM](https://npmjs.com).
 
 ## Usage
 
-### Lambda function
-
-Unless your application requires [complex routing](#complex-routing), route handlers can be defined within the [Lambda function scope](https://docs.aws.amazon.com/lambda/latest/operatorguide/global-scope.html).
+Unless your application requires [complex routing](#complex-routing), route handlers can be defined within the [Lambda function scope](https://docs.aws.amazon.com/lambda/latest/operatorguide/global-scope.html).  Otherwise route handlers are loaded from the `appName/src/routes` directory in hierarchical order.
 
 ```javascript
 // .. sam-app/src/app.js
@@ -71,13 +69,11 @@ exports.handler = (event, context, callback) => {
 };
 ```
 
-### Common methods
+## Common methods
 
 The following methods are supported based on the class context.  For further information please refer to the [JSDoc generated documentation](#cli-options) which includes method `arguments`/`return` types and general usage examples.
 
-#### Router
-
-| Method                      | Description                               |
+| Router Method               | Description                               |
 |-----------------------------|-------------------------------------------|
 | `router.setPrefix(path)`    | Set URI path prefix.                      |
 | `router.use(func)`          | Load the Route (e.g. [Middleware](#middleware)) handler. |
@@ -89,9 +85,7 @@ The following methods are supported based on the class context.  For further inf
 | `router.default(func)`      | Set router fallback (default route).      |
 | `router.response()`         | Return the AWS response object.           |
 
-#### router/Request
-
-| Method              | Description                                       |
+| Request Method      | Description                                       |
 |---------------------|---------------------------------------------------|
 | `req.is(mimeType)`  | Check `Accept` matches the given value.           |
 | `req.header(name)`  | Return value for given HTTP header name.          |
@@ -103,9 +97,7 @@ The following methods are supported based on the class context.  For further inf
 | `req.queryString()` | Return the serialized query parameters.           |
 | `req.body()`        | Return the base64-encoded body data.              |
 
-#### router/Response
-
-| Method                          | Description                     |
+| Response Method                 | Description                     |
 |---------------------------------|---------------------------------|
 | `res.setHeader(name, value)`    | Set HTTP response header.       |
 | `res.status(code).send(body)`   | Send the HTTP response (`Array`, `Buffer`, `Object`, `String`). |
@@ -113,7 +105,7 @@ The following methods are supported based on the class context.  For further inf
 | `res.status(code).json(obj)`    | Send the HTTP response as JSON. |
 | `res.status(code).text(str)`    | Send the HTTP response as text. |
 
-### Complex routing
+## Complex routing
 
 When constructing a routing handler the following methods/aliases are supported.  While they can be used interchangeably they must define either a [Route](#route-handler) or [Resource](#resource-handler) handler, but not both.
 
@@ -125,10 +117,10 @@ When constructing a routing handler the following methods/aliases are supported.
 | patch          | update |
 | delete         | N/A    |
 
-#### Route handler
+### Route handler
 
 ```javascript
-// .. sam-app/src/routes/foo.js
+// .. appName/src/routes/foo.js
 
 'use strict';
 
@@ -178,10 +170,10 @@ module.exports = {
 };
 ```
 
-#### Resource handler
+### Resource handler
 
 ```javascript
-// .. sam-app/src/routes/foo/bar.js
+// .. appName/src/routes/foo/bar.js
 
 'use strict';
 
@@ -206,34 +198,14 @@ module.exports = {
     res.status(201).send();
   },
 
-  /**
-   * PATCH /api/foo/bar/<resourceId>
-   */
-  patch (req, res, id) {
-    res.status(204).send();
-  },
-
-  /**
-   * DELETE /api/foo/bar/<resourceId>
-   */
-  delete (req, res, id) {
-    res.status(410).send();
-  },
-
-  /**
-   * POST /api/foo/bar/<resourceId>
-   */
-  post (req, res, id) {
-    res.status(200).send();
-  }
+  ..
 };
-
 ```
 
-#### Mixed Route/Resource handler
+### Mixed Route/Resource handler
 
 ```javascript
-// .. sam-app/src/routes/foo.js
+// .. appName/src/routes/foo.js
 
 'use strict';
 
@@ -241,7 +213,7 @@ module.exports = {
  * @export {Object}
  */
 module.exports = {
-  resource: ['get', 'put', 'patch', 'submit'],
+  resource: ['put'],
 
   /**
    * GET /api/foo
@@ -252,63 +224,23 @@ module.exports = {
   },
 
   /**
-   * GET /api/foo/<resourceId>
+   * PUT /api/foo/<resourceId>
    */
   get (req, res, id) {
     res.setHeader('Content-Type', 'application/json');
     res.status(200).json({and: 'Omega Mu'});
   },
 
-  /**
-   * PUT /api/foo
-   */
-  create (req, res) {
-    res.status(201).send();
-  },
-
-  /**
-   * PUT /api/foo/<resourceId>
-   */
-  put (req, res, id) {
-    res.status(201).send();
-  },
-
-  /**
-   * PATCH /api/foo
-   */
-  update (req, res) {
-    res.status(204).send();
-  },
-
-  /**
-   * PATCH /api/foo/<resourceId>
-   */
-  patch (req, res, id) {
-    res.status(204).send();
-  },
-
-  /**
-   * DELETE /api/foo
-   */
-  delete (req, res) {
-    res.status(410).send();
-  },
-
-  /**
-   * POST /api/foo/<resourceId>
-   */
-  submit (req, res, id) {
-    res.status(200).send();
-  }
+  ..
 };
 ```
 
-### Middleware
+## Middleware
 
-#### Content-Type
+### Content-Type
 
 ```javascript
-// .. sam-app/src/middleware/ContentTypeHeader.js
+// .. appName/src/middleware/ContentTypeHeader.js
 
 'use strict';
 
@@ -322,10 +254,10 @@ module.exports = (req, res, next) => {
 };
 ```
 
-#### Access-Control
+### Access-Control
 
 ```javascript
-// .. sam-app/src/middleware/AccessControlHeaders.js
+// .. appName/src/middleware/AccessControlHeaders.js
 
 'use strict';
 
@@ -351,10 +283,10 @@ module.exports = (req, res, next) => {
 };
 ```
 
-#### Basic Authentication
+### Basic Authentication
 
 ```javascript
-// .. sam-app/src/middleware/BasicAuthHandler.js
+// .. appName/src/middleware/BasicAuthHandler.js
 
 'use strict';
 
