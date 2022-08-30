@@ -4,7 +4,7 @@
   "version": "0.3.2",
   "main": "src/Router.js",
   "scripts": {
-    "gendoc": "node_modules/.bin/jsdoc -d doc -r src",
+    "gendoc": "node_modules/.bin/jsdoc -d doc -r src -R README.md",
     "lint": "node_modules/.bin/eslint src test",
     "test": "node_modules/.bin/mocha --require test/mocha.env.js test/**/*.js"
   },
