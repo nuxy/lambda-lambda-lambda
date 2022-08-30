@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: router/Request.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: router/Request.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ *  lambda-lambda-lambda
+ *  AWS Lambda@Edge serverless application router.
+ *
+ *  Copyright 2021-2022, Marc S. Brooks (https://mbrooks.info)
+ *  Licensed under the MIT license:
+ *  http://www.opensource.org/licenses/mit-license.php
+ */
+
+'use strict';
+
+/**
+ * Provides AWS CloudFront Request instance and methods.
+ *
+ * @see https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-event-structure.html#example-origin-request
+ */
+class RouterRequest {
+
+  /**
+   * @param {Object} obj
+   *   AWS Request object.
+   */
+  constructor(obj) {
+    this.obj = obj;
+  }
+
+  /**
+   * Return CloudFront supported Request object.
+   *
+   * @return {Object}
+   */
+  data() {
+    return this.obj;
+  }
+
+  /**
+   * Return value for given HTTP header name.
+   *
+   * @param {String} name
+   *   HTTP header name.
+   *
+   * @return {String|undefined}
+   *
+   * @example
+   *   const value = req.header('Content-Type');
+   *   // text/html
+   */
+  header(name) {
+    const headers = this.getHeaders();
+
+    let value;
+    Object.keys(headers).forEach(function(key) {
+      if (name &amp;&amp; key === name.toLowerCase()) {
+        value = headers[key][0].value;
+      }
+    });
+    return value;
+  }
+
+  /**
+   * Check Accept matches the given value.
+   *
+   * @param {String} mimeType
+   *   MIME type value.
+   *
+   * @return {Boolean}
+   *
+   * @example
+   *   const value = req.is('text/html');
+   *   // true
+   */
+  is(mimeType) {
+    return (this.header('Accept') === mimeType);
+  }
+
+  /**
+   * Return the HTTP request parameters or name/value.
+   *
+   * @param {String} name
+   *   Parameter name (optional).
+   *
+   * @return {String|Object}
+   *
+   * @example
+   *   const params = req.param();
+   *   // {name: 'value'}
+   *
+   *   const value = req.param('name');
+   *   // value
+   */
+  param(name) {
+    let obj = {};
+
+    if (this.queryString()) {
+      obj = RouterRequest.parseParams(this.queryString());
+    } else if (this.body()) {
+      obj = RouterRequest.parseBody(this.body());
+    }
+
+    return obj[name] || obj;
+  }
+
+  /**
+   * Return the HTTP method of the request.
+   *
+   * @return {String}
+   */
+  method() {
+    return this.data().method;
+  }
+
+  /**
+   * Return the serialized query parameters.
+   *
+   * @return {String}
+   */
+  queryString() {
+    return this.data().querystring;
+  }
+
+  /**
+   * Return the relative path of the requested object.
+   *
+   * @return {String}
+   */
+  uri() {
+    return this.data().uri;
+  }
+
+  /**
+   * Return the HTTP client IP (remote address).
+   *
+   * @return {String}
+   */
+  clientIp() {
+    return this.data().clientIp;
+  }
+
+  /**
+   * Return the base64-encoded body data.
+   *
+   * @return {String}
+   */
+  body() {
+    return this.data().body.data;
+  }
+
+  /**
+   * Return the headers of the request.
+   *
+   * @return {Array&lt;Object|undefined>}
+   */
+  getHeaders() {
+    return this.data().headers;
+  }
+
+  /**
+   * Convert base64-encoded request body to object.
+   *
+   * @param {String} str
+   *   base64 string.
+   *
+   * @return {Object|undefined}
+   */
+  static parseBody(str) {
+    const body = Buffer.from(
+      str, 'base64'
+    ).toString();
+
+    if (RouterRequest.isJson(body)) {
+      return JSON.parse(body);
+    }
+
+    if (RouterRequest.isParams(body)) {
+      return RouterRequest.parseParams(body);
+    }
+  }
+
+  /**
+   * Convert serialized query string to object.
+   *
+   * @param {String} str
+   *   Parameter name/value pairs.
+   *
+   * @return {Object}
+   */
+  static parseParams(str) {
+    return Object.fromEntries(new URLSearchParams(str));
+  }
+
+  /**
+   * Check valid HTTP request parameters.
+   *
+   * @param {String} str
+   *   Parameter name/value pairs.
+   *
+   * @return {Boolean}
+   */
+  static isParams(str) {
+    const values = Array.from(new URLSearchParams(str));
+
+    return (values.length > 0 &amp;&amp; values[0][0] !== str);
+  }
+
+  /**
+   * Check valid JSON string format.
+   *
+   * @param {String} str
+   *   JSON string.
+   *
+   * @return {Boolean}
+   */
+  static isJson(str) {
+    let data;
+
+    try {
+      data = JSON.parse(str);
+    } catch (err) {
+      return false;
+    }
+
+    if (Array.isArray(data) || typeof data === 'object') {
+      return true;
+    }
+
+    return false;
+  }
+};
+
+module.exports = RouterRequest;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-router_Common.html">router/Common</a></li><li><a href="module-router_Route.html">router/Route</a></li></ul><h3>Classes</h3><ul><li><a href="Router.html">Router</a></li><li><a href="RouterRequest.html">RouterRequest</a></li><li><a href="RouterResponse.html">RouterResponse</a></li><li><a href="RouterStack.html">RouterStack</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getRoutes">getRoutes</a></li><li><a href="global.html#loadRoutes">loadRoutes</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Tue Aug 30 2022 12:29:52 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

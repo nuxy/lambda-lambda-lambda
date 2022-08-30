@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Router.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Router.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ *  lambda-lambda-lambda
+ *  AWS Lambda@Edge serverless application router.
+ *
+ *  Copyright 2021-2022, Marc S. Brooks (https://mbrooks.info)
+ *  Licensed under the MIT license:
+ *  http://www.opensource.org/licenses/mit-license.php
+ */
+
+'use strict';
+
+const fs   = require('fs');
+const path = require('path');
+
+// Local modules.
+const Request  = require('./router/Request');
+const Response = require('./router/Response');
+const Route    = require('./router/Route');
+const Stack    = require('./router/Stack');
+
+const {
+  isValidFunc,
+  isValidPath,
+  isValidRoute,
+  moduleParent,
+  setFuncName
+} = require('./router/Common');
+
+/**
+ * Provides HTTP request/response handling.
+ */
+class Router {
+
+  /**
+   * @param {Object} request
+   *   AWS request object.
+   *
+   * @param {Object|undefined} response
+   *   AWS response object (optional).
+   *
+   * @example
+   *   exports.handler = (event, context, callback) => {
+   *     const {request, response} = event.Records[0].cf;
+   *
+   *     const router = new Router(request, response);
+   *
+   *       ..
+   *
+   *     callback(null, router.response());
+   *   };
+   */
+  constructor(request, response) {
+    this.req   = new Request (request);
+    this.res   = new Response(response);
+    this.stack = new Stack();
+
+    this.prefix = '';
+  }
+
+  /**
+   * Return the AWS response object.
+   *
+   * @return {Object}
+   */
+  response() {
+    loadRoutes(this);
+
+    this.stack.exec(this.req, this.res);
+
+    return this.res.data();
+  }
+
+  /**
+   * Handle the Route/Middleware request (add to stack).
+   *
+   * @param {String} path
+   *   Request URI.
+   *
+   * @param {Function} func
+   *   Route/Middleware function.
+   */
+  handle(path, func) {
+    let uri = `${this.prefix}${path}`;
+
+    if (isValidRoute(this.req.uri(), uri, func)) {
+      if (!func.name) {
+        setFuncName(func, 'route::undefined');
+      }
+
+      this.stack.add(func);
+    }
+  }
+
+  /**
+   * Load the Route (e.g. Middleware) handler.
+   *
+   * @param {Function|String} arg
+   *   Route/Middleware or Request URI.
+   *
+   * @param {Function} func
+   *   Route/Middleware function (optional).
+   *
+   * @example
+   *   router.use(function(req, res, next) {
+   *     if (req.method() === 'POST') {
+   *       res.status(405).send();
+   *     } else {
+   *       next();
+   *     }
+   *   });
+   *
+   *     ..
+   *
+   *   router.use('/api/test', function(req, res) {
+   *     res.setHeader('Content-Type', 'text/html');
+   *     res.status(200).send('Hello World');
+   *   });
+   */
+  use(arg, func) {
+
+    // Route middleware handler.
+    if (isValidPath(arg) &amp;&amp; isValidFunc(func)) {
+      setFuncName(func, `middleware:${arg}`);
+
+      this.handle(arg, func);
+    } else
+
+    // General middleware.
+    if (isValidFunc(arg)) {
+      if (arg.length === 3 &amp;&amp; !arg.name) {
+        setFuncName(arg, 'middleware');
+      }
+
+      this.stack.add(arg);
+    }
+  }
+
+  /**
+   * Set URI path prefix.
+   *
+   * @param {String} value
+   *   Request URI.
+   *
+   * @example
+   *   router.setPrefix('/api');
+   */
+  setPrefix(value) {
+    if (isValidPath(value) &amp;&amp; value !== '/') {
+      this.prefix = value;
+    }
+  }
+
+  /**
+   * Set router fallback (default route).
+   *
+   * @param {Function} route
+   *   Route function.
+   *
+   * @example
+   *   router.default(function(req, res) {
+   *     res.status(404).send();
+   *   });
+   */
+  default(route) {
+    const func = (req, res, next) => {
+      route(req, res, next);
+    };
+
+    setFuncName(func, 'fallback');
+
+    this.use(func);
+  }
+
+  /**
+   * Handle HTTP GET requests.
+   *
+   * @param {String} path
+   *   Request URI.
+   *
+   * @param {Function} route
+   *   Route function.
+   *
+   * @example
+   *   router.get('/api/test', function(req, res) {
+   *     res.setHeader('Content-Type', 'text/html');
+   *     res.status(200).send('Hello World');
+   *   });
+   */
+  get(path, route) {
+    if (this.req.method() === 'GET') {
+      this.handle(path, route);
+    }
+  }
+
+  /**
+   * Handle HTTP POST requests.
+   *
+   * @param {String} path
+   *   Request URI.
+   *
+   * @param {Function} route
+   *   Route function.
+   *
+   * @example
+   *   router.post('/api/test', function(req, res) {
+   *     res.status(201).send();
+   *   });
+   */
+  post(path, route) {
+    if (this.req.method() === 'POST') {
+      this.handle(path, route);
+    }
+  }
+
+  /**
+   * Handle HTTP PUT requests.
+   *
+   * @param {String} path
+   *   Request URI.
+   *
+   * @param {Function} route
+   *   Route function.
+   *
+   * @example
+   *   router.put('/api/test', function(req, res) {
+   *     res.status(201).send();
+   *   });
+   */
+  put(path, route) {
+    if (this.req.method() === 'PUT') {
+      this.handle(path, route);
+    }
+  }
+
+  /**
+   * Handle HTTP PATCH requests.
+   *
+   * @param {String} path
+   *   Request URI.
+   *
+   * @param {Function} route
+   *   Route function.
+   *
+   * @example
+   *   router.patch('/api/test', function(req, res) {
+   *     res.status(204).send();
+   *   });
+   */
+  patch(path, route) {
+    if (this.req.method() === 'PATCH') {
+      this.handle(path, route);
+    }
+  }
+
+  /**
+   * Handle HTTP DELETE requests.
+   *
+   * @param {String} path
+   *   Request URI.
+   *
+   * @param {Function} route
+   *   Route function.
+   *
+   * @example
+   *   router.delete('/api/test', function(req, res) {
+   *     res.status(200).send();
+   *   });
+   */
+  delete(path, route) {
+    if (this.req.method() === 'DELETE') {
+      this.handle(path, route);
+    }
+  }
+};
+
+/**
+ * Load routes from a pre-configured directory.
+ *
+ * @param {Router} router
+ *   Router instance.
+ */
+function loadRoutes(router) {
+  const routeDir = moduleParent() + '/routes';
+
+  if (fs.existsSync(routeDir)) {
+    const files = getRoutes(routeDir);
+
+    files.forEach(file => {
+      file = path.relative(routeDir, file);
+      const {dir, name} = path.parse(file);
+
+      const filePath = [dir, name].join('/');
+      const route = require(`${routeDir}/${filePath}`);
+
+      route.path = (
+        filePath[0] === '/' ? filePath : `/${filePath}`
+      ).toLowerCase();
+
+      Route(router, route);
+    });
+  }
+}
+
+/**
+ * Return list of route files for a given directory.
+ *
+ * @param {String} dir
+ *   Files directory.
+ *
+ * @param {Array} files
+ *   List of files (optional).
+ *
+ * @return {Array&lt;String>}
+ */
+function getRoutes(dir, files = []) {
+  fs.readdirSync(dir).forEach(function(file) {
+    const filePath = path.join(dir, file);
+
+    if (fs.lstatSync(filePath).isDirectory()) {
+
+      // Perform recursive traversal.
+      getRoutes(filePath, files);
+    } else if (path.extname(filePath) === '.js') {
+      files.push(filePath);
+    }
+  });
+
+  return files;
+}
+
+module.exports = Router;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-router_Common.html">router/Common</a></li><li><a href="module-router_Route.html">router/Route</a></li></ul><h3>Classes</h3><ul><li><a href="Router.html">Router</a></li><li><a href="RouterRequest.html">RouterRequest</a></li><li><a href="RouterResponse.html">RouterResponse</a></li><li><a href="RouterStack.html">RouterStack</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getRoutes">getRoutes</a></li><li><a href="global.html#loadRoutes">loadRoutes</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Tue Aug 30 2022 12:29:52 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

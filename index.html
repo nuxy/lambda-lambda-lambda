@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>lambda-lambda-lambda</h1>
+<p><a href="https://badge.fury.io/js/lambda-lambda-lambda"><img src="https://badge.fury.io/js/lambda-lambda-lambda.svg" alt="npm version"></a> <a href="https://www.npmjs.com/package/lambda-lambda-lambda"><img src="https://img.shields.io/npm/dm/lambda-lambda-lambda.svg" alt=""></a> <a href="https://app.travis-ci.com/github/nuxy/lambda-lambda-lambda"><img src="https://api.travis-ci.com/nuxy/lambda-lambda-lambda.svg?branch=master" alt="Build Status"></a></p>
+<p><a href="https://aws.amazon.com/lambda/edge">AWS Lambda@Edge</a> serverless application router.</p>
+<p><img src="https://raw.githubusercontent.com/nuxy/lambda-lambda-lambda/master/package.png" alt="lambda-lambda-lambda"></p>
+<h2>Features</h2>
+<ul>
+<li><a href="#route-handler">Routes</a> and URI <a href="#resource-handler">Resource</a> support.</li>
+<li>Local/Globally scoped <a href="#middleware">Middleware</a>.</li>
+<li>Request/Response handling <a href="#common-methods">API</a>.</li>
+<li>Lightweight (<strong>no dependencies</strong>).</li>
+<li><a href="https://aws.amazon.com/lambda/pricing">Pay-per-use</a> pricing solution.</li>
+</ul>
+<h2>Dependencies</h2>
+<ul>
+<li><a href="https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html">AWS SAM CLI</a></li>
+<li><a href="https://nodejs.org">Node.js</a></li>
+</ul>
+<h2>Getting started</h2>
+<p>The easiest way to build a new application, without the need to <a href="#installation">manually install</a> this package, is to use the <a href="https://marketplace.visualstudio.com/items?itemName=Nuxy.vscode-lambda-lambda-lambda">Lambda Lambda Lambda VS Code extension</a> which allows you to:</p>
+<ul>
+<li>Scaffold app sources and dependencies.</li>
+<li>Run it locally (in <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers">Remote - Containers</a>)</li>
+<li>Test code changes in realtime.</li>
+<li>Deploy app sources to AWS.</li>
+</ul>
+<h2>Installation</h2>
+<p>Install package dependencies using <a href="https://npmjs.com">NPM</a>.</p>
+<pre><code>$ npm install lambda-lambda-lambda
+</code></pre>
+<h2>Usage</h2>
+<p>Unless your application requires <a href="#complex-routing">complex routing</a>, route handlers can be defined within the <a href="https://docs.aws.amazon.com/lambda/latest/operatorguide/global-scope.html">Lambda function scope</a>.  Otherwise <a href="#route-handler">route handlers</a> are loaded from <code>appName/src/routes</code> directory in hierarchical order, starting with the default handler <code>appName/src/app.js</code> as described below.</p>
+<pre class="prettyprint source lang-javascript"><code>// .. appName/src/app.js
+
+'use strict';
+
+// Load module.
+const Router = require('lambda-lambda-lambda');
+
+/**
+ * @see AWS::Serverless::Function
+ */
+exports.handler = (event, context, callback) => {
+  const {request, response} = event.Records[0].cf;
+
+  const router = new Router(request, response);
+  router.setPrefix('/api'); // optional, default /
+
+  // Middleware (order is important).
+  router.use(function(req, res, next) {
+    if (req.method() === 'CONNECT') {
+      res.status(405).send();
+    } else {
+      next(); // Run subsequent handler
+    }
+  });
+
+  // Send root response.
+  router.get('/', function(req, res) {
+    res.status(501).send();
+  });
+
+  // .. everything else.
+  router.default(function(req, res) {
+    res.status(404).send();
+  });
+
+  callback(null, router.response());
+};
+</code></pre>
+<h2>Common methods</h2>
+<p>The following methods are supported based on the class context.  For further information please refer to the <a href="#cli-options">JSDoc generated documentation</a> which includes method <code>arguments</code>/<code>return</code> types and general usage examples.</p>
+<table>
+<thead>
+<tr>
+<th>Router Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>router.setPrefix(path)</code></td>
+<td>Set URI path prefix.</td>
+</tr>
+<tr>
+<td><code>router.use(func)</code></td>
+<td>Load the Route (e.g. <a href="#middleware">Middleware</a>) handler.</td>
+</tr>
+<tr>
+<td><code>router.get(path, func)</code></td>
+<td>Handle HTTP GET requests.</td>
+</tr>
+<tr>
+<td><code>router.put(path, func)</code></td>
+<td>Handle HTTP PUT requests.</td>
+</tr>
+<tr>
+<td><code>router.patch(path, func)</code></td>
+<td>Handle HTTP PATCH requests.</td>
+</tr>
+<tr>
+<td><code>router.post(path, func)</code></td>
+<td>Handle HTTP POST requests.</td>
+</tr>
+<tr>
+<td><code>router.delete(path, func)</code></td>
+<td>Handle HTTP DELETE requests.</td>
+</tr>
+<tr>
+<td><code>router.default(func)</code></td>
+<td>Set router fallback (default route).</td>
+</tr>
+<tr>
+<td><code>router.response()</code></td>
+<td>Return the AWS response object.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Request Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>req.is(mimeType)</code></td>
+<td>Check <code>Accept</code> matches the given value.</td>
+</tr>
+<tr>
+<td><code>req.header(name)</code></td>
+<td>Return value for given HTTP header name.</td>
+</tr>
+<tr>
+<td><code>req.getHeaders()</code></td>
+<td>Return the headers of the request.</td>
+</tr>
+<tr>
+<td><code>req.method()</code></td>
+<td>Return the HTTP method of the request.</td>
+</tr>
+<tr>
+<td><code>req.uri()</code></td>
+<td>Return the relative path of the requested object.</td>
+</tr>
+<tr>
+<td><code>req.clientIp()</code></td>
+<td>Return the HTTP client IP (remote address).</td>
+</tr>
+<tr>
+<td><code>req.param(name)</code></td>
+<td>Return the HTTP request parameters or name/value.</td>
+</tr>
+<tr>
+<td><code>req.queryString()</code></td>
+<td>Return the serialized query parameters.</td>
+</tr>
+<tr>
+<td><code>req.body()</code></td>
+<td>Return the base64-encoded body data.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Response Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>res.setHeader(name, value)</code></td>
+<td>Set HTTP response header.</td>
+</tr>
+<tr>
+<td><code>res.status(code).send(body)</code></td>
+<td>Send the HTTP response (<code>Array</code>, <code>Buffer</code>, <code>Object</code>, <code>String</code>).</td>
+</tr>
+<tr>
+<td><code>res.status(code).data(buffer)</code></td>
+<td>Send binary data with HTTP response.</td>
+</tr>
+<tr>
+<td><code>res.status(code).json(obj)</code></td>
+<td>Send the HTTP response as JSON.</td>
+</tr>
+<tr>
+<td><code>res.status(code).text(str)</code></td>
+<td>Send the HTTP response as text.</td>
+</tr>
+</tbody>
+</table>
+<h2>Complex routing</h2>
+<p>When constructing a routing handler the following methods/aliases are supported.  While they can be used interchangeably they must define either a <a href="#route-handler">Route</a> or <a href="#resource-handler">Resource</a> handler, but not both.</p>
+<table>
+<thead>
+<tr>
+<th>Handler Method</th>
+<th>Alias</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>get</td>
+<td>index</td>
+</tr>
+<tr>
+<td>post</td>
+<td>submit</td>
+</tr>
+<tr>
+<td>put</td>
+<td>create</td>
+</tr>
+<tr>
+<td>patch</td>
+<td>update</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+<h3>Route handler</h3>
+<pre class="prettyprint source lang-javascript"><code>// .. appName/src/routes/foo.js
+
+'use strict';
+
+// Load module.
+const contentTypeHeader = require('middleware/ContentTypeHeader');
+
+/**
+ * @export {Object}
+ */
+module.exports = {
+  middleware: [contentTypeHeader], // Locally scoped.
+
+  /**
+   * GET /api/foo
+   */
+  index (req, res) {
+    res.status(200).send('Lambda, Lambda, Lambda');
+  },
+
+  /**
+   * PUT /api/foo
+   */
+  create (req, res) {
+    res.status(201).send();
+  },
+
+  /**
+   * PATCH /api/foo
+   */
+  update (req, res) {
+    res.status(204).send();
+  },
+
+  /**
+   * DELETE /api/foo
+   */
+  delete (req, res) {
+    res.status(410).send();
+  },
+
+  /**
+   * POST /api/foo
+   */
+  submit (req, res) {
+    res.status(200).send();
+  }
+};
+</code></pre>
+<h3>Resource handler</h3>
+<pre class="prettyprint source lang-javascript"><code>// .. appName/src/routes/foo/bar.js
+
+'use strict';
+
+/**
+ * @export {Object}
+ */
+module.exports = {
+  resource: true,
+
+  /**
+   * GET /api/foo/bar/&lt;resourceId>
+   */
+  get (req, res, id) {
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json({and: 'Omega Mu'});
+  },
+
+  /**
+   * PUT /api/foo/bar/&lt;resourceId>
+   */
+  put (req, res, id) {
+    res.status(201).send();
+  },
+
+  ..
+};
+</code></pre>
+<h3>Mixed Route/Resource handler</h3>
+<pre class="prettyprint source lang-javascript"><code>// .. appName/src/routes/foo.js
+
+'use strict';
+
+/**
+ * @export {Object}
+ */
+module.exports = {
+  resource: ['put'],
+
+  /**
+   * GET /api/foo
+   */
+  index (req, res) {
+    res.setHeader('Content-Type', 'text/html');
+    res.status(200).send('Lambda, Lambda, Lambda');
+  },
+
+  /**
+   * PUT /api/foo/&lt;resourceId>
+   */
+  get (req, res, id) {
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json({and: 'Omega Mu'});
+  },
+
+  ..
+};
+</code></pre>
+<h2>Middleware</h2>
+<h3>Content-Type</h3>
+<pre class="prettyprint source lang-javascript"><code>// .. appName/src/middleware/ContentTypeHeader.js
+
+'use strict';
+
+/**
+ * Middleware to send Content-Type header.
+ */
+module.exports = (req, res, next) => {
+  res.setHeader('Content-Type', 'text/html');
+
+  next(); // Run subsequent handler.
+};
+</code></pre>
+<h3>Access-Control</h3>
+<pre class="prettyprint source lang-javascript"><code>// .. appName/src/middleware/AccessControlHeaders.js
+
+'use strict';
+
+/**
+ * Middleware to send Access-Control-* headers.
+ */
+module.exports = (req, res, next) => {
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Headers', 'Accept,Content-Type');
+  res.setHeader('Access-Control-Allow-Methods', 'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT');
+
+  // Set CORS restrictions.
+  res.setHeader('Access-Control-Allow-Origin',
+    (config.development === true) ? 'http://localhost:9000' : 'https://domain.com'
+  );
+
+  // Handle preflight requests.
+  if (req.method() === 'OPTIONS') {
+    res.status(204).send();
+  } else {
+    next(); // Run subsequent handler.
+  }
+};
+</code></pre>
+<h3>Basic Authentication</h3>
+<pre class="prettyprint source lang-javascript"><code>// .. appName/src/middleware/BasicAuthHandler.js
+
+'use strict';
+
+/**
+ * Middleware to prompt Basic Authentication.
+ */
+module.exports = (req, res, next) => {
+  const username = &quot;private&quot;;
+  const password = &quot;password&quot;;
+  const authStr  = 'Basic ' + Buffer.from(`${username}:${password}`).toString('base64');
+
+  if (req.header('Authorization') !== authStr) {
+    res.setHeader('WWW-Authenticate', 'Basic');
+    res.status(401).send('Unauthorized');
+  } else {
+    next(); // Run subsequent handler.
+  }
+};
+</code></pre>
+<h2>AWS requirements</h2>
+<p>In order to successfully deploy your application you must have <a href="https://docs.aws.amazon.com/config/latest/developerguide/gs-cli.html">set-up your AWS Config</a> and have <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html">created an IAM user</a> with the following <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage.html">policies</a>:</p>
+<ul>
+<li><a href="https://console.aws.amazon.com/iam/home#/policies/arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2FIAMFullAccess">IAMFullAccess</a></li>
+<li><a href="https://console.aws.amazon.com/iam/home#/policies/arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2FCloudFrontFullAccess">CloudFrontFullAccess</a></li>
+<li><a href="https://console.aws.amazon.com/iam/home#/policies/arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2FAWSCloudFormationFullAccess">AWSCloudFormationFullAccess</a></li>
+<li><a href="https://console.aws.amazon.com/iam/home#/policies/arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2FAWSLambda_FullAccess">AWSLambda_FullAccess</a></li>
+</ul>
+<p>WARNING: The policies above are provided to ensure a successful application deployment.  It is recommended that you adjust these policies to meet the security requirements of your Lambda application.  They should NOT be used in a Production environment.</p>
+<h2>Developers</h2>
+<h3>CLI options</h3>
+<p>Run <a href="https://eslint.org/">ESLint</a> on project sources:</p>
+<pre><code>$ npm run lint
+</code></pre>
+<p>Generate documentation using <a href="https://jsdoc.app">JSDoc</a>:</p>
+<pre><code>$ npm run gendoc
+</code></pre>
+<p>Run <a href="https://mochajs.org">Mocha</a> integration tests:</p>
+<pre><code>$ npm run test
+</code></pre>
+<h2>References</h2>
+<ul>
+<li><a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/edge-functions-restrictions.html">Restrictions on edge functions</a></li>
+</ul>
+<h2>Motivation</h2>
+<p>I was looking for a <strong>light-weight API driven routing system</strong> (limited dependencies, easy to audit) <strong>that didn't require API Gateway</strong> integration (<a href="https://aws.amazon.com/lambda/edge">Lambda/CloudFront</a> only) but <strong>could be distributed globally</strong> for cheap. And finally, I wanted a <strong>unopionionated way to consolidate app code</strong> and dependencies to a <strong>single Lambda/CloudFront behavior</strong>.</p>
+<p>Well, my search came short <em>so I wrote this</em>.</p>
+<h2>Contributions</h2>
+<p>If you fix a bug, or have a code you want to contribute, please send a pull-request with your changes. (Note: Before committing your code please ensure that you are following the <a href="https://github.com/felixge/node-style-guide">Node.js style guide</a>)</p>
+<h2>Versioning</h2>
+<p>This package is maintained under the <a href="https://semver.org">Semantic Versioning</a> guidelines.</p>
+<h2>License and Warranty</h2>
+<p>This package is distributed in the hope that it will be useful, but without any warranty; without even the implied warranty of merchantability or fitness for a particular purpose.</p>
+<p><em>lambda-lambda-lambda</em> is provided under the terms of the <a href="http://www.opensource.org/licenses/mit-license.php">MIT license</a></p>
+<p><a href="https://aws.amazon.com">AWS</a> is a registered trademark of Amazon Web Services, Inc.</p>
+<h2>Author</h2>
+<p><a href="https://github.com/nuxy">Marc S. Brooks</a></p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-router_Common.html">router/Common</a></li><li><a href="module-router_Route.html">router/Route</a></li></ul><h3>Classes</h3><ul><li><a href="Router.html">Router</a></li><li><a href="RouterRequest.html">RouterRequest</a></li><li><a href="RouterResponse.html">RouterResponse</a></li><li><a href="RouterStack.html">RouterStack</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getRoutes">getRoutes</a></li><li><a href="global.html#loadRoutes">loadRoutes</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Tue Aug 30 2022 12:29:52 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
