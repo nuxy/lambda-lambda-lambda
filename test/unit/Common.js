@@ -55,6 +55,20 @@ describe('Common module', function() {
       });
     });
 
+    describe('getResourceId', function() {
+      const result1 = Common.getResourceId('/foo/bar/abc123', '/foo/bar/biz', function(req, res, next) {});
+      const result2 = Common.getResourceId('/foo/bar/abc123', '/foo/bar', function(req, res, next) {});
+      const result3 = Common.getResourceId('/foo/abc123', '/foo/bar', function(req, res, next) {});
+      const result4 = Common.getResourceId('/foo/abc123', '/foo', function(req, res, next) {});
+
+      it('should return value', function() {
+        expect(result1).to.be.null;
+        expect(result2).to.equal('abc123');
+        expect(result3).to.be.null;
+        expect(result4).to.equal('abc123');
+      });
+    });
+
     describe('setFuncName', function() {
       const func = function(req, res, next) {};
 

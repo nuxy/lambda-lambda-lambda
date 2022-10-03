@@ -70,6 +70,29 @@ exports.isValidRoute = function(uri, path, func) {
 };
 
 /**
+ * Return URI fragment, if Route is a resource.
+ *
+ * @param {String} uri
+ *   Request URI.
+ *
+ * @param {String} path
+ *   Route path value.
+ *
+ * @return {String|undefined}
+ *
+ * @example
+ *   const result = getResourceId('/api/test/abc123', '/api/test');
+ *   // abc123
+ */
+exports.getResourceId = function(uri, path) {
+  const fragment = uri.replace(new RegExp(`^(?:${path}(?:\/([a-z0-9-_]+))?)$`, 'i'), '$1');
+  if (fragment !== uri) {
+    return fragment;
+  }
+  return null;
+};
+
+/**
  * Set name for a given function (inline).
  *
  * @param {Function} func

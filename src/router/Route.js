@@ -12,7 +12,7 @@
 'use strict';
 
 // Local modules.
-const {isValidFunc, setFuncName} = require('./Common');
+const {getResourceId, isValidFunc, setFuncName} = require('./Common');
 
 /**
  * Handle routing operations for the given Route.
@@ -90,26 +90,3 @@ module.exports = (router, route) => {
     router[method](path, routeFunc);
   }
 };
-
-/**
- * Return URI fragment, if Route is a resource.
- *
- * @param {String} uri
- *   Request URI.
- *
- * @param {String} path
- *   Route path value.
- *
- * @return {String|undefined}
- *
- * @example
- *   getResourceId('/api/test/abc123', '/api/test');
- *   // abc123
- */
-function getResourceId(uri, path) {
-  const fragment = uri.replace(new RegExp(`^(?:${path}(?:\/([a-z0-9-_]+))?)$`, 'i'), '$1');
-  if (fragment !== uri) {
-    return fragment;
-  }
-  return null;
-}
