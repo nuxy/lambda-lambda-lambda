@@ -246,8 +246,6 @@ module.exports = {
 
 ## Middleware
 
-### Content-Type
-
 ```javascript
 // .. appName/src/middleware/ContentTypeHeader.js
 
@@ -263,58 +261,7 @@ module.exports = (req, res, next) => {
 };
 ```
 
-### Access-Control
-
-```javascript
-// .. appName/src/middleware/AccessControlHeaders.js
-
-'use strict';
-
-/**
- * Middleware to send Access-Control-* headers.
- */
-module.exports = (req, res, next) => {
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Headers', 'Accept,Content-Type');
-  res.setHeader('Access-Control-Allow-Methods', 'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT');
-
-  // Set CORS restrictions.
-  res.setHeader('Access-Control-Allow-Origin',
-    (config.development === true) ? 'http://localhost:9000' : 'https://domain.com'
-  );
-
-  // Handle preflight requests.
-  if (req.method() === 'OPTIONS') {
-    res.status(204).send();
-  } else {
-    next(); // Run subsequent handler.
-  }
-};
-```
-
-### Basic Authentication
-
-```javascript
-// .. appName/src/middleware/BasicAuthHandler.js
-
-'use strict';
-
-/**
- * Middleware to prompt Basic Authentication.
- */
-module.exports = (req, res, next) => {
-  const username = "private";
-  const password = "password";
-  const authStr  = 'Basic ' + Buffer.from(`${username}:${password}`).toString('base64');
-
-  if (req.header('Authorization') !== authStr) {
-    res.setHeader('WWW-Authenticate', 'Basic');
-    res.status(401).send('Unauthorized');
-  } else {
-    next(); // Run subsequent handler.
-  }
-};
-```
+See [restfulApiHandler](https://github.com/nuxy/lambda-lambda-lambda/tree/master/example/restfulApiHandler/src/middleware) example for more complex use cases.
 
 ## AWS requirements
 
