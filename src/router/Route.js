@@ -31,7 +31,7 @@ const {getResourceId, isValidFunc, setFuncName} = require('./Common');
  *     patch  (req, res, id) {},
  *     post   (req, res) {},
  *     submit (req, res, id) {},
- *     delete (req, res) {}
+ *     delete (req, res, id) {}
  *   };
  *
  *   module.exports = routeConfig;
