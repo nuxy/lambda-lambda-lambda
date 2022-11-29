@@ -5,6 +5,7 @@ const config = require('./config.json');
 
 const accessControlHeaders  = require('./middleware/AccessControlHeaders');
 const cloudfrontCacheHeader = require('./middleware/CloudfrontCacheHeader');
+const contentNegotiation    = require('./middleware/ContentNegotiation');
 
 /**
  * @see AWS::Serverless::Function
@@ -26,6 +27,7 @@ exports.handler = (event, context, callback) => {
 
   router.use(accessControlHeaders);
   router.use(cloudfrontCacheHeader);
+  router.use(contentNegotiation);
 
   // Send root response.
   router.get('/', function(req, res) {
