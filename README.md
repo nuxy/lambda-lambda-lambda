@@ -27,6 +27,7 @@ The easiest way to build a new application, without the need to [manually instal
 - Run it locally (in [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers))
 - Test code changes in realtime.
 - Deploy app sources to AWS.
+- Generate [JSDoc](https://jsdoc.app)/[Swagger](https://swagger.io) documentation.
 
 ## Installation
 

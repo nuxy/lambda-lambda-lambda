@@ -11,7 +11,26 @@ module.exports = {
   middleware: [basicAuthHandler],
 
   /**
-   * GET /api/example/private/image
+   * @openapi
+   *
+   * /api/example/private/image:
+   *   get:
+   *     description: Example using `Route.index` handler alias.
+   *     responses:
+   *       200:
+   *         description: Returns binary string.
+   *         content:
+   *           image/png:
+   *             schema:
+   *               type: string
+   *       401:
+   *         description: Unauthorized
+   *       404:
+   *         description: Not found
+   *     security:
+   *       basicAuth: []
+   *     tags:
+   *       - Protected image
    */
   index (req, res) {
     const buffer = fs.readFileSync(`${__dirname}/../../../../package.png`);

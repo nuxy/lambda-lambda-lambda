@@ -6,6 +6,16 @@
   "dependencies": {
     "lambda-lambda-lambda": "latest"
   },
+  "devDependencies": {
+    "eslint": "latest",
+    "jsdoc": "latest",
+    "swagger-jsdoc": "latest"
+  },
+  "scripts": {
+    "genapi": "swagger-jsdoc -d src/openapi.js -o swagger.json src/routes/**.js src/routes/**/*.js src/routes/**/**/*.js",
+    "gendoc": "jsdoc -d doc -r src",
+    "lint": "eslint src/*.js"
+  },
   "engines": {
     "node": ">=14.0.0"
   }

@@ -10,37 +10,132 @@ module.exports = {
   resource: ['create', 'update', 'delete'],
 
   /**
-   * GET /api/example
+   * @openapi
+   *
+   * /api/example:
+   *   get:
+   *     description: Example using `Route.index` handler alias.
+   *     responses:
+   *       200:
+   *         description: Returns JSON response.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 name:
+   *                   type: string
+   *     tags:
+   *       - Public route
    */
   index (req, res) {
-    res.status(200).send('example:index');
+    res.status(200).send({name: 'example:index'});
   },
 
   /**
-   * PUT /api/example/<resourceId>
+   * @openapi
+   *
+   * /api/example/{resourceId}:
+   *   put:
+   *     description: Example using `Route.create` handler alias.
+   *     parameters:
+   *       - in: path
+   *         name: resourceId
+   *         default: 123456
+   *         required: true
+   *     responses:
+   *       200:
+   *         description: Returns JSON response.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 name:
+   *                   type: string
+   *     tags:
+   *       - Public route
    */
   create (req, res, id) {
-    res.status(201).send(`example/${id}:create`);
+    res.status(201).send({name: `example/${id}:create`});
   },
 
   /**
-   * PATCH /api/example/<resourceId>
+   * @openapi
+   *
+   * /api/example/{resourceId}:
+   *   patch:
+   *     description: Example using `Route.update` handler alias.
+   *     parameters:
+   *       - in: path
+   *         name: resourceId
+   *         default: 123456
+   *         required: true
+   *     responses:
+   *       200:
+   *         description: Returns JSON response.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 name:
+   *                   type: string
+   *     tags:
+   *       - Public route
    */
   update (req, res, id) {
-    res.status(204).send(`example/${id}:update`);
+    res.status(204).send({name: `example/${id}:update`});
   },
 
   /**
-   * DELETE /api/example/<resourceId>
+   * @openapi
+   *
+   * /api/example/{resourceId}:
+   *   delete:
+   *     description: Example using `Route.delete` handler method.
+   *     parameters:
+   *       - in: path
+   *         name: resourceId
+   *         default: 123456
+   *         required: true
+   *     responses:
+   *       200:
+   *         description: Returns JSON response.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 name:
+   *                   type: string
+   *     tags:
+   *       - Public route
    */
   delete (req, res, id) {
-    res.status(410).send(`example/${id}:delete`);
+    res.status(410).send({name: `example/${id}:delete`});
   },
 
   /**
-   * POST /api/example
+   * @openapi
+   *
+   * /api/example:
+   *   post:
+   *     description: Example using `Route.submit` handler alias.
+   *     responses:
+   *       200:
+   *         description: Returns JSON response.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 name:
+   *                   type: string
+   *     tags:
+   *       - Public route
    */
   submit (req, res) {
-    res.status(200).send('example:submit');
+    res.status(200).send({name: 'example:submit'});
   }
 };

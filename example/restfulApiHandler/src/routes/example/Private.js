@@ -11,37 +11,152 @@ module.exports = {
   resource: ['create', 'update', 'delete'],
 
   /**
-   * GET /api/example/private
+   * @openapi
+   *
+   * /api/example/private:
+   *   get:
+   *     description: Example using `Route.index` handler alias.
+   *     responses:
+   *       200:
+   *         description: Returns JSON response.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 name:
+   *                   type: string
+   *       401:
+   *         description: Unauthorized
+   *     security:
+   *       basicAuth: []
+   *     tags:
+   *       - Protected route
    */
   index (req, res) {
-    res.status(200).send('example/private:index');
+    res.status(200).send({name: 'example/private:index'});
   },
 
   /**
-   * PUT /api/example/private/<resourceId>
+   * @openapi
+   *
+   * /api/example/private/{resourceId}:
+   *   put:
+   *     description: Example using `Route.create` handler alias.
+   *     parameters:
+   *       - in: path
+   *         name: resourceId
+   *         default: 123456
+   *         required: true
+   *     responses:
+   *       200:
+   *         description: Returns JSON response.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 name:
+   *                   type: string
+   *       401:
+   *         description: Unauthorized
+   *     security:
+   *       basicAuth: []
+   *     tags:
+   *       - Protected route
    */
   create (req, res, id) {
-    res.status(201).send(`example/private/${id}:create`);
+    res.status(201).send({name: `example/private/${id}:create`});
   },
 
   /**
-   * PATCH /api/example/private/<resourceId>
+   * @openapi
+   *
+   * /api/example/private/{resourceId}:
+   *   patch:
+   *     description: Example using `Route.update` handler alias.
+   *     parameters:
+   *       - in: path
+   *         name: resourceId
+   *         default: 123456
+   *         required: true
+   *     responses:
+   *       200:
+   *         description: Returns JSON response.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 name:
+   *                   type: string
+   *       401:
+   *         description: Unauthorized
+   *     security:
+   *       basicAuth: []
+   *     tags:
+   *       - Protected route
    */
   update (req, res, id) {
-    res.status(204).send(`example/private/${id}:update`);
+    res.status(204).send({name: `example/private/${id}:update`});
   },
 
   /**
-   * DELETE /api/example/private/<resourceId>
+   * @openapi
+   *
+   * /api/example/private/{resourceId}:
+   *   delete:
+   *     description: Example using `Route.delete` handler method.
+   *     parameters:
+   *       - in: path
+   *         name: resourceId
+   *         default: 123456
+   *         required: true
+   *     responses:
+   *       200:
+   *         description: Returns JSON response.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 name:
+   *                   type: string
+   *       401:
+   *         description: Unauthorized
+   *     security:
+   *       basicAuth: []
+   *     tags:
+   *       - Protected route
    */
   delete (req, res, id) {
-    res.status(410).send(`example/private/${id}:delete`);
+    res.status(410).send({name: `example/private/${id}:delete`});
   },
 
   /**
-   * POST /api/example/private
+   * @openapi
+   *
+   * /api/example/private:
+   *   post:
+   *     description: Example using `Route.submit` handler alias.
+   *     responses:
+   *       200:
+   *         description: Returns JSON response.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 name:
+   *                   type: string
+   *       401:
+   *         description: Unauthorized
+   *     security:
+   *       basicAuth: []
+   *     tags:
+   *       - Protected route
    */
   submit (req, res) {
-    res.status(200).send('example/private:submit');
+    res.status(200).send({name: 'example/private:submit'});
   }
 };
