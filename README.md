@@ -12,7 +12,7 @@
 - Local/Globally scoped [Middleware](#middleware).
 - Request/Response handling [API](#common-methods).
 - Lightweight (**no dependencies**).
-- [Pay-per-use](https://aws.amazon.com/lambda/pricing) pricing solution.
+- [Pay-per-use](https://aws.amazon.com/lambda/pricing) priced solution.
 
 ## Dependencies
 
@@ -297,7 +297,7 @@ Run [Mocha](https://mochajs.org) integration tests:
 
 ## Motivation
 
-I was looking for a **light-weight API driven routing system** (limited dependencies, easy to audit) **that didn't require API Gateway** integration ([Lambda/CloudFront](https://aws.amazon.com/lambda/edge) only) but **could be distributed globally** for cheap. And finally, I wanted a **unopionionated way to consolidate app code** and dependencies to a **single Lambda/CloudFront behavior**.
+I was looking for a **light-weight API driven routing system** (limited dependencies, easy to audit) **that didn't require API Gateway** integration ([Lambda/CloudFront](https://aws.amazon.com/lambda/edge) only) but **could be distributed globally and cached** for cheap.  And finally, I wanted an **unopionionated way to consolidate application code** and dependencies to a **single Lambda/CloudFront behavior**.
 
 Well, my search came short _so I wrote this_.
 
