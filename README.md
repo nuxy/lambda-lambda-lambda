@@ -81,7 +81,7 @@ exports.handler = (event, context, callback) => {
 
 ## Common methods
 
-The following methods are supported based on the class context.  For further information please refer to the [JSDoc generated documentation](#cli-options) which includes method `arguments`/`return` types and general usage examples.
+The following methods are supported based on the class context.  For further information please refer to the [JSDoc](#cli-options) generated [documentation](https://nuxy.github.io/lambda-lambda-lambda) which includes method `arguments`/`return` types and general usage examples.
 
 | Router Method               | Description                               |
 |-----------------------------|-------------------------------------------|
