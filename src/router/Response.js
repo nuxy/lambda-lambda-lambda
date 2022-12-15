@@ -70,7 +70,7 @@ class RouterResponse {
    *   HTTP header value.
    *
    * @example
-   *   res.setHeader('Content-Type', 'text/html');
+   * res.setHeader('Content-Type', 'text/html');
    */
   setHeader(key, value) {
     if (key && value) {
@@ -89,20 +89,20 @@ class RouterResponse {
    * @return {Object<Function>}
    *
    * @example
-   *   res.setHeader('Content-Type', 'mime/type');
-   *   res.status(200).send(value);
-   *     ..
+   * res.setHeader('Content-Type', 'mime/type');
+   * res.status(200).send(value);
+   *   ..
    *
-   *   res.setHeader('Content-Type', 'application/json');
-   *   res.status(200).json({hello: 'world'});
-   *     ..
+   * res.setHeader('Content-Type', 'application/json');
+   * res.status(200).json({hello: 'world'});
+   *   ..
    *
-   *   res.setHeader('Content-Type', 'text/html');
-   *   res.status(200).text('Hello World');
-   *     ..
+   * res.setHeader('Content-Type', 'text/html');
+   * res.status(200).text('Hello World');
+   *   ..
    *
-   *   res.setHeader('Content-Type', 'image/jpeg; charset=utf-8');
-   *   res.status(200).data(buffer);
+   * res.setHeader('Content-Type', 'image/jpeg; charset=utf-8');
+   * res.status(200).data(buffer);
    */
   status(code) {
     this.data().status = code;

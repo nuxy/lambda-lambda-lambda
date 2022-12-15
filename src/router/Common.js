@@ -20,8 +20,8 @@
  * @return {Boolean}
  *
  * @example
- *   const result = isValidPath('/api/test');
- *   // true
+ * const result = isValidPath('/api/test');
+ * // true
  */
 exports.isValidPath = function(value) {
   return /^\/([a-z0-9-_\/]+)?$/.test(value);
@@ -36,8 +36,8 @@ exports.isValidPath = function(value) {
  * @return {Boolean}
  *
  * @example
- *   const result = isValidFunc((req, res, next) => {});
- *   // true
+ * const result = isValidFunc((req, res, next) => {});
+ * // true
  */
 exports.isValidFunc = function(value) {
   return (typeof value === 'function' && value.length >= 1 && value.length <= 3);
@@ -58,8 +58,8 @@ exports.isValidFunc = function(value) {
  * @return {Boolean}
  *
  * @example
- *   const result = isValidRoute('/api/test/123456', '/api/test', (req, res) => {}));
- *   // true
+ * const result = isValidRoute('/api/test/123456', '/api/test', (req, res) => {}));
+ * // true
  */
 exports.isValidRoute = function(uri, path, func) {
   if (module.exports.isValidFunc(func) && !/^route:/.test(func.name)) {
@@ -81,8 +81,8 @@ exports.isValidRoute = function(uri, path, func) {
  * @return {String|undefined}
  *
  * @example
- *   const result = getResourceId('/api/test/abc123', '/api/test');
- *   // abc123
+ * const result = getResourceId('/api/test/abc123', '/api/test');
+ * // abc123
  */
 exports.getResourceId = function(uri, path) {
   const fragment = uri.replace(new RegExp(`^(?:${path}(?:\/([a-z0-9-_]+))?)$`, 'i'), '$1');
@@ -102,10 +102,10 @@ exports.getResourceId = function(uri, path) {
  *   Function name.
  *
  * @example
- *   const func = function() {};
- *   setFuncName(func, 'test);
- *   func.name
- *   // test
+ * const func = function() {};
+ * setFuncName(func, 'test);
+ * func.name
+ * // test
  */
 exports.setFuncName = function(func, value) {
   Object.defineProperty(func, 'name', {value});
@@ -117,7 +117,7 @@ exports.setFuncName = function(func, value) {
  * @return {String|null}
  *
  * @example
- *   const dir = moduleParent();
+ * const dir = moduleParent();
  */
 exports.moduleParent = function() {
   const moduleParents = Object.values(require.cache)

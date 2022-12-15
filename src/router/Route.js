@@ -18,23 +18,23 @@ const {getResourceId, isValidFunc, setFuncName} = require('./Common');
  * Handle routing operations for the given Route.
  *
  * @example
- *   // .. sam-app/src/routes/foo.js
- *   const routeConfig = {
- *     middleware: [middlewareFunc1, middlewareFunc2],
- *     resource: true || ['get', 'put', 'patch', 'submit'],
+ * // .. sam-app/src/routes/foo.js
+ * const routeConfig = {
+ *   middleware: [middlewareFunc1, middlewareFunc2],
+ *   resource: true || ['get', 'put', 'patch', 'submit'],
  *
- *     index  (req, res) {},
- *     get    (req, res, id) {},
- *     create (req, res) {},
- *     put    (req, res, id) {},
- *     update (req, res) {},
- *     patch  (req, res, id) {},
- *     post   (req, res) {},
- *     submit (req, res, id) {},
- *     delete (req, res, id) {}
- *   };
+ *   index  (req, res) {},
+ *   get    (req, res, id) {},
+ *   create (req, res) {},
+ *   put    (req, res, id) {},
+ *   update (req, res) {},
+ *   patch  (req, res, id) {},
+ *   post   (req, res) {},
+ *   submit (req, res, id) {},
+ *   delete (req, res, id) {}
+ * };
  *
- *   module.exports = routeConfig;
+ * module.exports = routeConfig;
  */
 module.exports = (router, route) => {
   const path = route.path;

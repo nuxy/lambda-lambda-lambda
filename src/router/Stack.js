@@ -40,26 +40,26 @@ class RouterStack {
    *   Route/middleware function.
    *
    * @example
-   *   const func1 = function(req, res, next) {
-   *     if (req.method() === 'POST') {
-   *       res.status(405).send();
-   *     } else {
-   *       next();
-   *     }
-   *   };
+   * const func1 = function(req, res, next) {
+   *   if (req.method() === 'POST') {
+   *     res.status(405).send();
+   *   } else {
+   *     next();
+   *   }
+   * };
    *
-   *   setFuncName(func1, 'middleware');
-   *   stack.add(func1);
+   * setFuncName(func1, 'middleware');
+   * stack.add(func1);
    *
-   *     ..
+   *   ..
    *
-   *   const func2 = function(req, res) {
-   *     res.setHeader('Content-Type', 'text/html');
-   *     res.status(200).send('Hello World');
-   *   };
+   * const func2 = function(req, res) {
+   *   res.setHeader('Content-Type', 'text/html');
+   *   res.status(200).send('Hello World');
+   * };
    *
-   *   setFuncName(func2, 'route:get');
-   *   stack.add(func2);
+   * setFuncName(func2, 'route:get');
+   * stack.add(func2);
    */
   add(func) {
     if (isValidFunc(func)) {
@@ -96,10 +96,10 @@ class RouterStack {
    *   Response instance.
    *
    * @example
-   *   stack.exec(req, res);
+   * stack.exec(req, res);
    *
-   *   // updated instance
-   *   res.data();
+   * // updated instance
+   * res.data();
    */
   exec(req, res) {
     const funcs = [].concat(this.middleware, this.routes, this.resources, [this.fallback]);

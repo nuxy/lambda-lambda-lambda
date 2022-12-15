@@ -42,8 +42,8 @@ class RouterRequest {
    * @return {String|undefined}
    *
    * @example
-   *   const value = req.header('Content-Type');
-   *   // text/html
+   * const value = req.header('Content-Type');
+   * // text/html
    */
   header(name) {
     const headers = this.getHeaders();
@@ -66,8 +66,8 @@ class RouterRequest {
    * @return {Boolean}
    *
    * @example
-   *   const value = req.is('text/html');
-   *   // true
+   * const value = req.is('text/html');
+   * // true
    */
   is(mimeType) {
     return (this.header('Accept') === mimeType);
@@ -82,11 +82,11 @@ class RouterRequest {
    * @return {String|Object}
    *
    * @example
-   *   const params = req.param();
-   *   // {name: 'value'}
+   * const params = req.param();
+   * // {name: 'value'}
    *
-   *   const value = req.param('name');
-   *   // value
+   * const value = req.param('name');
+   * // value
    */
   param(name) {
     let obj = {};

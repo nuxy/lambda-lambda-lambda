@@ -39,15 +39,15 @@ class Router {
    *   AWS response object (optional).
    *
    * @example
-   *   exports.handler = (event, context, callback) => {
-   *     const {request, response} = event.Records[0].cf;
+   * exports.handler = (event, context, callback) => {
+   *   const {request, response} = event.Records[0].cf;
    *
-   *     const router = new Router(request, response);
+   *   const router = new Router(request, response);
    *
-   *       ..
+   *     ..
    *
-   *     callback(null, router.response());
-   *   };
+   *   callback(null, router.response());
+   * };
    */
   constructor(request, response) {
     this.req   = new Request (request);
@@ -101,20 +101,20 @@ class Router {
    *   Route/Middleware function (optional).
    *
    * @example
-   *   router.use(function(req, res, next) {
-   *     if (req.method() === 'POST') {
-   *       res.status(405).send();
-   *     } else {
-   *       next();
-   *     }
-   *   });
+   * router.use(function(req, res, next) {
+   *   if (req.method() === 'POST') {
+   *     res.status(405).send();
+   *   } else {
+   *     next();
+   *   }
+   * });
    *
-   *     ..
+   *   ..
    *
-   *   router.use('/api/test', function(req, res) {
-   *     res.setHeader('Content-Type', 'text/html');
-   *     res.status(200).send('Hello World');
-   *   });
+   * router.use('/api/test', function(req, res) {
+   *   res.setHeader('Content-Type', 'text/html');
+   *   res.status(200).send('Hello World');
+   * });
    */
   use(arg, func) {
 
@@ -142,7 +142,7 @@ class Router {
    *   Request URI.
    *
    * @example
-   *   router.setPrefix('/api');
+   * router.setPrefix('/api');
    */
   setPrefix(value) {
     if (isValidPath(value) && value !== '/') {
@@ -157,9 +157,9 @@ class Router {
    *   Route function.
    *
    * @example
-   *   router.default(function(req, res) {
-   *     res.status(404).send();
-   *   });
+   * router.default(function(req, res) {
+   *   res.status(404).send();
+   * });
    */
   default(route) {
     const func = (req, res, next) => {
@@ -181,10 +181,10 @@ class Router {
    *   Route function.
    *
    * @example
-   *   router.get('/api/test', function(req, res) {
-   *     res.setHeader('Content-Type', 'text/html');
-   *     res.status(200).send('Hello World');
-   *   });
+   * router.get('/api/test', function(req, res) {
+   *   res.setHeader('Content-Type', 'text/html');
+   *   res.status(200).send('Hello World');
+   * });
    */
   get(path, route) {
     if (this.req.method() === 'GET') {
@@ -202,9 +202,9 @@ class Router {
    *   Route function.
    *
    * @example
-   *   router.post('/api/test', function(req, res) {
-   *     res.status(201).send();
-   *   });
+   * router.post('/api/test', function(req, res) {
+   *   res.status(201).send();
+   * });
    */
   post(path, route) {
     if (this.req.method() === 'POST') {
@@ -222,9 +222,9 @@ class Router {
    *   Route function.
    *
    * @example
-   *   router.put('/api/test', function(req, res) {
-   *     res.status(201).send();
-   *   });
+   * router.put('/api/test', function(req, res) {
+   *   res.status(201).send();
+   * });
    */
   put(path, route) {
     if (this.req.method() === 'PUT') {
@@ -242,9 +242,9 @@ class Router {
    *   Route function.
    *
    * @example
-   *   router.patch('/api/test', function(req, res) {
-   *     res.status(204).send();
-   *   });
+   * router.patch('/api/test', function(req, res) {
+   *   res.status(204).send();
+   * });
    */
   patch(path, route) {
     if (this.req.method() === 'PATCH') {
@@ -262,9 +262,9 @@ class Router {
    *   Route function.
    *
    * @example
-   *   router.delete('/api/test', function(req, res) {
-   *     res.status(200).send();
-   *   });
+   * router.delete('/api/test', function(req, res) {
+   *   res.status(200).send();
+   * });
    */
   delete(path, route) {
     if (this.req.method() === 'DELETE') {
