@@ -11,8 +11,8 @@ module.exports = {
   components: {
     securitySchemes: {
       basicAuth: {
-        type: "http",
-        scheme: "basic"
+        type: 'http',
+        scheme: 'basic'
       }
     }
   }
