@@ -1,7 +1,7 @@
 {
   "name": "lambda-lambda-lambda",
   "description": "AWS Lambda@Edge serverless application router.",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "main": "src/Router.js",
   "scripts": {
     "gendoc": "node_modules/.bin/jsdoc -c .jsdocrc",
