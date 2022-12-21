@@ -49,7 +49,7 @@ module.exports = {
    *         default: 123456
    *         required: true
    *     responses:
-   *       200:
+   *       201:
    *         description: Returns JSON response.
    *         content:
    *           application/json:
@@ -98,7 +98,7 @@ module.exports = {
    *       - Protected route
    */
   update (req, res, id) {
-    res.status(204).send({name: `example/private/${id}:update`});
+    res.status(200).send({name: `example/private/${id}:update`});
   },
 
   /**
@@ -130,7 +130,7 @@ module.exports = {
    *       - Protected route
    */
   delete (req, res, id) {
-    res.status(410).send({name: `example/private/${id}:delete`});
+    res.status(200).send({name: `example/private/${id}:delete`});
   },
 
   /**

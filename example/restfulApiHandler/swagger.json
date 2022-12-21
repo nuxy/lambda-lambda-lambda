@@ -79,7 +79,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "Returns JSON response.",
             "content": {
               "application/json": {
@@ -234,7 +234,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "Returns JSON response.",
             "content": {
               "application/json": {
