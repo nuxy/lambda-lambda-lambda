@@ -79,7 +79,7 @@ class RouterRequest {
    * @param {String} name
    *   Parameter name (optional).
    *
-   * @return {String|Object}
+   * @return {String|Object|undefined}
    *
    * @example
    * const params = req.param();
@@ -97,7 +97,11 @@ class RouterRequest {
       obj = RouterRequest.parseBody(this.body());
     }
 
-    return obj[name] || obj;
+    if (name && obj[name]) {
+      return obj[name];
+    } else if (!name && obj) {
+      return obj;
+    }
   }
 
   /**

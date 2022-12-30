@@ -65,6 +65,12 @@ describe('Request module', function() {
 
             expect(result).to.equal('bar');
           });
+
+          it('should not return value', function() {
+            const result = request.param('qux');
+
+            expect(result).to.be.undefined;
+          });
         });
       });
 
@@ -88,6 +94,12 @@ describe('Request module', function() {
             const result = request.param('biz');
 
             expect(result).to.equal('baz');
+          });
+
+          it('should not return value', function() {
+            const result = request.param('qux');
+
+            expect(result).to.be.undefined;
           });
         });
       });
