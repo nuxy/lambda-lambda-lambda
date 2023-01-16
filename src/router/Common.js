@@ -103,7 +103,7 @@ exports.getResourceId = function(uri, path) {
  *
  * @example
  * const func = function() {};
- * setFuncName(func, 'test);
+ * setFuncName(func, 'test');
  * func.name
  * // test
  */
