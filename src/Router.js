@@ -162,13 +162,15 @@ class Router {
    * });
    */
   default(route) {
-    const func = (req, res, next) => {
-      route(req, res, next);
-    };
+    if (isValidFunc(route)) {
+      const func = (req, res, next) => {
+        route(req, res, next);
+      };
 
-    setFuncName(func, 'fallback');
+      setFuncName(func, 'fallback');
 
-    this.use(func);
+      this.use(func);
+    }
   }
 
   /**
@@ -187,7 +189,7 @@ class Router {
    * });
    */
   get(path, route) {
-    if (this.req.method() === 'GET') {
+    if (this.req.method() === 'GET' && isValidFunc(route)) {
       this.handle(path, route);
     }
   }
@@ -207,7 +209,7 @@ class Router {
    * });
    */
   post(path, route) {
-    if (this.req.method() === 'POST') {
+    if (this.req.method() === 'POST' && isValidFunc(route)) {
       this.handle(path, route);
     }
   }
@@ -227,7 +229,7 @@ class Router {
    * });
    */
   put(path, route) {
-    if (this.req.method() === 'PUT') {
+    if (this.req.method() === 'PUT' && isValidFunc(route)) {
       this.handle(path, route);
     }
   }
@@ -247,7 +249,7 @@ class Router {
    * });
    */
   patch(path, route) {
-    if (this.req.method() === 'PATCH') {
+    if (this.req.method() === 'PATCH' && isValidFunc(route)) {
       this.handle(path, route);
     }
   }
@@ -267,7 +269,7 @@ class Router {
    * });
    */
   delete(path, route) {
-    if (this.req.method() === 'DELETE') {
+    if (this.req.method() === 'DELETE' && isValidFunc(route)) {
       this.handle(path, route);
     }
   }
