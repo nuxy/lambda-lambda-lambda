@@ -28,8 +28,8 @@
   "author": "Marc S. Brooks <devel@mbrooks.info> (https://mbrooks.info)",
   "license": "MIT",
   "devDependencies": {
-    "aws-sdk": "^2.1190.0",
-    "chai": "^4.3.6",
+    "aws-sdk": "^2.1323.0",
+    "chai": "^4.3.7",
     "clone": "^2.1.2",
     "eslint": "^7.32.0",
     "jsdoc": "^3.6.11",
