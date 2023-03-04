@@ -17,17 +17,17 @@
 class RouterRequest {
 
   /**
-   * @param {Object} obj
-   *   AWS Request object.
+   * @param {CloudFrontRequest} obj
+   *   CloudFront request object.
    */
   constructor(obj) {
     this.obj = obj;
   }
 
   /**
-   * Return CloudFront supported Request object.
+   * Return CloudFront request object.
    *
-   * @return {Object}
+   * @return {CloudFrontRequest}
    */
   data() {
     return this.obj;
@@ -152,7 +152,7 @@ class RouterRequest {
   /**
    * Return the headers of the request.
    *
-   * @return {Array<Object|undefined>}
+   * @return {CloudFrontFunctionsHeaders}
    */
   getHeaders() {
     return this.data().headers;

@@ -32,11 +32,11 @@ const {
 class Router {
 
   /**
-   * @param {Object} request
-   *   AWS request object.
+   * @param {CloudFrontRequest} request
+   *   CloudFront request object.
    *
-   * @param {Object|undefined} response
-   *   AWS response object (optional).
+   * @param {CloudFrontResponse|undefined} response
+   *   CloudFront response object (optional).
    *
    * @example
    * exports.handler = (event, context, callback) => {
@@ -58,9 +58,9 @@ class Router {
   }
 
   /**
-   * Return the AWS response object.
+   * Return CloudFront response object.
    *
-   * @return {Object}
+   * @return {CloudFrontResponse}
    */
   response() {
     loadRoutes(this);

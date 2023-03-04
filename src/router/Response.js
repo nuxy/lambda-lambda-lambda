@@ -17,8 +17,8 @@
 class RouterResponse {
 
   /**
-   * @param {Object|undefined} obj
-   *   AWS response object (optional).
+   * @param {CloudFrontResponse|undefined} obj
+   *   CloudFront response object (optional).
    */
   constructor(obj = {}) {
     this.obj = Object.assign({
@@ -28,9 +28,9 @@ class RouterResponse {
   }
 
   /**
-   * Return the AWS response data.
+   * Return the CloudFront response data.
    *
-   * @return {Object}
+   * @return {CloudFrontResponse}
    */
   data() {
     return this.obj;
