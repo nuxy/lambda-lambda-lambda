@@ -2,19 +2,19 @@
 
 // Load modules.
 const contentNegotiation = require(`${process.cwd()}/test/e2e/handler/middleware/ContentNegotiation`);
-const contentTypeHeader  = require(`${process.cwd()}/test/e2e/handler/middleware/ContentTypeHeader`);
 
 /**
  * @export {Object}
  */
 module.exports = {
-  middleware: [contentNegotiation, contentTypeHeader],
+  middleware: [contentNegotiation],
   resource: ['get', 'put', 'patch', 'delete', 'post'],
 
   /**
    * GET /api/<path>
    */
   index (req, res) {
+    res.setHeader('Content-Type', 'application/json');
     res.status(200).json({index: true});
   },
 
@@ -23,6 +23,7 @@ module.exports = {
    */
   get (req, res, id) {
     res.setHeader('X-Request-ID', id);
+    res.setHeader('Content-Type', 'application/json');
     res.status(200).json({get: true});
   },
 
@@ -30,6 +31,7 @@ module.exports = {
    * PUT /api/<path>
    */
   create (req, res) {
+    res.setHeader('Content-Type', 'application/json');
     res.status(201).json({create: true});
   },
 
@@ -38,6 +40,7 @@ module.exports = {
    */
   put (req, res, id) {
     res.setHeader('X-Request-ID', id);
+    res.setHeader('Content-Type', 'application/json');
     res.status(201).json({put: true});
   },
 
@@ -45,6 +48,7 @@ module.exports = {
    * PATCH /api/<path>
    */
   update (req, res) {
+    res.setHeader('Content-Type', 'application/json');
     res.status(204).json({update: true});
   },
 
@@ -53,6 +57,7 @@ module.exports = {
    */
   patch (req, res, id) {
     res.setHeader('X-Request-ID', id);
+    res.setHeader('Content-Type', 'application/json');
     res.status(204).json({patch: true});
   },
 
@@ -61,6 +66,7 @@ module.exports = {
    */
   delete (req, res, id) {
     res.setHeader('X-Request-ID', id);
+    res.setHeader('Content-Type', 'application/json');
     res.status(410).json({delete: true});
   },
 
@@ -68,6 +74,7 @@ module.exports = {
    * POST /api/<path>
    */
   submit (req, res) {
+    res.setHeader('Content-Type', 'application/json');
     res.status(200).json({submit: true});
   },
 
@@ -76,6 +83,7 @@ module.exports = {
    */
   post (req, res, id) {
     res.setHeader('X-Request-ID', id);
+    res.setHeader('Content-Type', 'application/json');
     res.status(200).json({post: true});
   }
 };

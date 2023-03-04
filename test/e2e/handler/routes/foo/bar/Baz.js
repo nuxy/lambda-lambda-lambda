@@ -1,18 +1,15 @@
 'use strict';
 
-// Load modules.
-const contentTypeHeader = require(`${process.cwd()}/test/e2e/handler/middleware/ContentTypeHeader`);
-
 /**
  * @export {Object}
  */
 module.exports = {
-  middleware: contentTypeHeader,
 
   /**
    * GET /api/<path>
    */
   index (req, res) {
+    res.setHeader('Content-Type', 'text/html');
     res.status(200).send('foo/bar/baz:index');
   },
 
@@ -20,6 +17,7 @@ module.exports = {
    * PUT /api/<path>
    */
   create (req, res) {
+    res.setHeader('Content-Type', 'text/html');
     res.status(201).send('foo/bar/baz:create');
   },
 
@@ -27,6 +25,7 @@ module.exports = {
    * PATCH /api/<path>
    */
   update (req, res) {
+    res.setHeader('Content-Type', 'text/html');
     res.status(204).send('foo/bar/baz:update');
   },
 
@@ -34,6 +33,7 @@ module.exports = {
    * DELETE /api/<path>
    */
   delete (req, res) {
+    res.setHeader('Content-Type', 'text/html');
     res.status(410).send('foo/bar/baz:delete');
   },
 
@@ -41,6 +41,7 @@ module.exports = {
    * POST /api/<path>
    */
   submit (req, res) {
+    res.setHeader('Content-Type', 'text/html');
     res.status(200).send('foo/bar/baz:submit');
   }
 };
