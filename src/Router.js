@@ -44,9 +44,17 @@ class Router {
    *
    *   const router = new Router(request, response);
    *
-   *     ..
-   *
    *   callback(null, router.response());
+   * };
+   *
+   *   ..
+   *
+   * exports.handler = async (event) => {
+   *   const {request, response} = event.Records[0].cf;
+   *
+   *   const router = new Router(request, response);
+   *
+   *   return await router.response(true);
    * };
    */
   constructor(request, response) {
@@ -60,10 +68,21 @@ class Router {
   /**
    * Return CloudFront response object.
    *
-   * @return {CloudFrontResponse}
+   * @param {Boolean} async
+   *   Return Promised response.
+   *
+   * @return {CloudFrontResponse|Promise<CloudFrontResponse>}
    */
-  response() {
+  response(async) {
     loadRoutes(this);
+
+    if (async === true) {
+      return new Promise((resolve, reject) => {
+        this.stack.exec(this.req, this.res, () => {
+          resolve(this.res.data());
+        });
+      });
+    }
 
     this.stack.exec(this.req, this.res);
 

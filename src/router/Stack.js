@@ -85,8 +85,9 @@ class RouterStack {
   }
 
   /**
-   * Execute stored functions (ordered by priority).
+   * Execute stored functions (a)synchronously.
    *
+   * Order by priority.
    * > Middleware, Routes, Resources, fallback
    *
    * @param {RouterRequest} req
@@ -95,13 +96,24 @@ class RouterStack {
    * @param {RouterResponse} res
    *   Response instance.
    *
+   * @param {Function} callback
+   *   Callback function (optional).
+   *
    * @example
    * stack.exec(req, res);
    *
    * // updated instance
    * res.data();
+   *
+   *   ..
+   *
+   * stack.exec(req, res, function() {
+   *   
+   *   // updated instance
+   *   res.data();
+   * });
    */
-  exec(req, res) {
+  exec(req, res, callback) {
     const funcs = [].concat(this.middleware, this.routes, this.resources, [this.fallback]);
 
     let nextItem = false;
@@ -111,8 +123,14 @@ class RouterStack {
         nextItem = false;
 
         func(req, res, () => {
-          nextItem = true;
+
+          // Skip if end of stack.
+          nextItem = (index !== funcs.length - 1);
         });
+      }
+
+      if (!nextItem && typeof callback === 'function') {
+        callback();
       }
     });
   }
