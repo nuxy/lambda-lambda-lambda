@@ -108,7 +108,7 @@ class RouterStack {
    *   ..
    *
    * stack.exec(req, res, function() {
-   *   
+   *
    *   // updated instance
    *   res.data();
    * });
