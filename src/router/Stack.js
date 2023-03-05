@@ -32,8 +32,8 @@ class RouterStack {
    *
    * Stack function types
    *  - middleware
-   *  - route:<method>
-   *  - resource:<method>
+   *  - route:&lt;method&gt;
+   *  - resource:&lt;method&gt;
    *  - fallback
    *
    * @param {Function} func
