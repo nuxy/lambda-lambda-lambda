@@ -10,7 +10,7 @@
 'use strict';
 
 // Local modules.
-const {isValidFunc} = require('./Common');
+const {isPromise, isValidFunc} = require('./Common');
 
 /**
  * Provides Stack item handler and methods.
@@ -125,7 +125,7 @@ class RouterStack {
           nextItem = (index !== funcs.length - 1);
         });
 
-        if (typeof promise?.then === 'function') {
+        if (isPromise(promise)) {
           promises.push(promise);
         }
       }
