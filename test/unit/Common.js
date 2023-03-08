@@ -9,6 +9,18 @@ const Common = require(`${PACKAGE_ROOT}/src/router/Common.js`);
 
 describe('Common module', function() {
   describe('Static methods', function() {
+    describe('isPromise', function() {
+      const result1 = Common.isPromise(new Promise(() => {}));
+      const result2 = Common.isPromise(new Object());
+      const result3 = Common.isPromise(new Function());
+
+      it('should return value', function() {
+        expect(result1).to.be.true;
+        expect(result2).to.be.false;
+        expect(result3).to.be.false;
+      });
+    });
+
     describe('isValidPath', function() {
       const result1 = Common.isValidPath('/');
       const result2 = Common.isValidPath('/foo_bar');

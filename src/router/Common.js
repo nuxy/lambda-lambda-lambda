@@ -12,6 +12,22 @@
 'use strict';
 
 /**
+ * Check if object is Promise.
+ *
+ * @param {Object} obj
+ *   Promise object.
+ *
+ * @return {Boolean}
+ *
+ * @example
+ * const result = isPromise(new Promise(() => {}));
+ * // true
+ */
+exports.isPromise = function(obj) {
+  return (typeof obj?.then === 'function');
+};
+
+/**
  * Check if valid URI path.
  *
  * @param {String} value
