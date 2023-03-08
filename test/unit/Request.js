@@ -1,13 +1,13 @@
 'use strict';
 
-const event = require('../event.json');
+const event = require(`${PACKAGE_ROOT}/test/event.json`);
 const chai  = require('chai');
 const clone = require('clone');
 
 const expect = chai.expect;
 
 // Load modules.
-const Request = require('../../src/router/Request.js');
+const Request = require(`${PACKAGE_ROOT}/src/router/Request.js`);
 
 describe('Request module', function() {
   describe('Instance methods', function() {

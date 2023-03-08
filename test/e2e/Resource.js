@@ -1,7 +1,7 @@
 'use strict';
 
-const app   = require('./handler/app');
-const event = require('../event.json');
+const app   = require(`${PACKAGE_ROOT}/test/e2e/handler/app`);
+const event = require(`${PACKAGE_ROOT}/test/event.json`);
 const chai  = require('chai');
 
 const expect = chai.expect;

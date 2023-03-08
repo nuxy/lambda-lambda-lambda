@@ -5,7 +5,7 @@ const chai = require('chai');
 const expect = chai.expect;
 
 // Load modules.
-const Common = require('../../src/router/Common.js');
+const Common = require(`${PACKAGE_ROOT}/src/router/Common.js`);
 
 describe('Common module', function() {
   describe('Static methods', function() {

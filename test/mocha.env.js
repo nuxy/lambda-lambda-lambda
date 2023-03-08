@@ -10,3 +10,6 @@ Module.prototype.require = function(name) {
 
   return _require.apply(this, arguments);
 };
+
+// Global shorthand.
+global.PACKAGE_ROOT = process.cwd();

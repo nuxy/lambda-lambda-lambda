@@ -1,13 +1,13 @@
 'use strict';
 
-const event = require('../event.json');
+const event = require(`${PACKAGE_ROOT}/test/event.json`);
 const chai  = require('chai');
 
 const expect = chai.expect;
 
 // Load modules.
-const Router        = require('../../src/Router.js');
-const {setFuncName} = require('../../src/router/Common.js');
+const Router        = require(`${PACKAGE_ROOT}/src/Router.js`);
+const {setFuncName} = require(`${PACKAGE_ROOT}/src/router/Common.js`);
 
 describe('Router module', function() {
   describe('Instance methods', function() {

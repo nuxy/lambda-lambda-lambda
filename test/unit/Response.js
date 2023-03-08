@@ -1,6 +1,6 @@
 'use strict';
 
-const event = require('../event.json');
+const event = require(`${PACKAGE_ROOT}/test/event.json`);
 const chai  = require('chai');
 
 const expect = chai.expect;
