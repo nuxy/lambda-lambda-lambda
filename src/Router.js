@@ -19,6 +19,7 @@ const Route    = require('./router/Route');
 const Stack    = require('./router/Stack');
 
 const {
+  isPromise,
   isValidFunc,
   isValidPath,
   isValidRoute,
@@ -54,7 +55,7 @@ class Router {
    *
    *   const router = new Router(request, response);
    *
-   *   return await router.response(true);
+   *   return await router.response();
    * };
    */
   constructor(request, response) {
@@ -68,20 +69,16 @@ class Router {
   /**
    * Return CloudFront response object.
    *
-   * @param {Boolean} async
-   *   Return Promised response.
-   *
    * @return {CloudFrontResponse|Promise<CloudFrontResponse>}
    */
-  response(async) {
+  response() {
     loadRoutes(this);
 
-    if (async === true) {
-      return this.stack.exec(this.req, this.res)
-        .then(() => this.res.data());
-    }
+    const result = this.stack.exec(this.req, this.res);
 
-    this.stack.exec(this.req, this.res);
+    if (isPromise(result)) {
+        return result.then(() => this.res.data());
+    }
 
     return this.res.data();
   }
