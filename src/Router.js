@@ -77,11 +77,8 @@ class Router {
     loadRoutes(this);
 
     if (async === true) {
-      return new Promise((resolve, reject) => {
-        this.stack.exec(this.req, this.res, () => {
-          resolve(this.res.data());
-        });
-      });
+      return this.stack.exec(this.req, this.res)
+        .then(() => this.res.data());
     }
 
     this.stack.exec(this.req, this.res);

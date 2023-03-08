@@ -157,12 +157,6 @@ describe('Stack module', function() {
       it('should return body', function() {
         expect(result.body).to.equal('Success');
       });
-
-      it('should support callback', function(done) {
-        stack.exec(req, res, function() {
-          done();
-        });
-      });
     });
   });
 });

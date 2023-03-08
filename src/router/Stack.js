@@ -96,8 +96,7 @@ class RouterStack {
    * @param {RouterResponse} res
    *   Response instance.
    *
-   * @param {Function} callback
-   *   Callback function (optional).
+   * @return {Promise|undefined}
    *
    * @example
    * stack.exec(req, res);
@@ -107,32 +106,34 @@ class RouterStack {
    *
    *   ..
    *
-   * stack.exec(req, res, function() {
-   *
-   *   // updated instance
-   *   res.data();
-   * });
+   * stack.exec(req, res)
+   *   .then(() => res.data())
    */
-  exec(req, res, callback) {
+  exec(req, res) {
     const funcs = [].concat(this.middleware, this.routes, this.resources, [this.fallback]);
 
     let nextItem = false;
+    let promises = [];
 
     funcs.forEach((func, index) => {
       if (nextItem || index === 0) {
         nextItem = false;
 
-        func(req, res, () => {
+        const promise = func(req, res, () => {
 
           // Skip if end of stack.
           nextItem = (index !== funcs.length - 1);
         });
-      }
 
-      if (!nextItem && typeof callback === 'function') {
-        callback();
+        if (typeof promise?.then === 'function') {
+          promises.push(promise);
+        }
       }
     });
+
+    if (promises.length) {
+      return Promise.all(promises);
+    }
   }
 };
 
