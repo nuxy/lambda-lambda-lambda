@@ -5,7 +5,7 @@ const _require = Module.prototype.require;
 // Override altered event state from prior tests.
 Module.prototype.require = function(name) {
   if (/\/event.json$/.test(name)) {
-    delete require.cache[require.resolve('./event.json')];
+    delete require.cache[require.resolve(name)];
   }
 
   return _require.apply(this, arguments);
