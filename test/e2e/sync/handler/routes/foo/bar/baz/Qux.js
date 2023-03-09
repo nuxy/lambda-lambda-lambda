@@ -1,7 +1,7 @@
 'use strict';
 
 // Load modules.
-const contentNegotiation = require(`${PACKAGE_ROOT}/test/e2e/handler/middleware/ContentNegotiation`);
+const contentNegotiation = require(`${PACKAGE_ROOT}/test/e2e/sync/handler/middleware/ContentNegotiation`);
 
 /**
  * @export {Object}
