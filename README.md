@@ -39,6 +39,8 @@ Install package dependencies using [NPM](https://npmjs.com).
 
 Unless your application requires [complex routing](#complex-routing), route handlers can be defined within the [Lambda function scope](https://docs.aws.amazon.com/lambda/latest/operatorguide/global-scope.html).  Otherwise [route handlers](#route-handler) are loaded from `appName/src/routes` directory in hierarchical order, starting with the default handler `appName/src/app.js` as described below.
 
+### Synchronous example
+
 ```javascript
 // .. appName/src/app.js
 
@@ -76,6 +78,30 @@ exports.handler = (event, context, callback) => {
   });
 
   callback(null, router.response());
+};
+```
+
+### Asynchronous example
+
+```javascript
+// .. appName/src/app.js
+
+'use strict';
+
+// Load module.
+const Router = require('lambda-lambda-lambda');
+
+/**
+ * @see AWS::Serverless::Function
+ */
+exports.handler = async (event) => {
+  const {request, response} = event.Records[0].cf;
+
+  const router = new Router(request, response);
+
+    ..
+
+  return await router.response();
 };
 ```
 
