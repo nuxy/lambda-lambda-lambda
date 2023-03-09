@@ -1,5 +1,6 @@
 .eslintrc
 .jsdocrc
+.nyc_output
 .travis.yml
 .vscode
 doc
