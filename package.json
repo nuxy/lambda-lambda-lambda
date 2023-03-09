@@ -6,7 +6,7 @@
   "scripts": {
     "gendoc": "node_modules/.bin/jsdoc -c .jsdocrc",
     "lint": "node_modules/.bin/eslint src test",
-    "test": "node_modules/.bin/mocha --require test/mocha.env.js test/**/*.js"
+    "test": "node_modules/.bin/mocha --require test/mocha.env.js 'test/e2e/sync/**/*.js' 'test/e2e/async/**/*.js' 'test/unit/**/*.js'"
   },
   "repository": {
     "type": "git",
