@@ -130,14 +130,15 @@ exports.setFuncName = function(func, value) {
 /**
  * Get executed module parent directory.
  *
- * @return {String|null}
+ * @return {String}
  *
  * @example
  * const dir = moduleParent();
+ * // path/to/app/parent/directory
  */
 exports.moduleParent = function() {
   const moduleParents = Object.values(require.cache)
     .filter((m) => m.children.includes(module));
 
-  return (moduleParents[0].parent) ? moduleParents[0].parent.path : null;
+  return moduleParents[0]?.parent.path;
 };
