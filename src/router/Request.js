@@ -223,11 +223,7 @@ class RouterRequest {
       return false;
     }
 
-    if (Array.isArray(data) || typeof data === 'object') {
-      return true;
-    }
-
-    return false;
+    return (Array.isArray(data) || typeof data === 'object');
   }
 };
 
