@@ -173,10 +173,12 @@ describe('Request module', function() {
 
   describe('Static methods', function() {
     describe('parseBody', function() {
-      const result = Request.parseBody('Zm9vPWJhciZiaXo9YmF6==');
+      const result1 = Request.parseBody('Zm9vPWJhciZiaXo9YmF6==');
+      const result2 = Request.parseBody('eyJmb28iOiAiYmFyIiwgImJpeiI6ICJiYXoifQ==');
 
       it('should return value', function() {
-        expect(result).to.deep.equal({foo: 'bar', biz: 'baz'});
+        expect(result1).to.deep.equal({foo: 'bar', biz: 'baz'});
+        expect(result2).to.deep.equal({foo: 'bar', biz: 'baz'});
       });
     });
 
