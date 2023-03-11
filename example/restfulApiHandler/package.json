@@ -2,7 +2,7 @@
   "name": "restfulApiHandler",
   "version": "0.0.1",
   "description": "Handler example with preconfigured routes and middleware.",
-  "main": "app.js",
+  "main": "src/app.js",
   "dependencies": {
     "lambda-lambda-lambda": "latest"
   },
