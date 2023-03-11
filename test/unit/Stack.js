@@ -88,74 +88,160 @@ describe('Stack module', function() {
     });
 
     describe('exec', function() {
-      const stack = new Stack();
+      describe('sync', function() {
+        const stack = new Stack();
 
-      let count = 0;
+        let count = 0;
 
-      const func1 = function(req, res, next) {
-        res.setHeader('Middleware', true);
-        count++;
-        next();
-      };
+        const func1 = function(req, res, next) {
+          res.setHeader('Middleware', true);
+          count++;
+          next();
+        };
 
-      Common.setFuncName(func1, 'middleware');
+        Common.setFuncName(func1, 'middleware');
 
-      const func2 = function(req, res, next) {
-        res.setHeader('Route', true);
-        res.status(200).send('Success');
-        count++;
-        next();
-      };
+        const func2 = function(req, res, next) {
+          res.setHeader('Route', true);
+          res.status(200).send('Success');
+          count++;
+          next();
+        };
 
-      Common.setFuncName(func1, 'route:get');
+        Common.setFuncName(func1, 'route:get');
 
-      const func3 = function(req, res, next) {
-        res.setHeader('Resource', true);
-        res.status(200).send('Success');
-        count++;
-        next();
-      };
+        const func3 = function(req, res, next) {
+          res.setHeader('Resource', true);
+          res.status(200).send('Success');
+          count++;
+          next();
+        };
 
-      Common.setFuncName(func1, 'resource:get');
+        Common.setFuncName(func1, 'resource:get');
 
-      const func4 = function(req, res, next) {
-        res.setHeader('Fallback', true);
-        res.status(200).send('Success');
-        count++;
-        next();
-      };
+        const func4 = function(req, res, next) {
+          res.setHeader('Fallback', true);
+          res.status(200).send('Success');
+          count++;
+          next();
+        };
 
-      Common.setFuncName(func1, 'fallback');
+        Common.setFuncName(func1, 'fallback');
 
-      stack.middleware = [func1];
-      stack.routes     = [func2];
-      stack.resources  = [func3];
-      stack.fallback   = func4;
+        stack.middleware = [func1];
+        stack.routes     = [func2];
+        stack.resources  = [func3];
+        stack.fallback   = func4;
 
-      const req = new Request(event.Records[0].cf.request, {});
-      const res = new Response({});
+        const req = new Request(event.Records[0].cf.request, {});
+        const res = new Response({});
 
-      stack.exec(req, res);
+        stack.exec(req, res);
 
-      const result = res.data();
+        const result = res.data();
 
-      it('should execute functions', function() {
-        expect(count).to.equal(4);
+        it('should execute functions', function() {
+          expect(count).to.equal(4);
+        });
+
+        it('should return headers', function() {
+          expect(result.headers.middleware).to.be.an('array');
+          expect(result.headers.route).to.be.an('array');
+          expect(result.headers.resource).to.be.an('array');
+          expect(result.headers.fallback).to.be.an('array');
+        });
+
+        it('should return status', function() {
+          expect(result.status).to.equal(200);
+        });
+
+        it('should return body', function() {
+          expect(result.body).to.equal('Success');
+        });
       });
 
-      it('should return headers', function() {
-        expect(result.headers.middleware).to.be.an('array');
-        expect(result.headers.route).to.be.an('array');
-        expect(result.headers.resource).to.be.an('array');
-        expect(result.headers.fallback).to.be.an('array');
-      });
+      describe('async', function() {
+        const stack = new Stack();
 
-      it('should return status', function() {
-        expect(result.status).to.equal(200);
-      });
+        let count = 0;
 
-      it('should return body', function() {
-        expect(result.body).to.equal('Success');
+        const func1 = function(req, res, next) {
+          return new Promise(function(resolve) {
+            res.setHeader('Middleware', true);
+            count++;
+            resolve();
+            next();
+          });
+        };
+
+        Common.setFuncName(func1, 'middleware');
+
+        const func2 = function(req, res, next) {
+          return new Promise(function(resolve) {
+            res.setHeader('Route', true);
+            res.status(200).send('Success');
+            count++;
+            resolve();
+            next();
+          });
+        };
+
+        Common.setFuncName(func1, 'route:get');
+
+        const func3 = function(req, res, next) {
+          return new Promise(function(resolve) {
+            res.setHeader('Resource', true);
+            res.status(200).send('Success');
+            count++;
+            resolve();
+            next();
+          });
+        };
+
+        Common.setFuncName(func1, 'resource:get');
+
+        const func4 = function(req, res, next) {
+          return new Promise(function(resolve) {
+            res.setHeader('Fallback', true);
+            res.status(200).send('Success');
+            count++;
+            resolve();
+            next();
+          });
+        };
+
+        Common.setFuncName(func1, 'fallback');
+
+        stack.middleware = [func1];
+        stack.routes     = [func2];
+        stack.resources  = [func3];
+        stack.fallback   = func4;
+
+        const req = new Request(event.Records[0].cf.request, {});
+        const res = new Response({});
+
+        stack.exec(req, res);
+
+        const result = res.data();
+
+        it('should execute functions', function() {
+          expect(count).to.equal(4);
+        });
+
+        it('should return headers', function() {
+          expect(result.headers.middleware).to.be.an('array');
+          expect(result.headers.route).to.be.an('array');
+          expect(result.headers.resource).to.be.an('array');
+          expect(result.headers.fallback).to.be.an('array');
+        });
+
+        it('should return status', function() {
+          expect(result.status).to.equal(200);
+        });
+
+        it('should return body', function() {
+          expect(result.body).to.equal('Success');
+        });
       });
     });
   });
