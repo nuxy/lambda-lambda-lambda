@@ -6,7 +6,8 @@
   "scripts": {
     "gendoc": "node_modules/.bin/jsdoc -c .jsdocrc",
     "lint": "node_modules/.bin/eslint src test",
-    "test": "node_modules/.bin/nyc --reporter=text node_modules/.bin/mocha --require test/mocha.env.js 'test/e2e/sync/**/*.js' 'test/e2e/async/**/*.js' 'test/unit/**/*.js'"
+    "test": "node_modules/.bin/nyc node_modules/.bin/mocha --require test/mocha.env.js 'test/e2e/sync/**/*.js' 'test/e2e/async/**/*.js' 'test/unit/**/*.js'",
+    "coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,7 @@
     "@types/aws-lambda": "^8.10.111",
     "chai": "^4.3.7",
     "clone": "^2.1.2",
+    "coveralls": "^3.1.1",
     "eslint": "^7.32.0",
     "jsdoc": "^3.6.11",
     "minami": "^1.2.3",
