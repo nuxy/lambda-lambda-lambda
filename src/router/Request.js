@@ -91,6 +91,7 @@ class RouterRequest {
   param(name) {
     let obj = {};
 
+    /* istanbul ignore else (tested in: test/unit/Request) */
     if (this.queryString()) {
       obj = RouterRequest.parseParams(this.queryString());
     } else if (this.body()) {

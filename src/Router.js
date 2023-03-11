@@ -76,6 +76,7 @@ class Router {
 
     const result = this.stack.exec(this.req, this.res);
 
+    /* istanbul ignore if (tested in: test/e2e/async) */
     if (isPromise(result)) {
         return result.then(() => this.res.data());
     }
