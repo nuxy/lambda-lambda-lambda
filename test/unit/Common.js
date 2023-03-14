@@ -74,9 +74,9 @@ describe('Common module', function() {
       const result4 = Common.getResourceId('/foo/abc123', '/foo', function(req, res, next) {});
 
       it('should return value', function() {
-        expect(result1).to.be.null;
+        expect(result1).to.be.undefined;
         expect(result2).to.equal('abc123');
-        expect(result3).to.be.null;
+        expect(result3).to.be.undefined;
         expect(result4).to.equal('abc123');
       });
     });

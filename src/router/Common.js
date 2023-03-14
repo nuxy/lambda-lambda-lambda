@@ -105,7 +105,6 @@ exports.getResourceId = function(uri, path) {
   if (fragment !== uri) {
     return fragment;
   }
-  return null;
 };
 
 /**
