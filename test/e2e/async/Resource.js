@@ -11,6 +11,37 @@ describe('Resource handler (async)', function() {
     const resourceId1 = 'uuid-123456_AbC';
     const resourceId2 = 'uuid-987654_Zyx';
 
+    describe('GET (missing resource)', function() {
+      let result;
+
+      before(async function() {
+        event.Records[0].cf.request.method = 'GET';
+        event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux';
+
+        // Handle Content Negotiation.
+        event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
+
+        result = await app.handler(event);
+      });
+
+      it('should return an object', function() {
+        expect(result).to.be.an('object');
+      });
+
+      it('should return headers', function() {
+        expect(result.headers).to.be.an('object');
+      });
+
+      it('should return status', function() {
+        expect(result.status).to.be.an('number');
+        expect(result.status).to.equal(404);
+      });
+
+      it('should return body', function() {
+        expect(result.body).to.be.undefined;
+      });
+    });
+
     describe('GET (resource 1)', function() {
       let result;
 
@@ -80,6 +111,37 @@ describe('Resource handler (async)', function() {
       it('should return body', function() {
         expect(result.body).to.be.an('string');
         expect(result.body).to.equal('{"get":true}');
+      });
+    });
+
+    describe('PUT (missing resource)', function() {
+      let result;
+
+      before(async function() {
+        event.Records[0].cf.request.method = 'PUT';
+        event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux';
+
+        // Handle Content Negotiation.
+        event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
+
+        result = await app.handler(event);
+      });
+
+      it('should return an object', function() {
+        expect(result).to.be.an('object');
+      });
+
+      it('should return headers', function() {
+        expect(result.headers).to.be.an('object');
+      });
+
+      it('should return status', function() {
+        expect(result.status).to.be.an('number');
+        expect(result.status).to.equal(404);
+      });
+
+      it('should return body', function() {
+        expect(result.body).to.be.undefined;
       });
     });
 
@@ -155,6 +217,37 @@ describe('Resource handler (async)', function() {
       });
     });
 
+    describe('PATCH (missing resource)', function() {
+      let result;
+
+      before(async function() {
+        event.Records[0].cf.request.method = 'PATCH';
+        event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux';
+
+        // Handle Content Negotiation.
+        event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
+
+        result = await app.handler(event);
+      });
+
+      it('should return an object', function() {
+        expect(result).to.be.an('object');
+      });
+
+      it('should return headers', function() {
+        expect(result.headers).to.be.an('object');
+      });
+
+      it('should return status', function() {
+        expect(result.status).to.be.an('number');
+        expect(result.status).to.equal(404);
+      });
+
+      it('should return body', function() {
+        expect(result.body).to.be.undefined;
+      });
+    });
+
     describe('PATCH (resource 1)', function() {
       let result;
 
@@ -227,6 +320,37 @@ describe('Resource handler (async)', function() {
       });
     });
 
+    describe('DELETE (missing resource)', function() {
+      let result;
+
+      before(async function() {
+        event.Records[0].cf.request.method = 'DELETE';
+        event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux';
+
+        // Handle Content Negotiation.
+        event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
+
+        result = await app.handler(event);
+      });
+
+      it('should return an object', function() {
+        expect(result).to.be.an('object');
+      });
+
+      it('should return headers', function() {
+        expect(result.headers).to.be.an('object');
+      });
+
+      it('should return status', function() {
+        expect(result.status).to.be.an('number');
+        expect(result.status).to.equal(404);
+      });
+
+      it('should return body', function() {
+        expect(result.body).to.be.undefined;
+      });
+    });
+
     describe('DELETE (resource)', function() {
       let result;
 
@@ -260,6 +384,34 @@ describe('Resource handler (async)', function() {
       it('should return body', function() {
         expect(result.body).to.be.an('string');
         expect(result.body).to.equal('{"delete":true}');
+      });
+    });
+
+    describe('POST (missing resource)', function() {
+      let result;
+
+      before(async function() {
+        event.Records[0].cf.request.method = 'POST';
+        event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux';
+
+        result = await app.handler(event);
+      });
+
+      it('should return an object', function() {
+        expect(result).to.be.an('object');
+      });
+
+      it('should return headers', function() {
+        expect(result.headers).to.be.an('object');
+      });
+
+      it('should return status', function() {
+        expect(result.status).to.be.an('number');
+        expect(result.status).to.equal(404);
+      });
+
+      it('should return body', function() {
+        expect(result.body).to.be.undefined;
       });
     });
 

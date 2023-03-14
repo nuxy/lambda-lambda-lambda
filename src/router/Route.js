@@ -76,14 +76,21 @@ module.exports = (router, route) => {
       const resourceId = getResourceId(router.req.uri(), `${router.prefix}${path}`);
 
       // Add resource ID to Route as argument.
-      if (resourceId) {
-        const oldFunc = routeFunc;
-        routeFunc = (req, res) => {
-          oldFunc(req, res, resourceId);
-        };
+      const oldFunc = routeFunc;
+      routeFunc = (req, res) => {
 
-        entityType = 'resource';
-      }
+        // If resource doesn't exist..
+        if (resourceId) {
+          return oldFunc(req, res, resourceId);
+        } else {
+
+          // .. send error response.
+          res.setHeader('Cache-Control', 'max-age=0');
+          res.status(404).send();
+        }
+      };
+
+      entityType = 'resource';
     }
 
     setFuncName(routeFunc, `${entityType}:${key}`);
