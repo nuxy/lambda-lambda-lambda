@@ -28,7 +28,7 @@ describe('Resource handler (sync)', function() {
         expect(result).to.be.an('object');
       });
 
-      it('should return result.headers', function() {
+      it('should return headers', function() {
         expect(result.headers).to.be.an('object');
         expect(result.headers['content-type'][0].key).to.equal('Content-Type');
         expect(result.headers['content-type'][0].value).to.equal('application/json');
@@ -38,12 +38,12 @@ describe('Resource handler (sync)', function() {
         expect(result.headers['x-request-id']).to.be.undefined;
       });
 
-      it('should return result.status', function() {
+      it('should return status', function() {
         expect(result.status).to.be.an('number');
         expect(result.status).to.equal(200);
       });
 
-      it('should return result.body', function() {
+      it('should return body', function() {
         expect(result.body).to.be.an('string');
         expect(result.body).to.equal('{"index":true}');
       });
@@ -66,7 +66,7 @@ describe('Resource handler (sync)', function() {
         expect(result).to.be.an('object');
       });
 
-      it('should return result.headers', function() {
+      it('should return headers', function() {
         expect(result.headers).to.be.an('object');
         expect(result.headers['x-request-id'][0].key).to.equal('X-Request-ID');
         expect(result.headers['x-request-id'][0].value).to.equal(resourceId1);
@@ -74,12 +74,12 @@ describe('Resource handler (sync)', function() {
         expect(result.headers['content-type'][0].value).to.equal('application/json');
       });
 
-      it('should return result.status', function() {
+      it('should return status', function() {
         expect(result.status).to.be.an('number');
         expect(result.status).to.equal(200);
       });
 
-      it('should return result.body', function() {
+      it('should return body', function() {
         expect(result.body).to.be.an('string');
         expect(result.body).to.equal('{"get":true}');
       });
@@ -102,7 +102,7 @@ describe('Resource handler (sync)', function() {
         expect(result).to.be.an('object');
       });
 
-      it('should return result.headers', function() {
+      it('should return headers', function() {
         expect(result.headers).to.be.an('object');
         expect(result.headers['x-request-id'][0].key).to.equal('X-Request-ID');
         expect(result.headers['x-request-id'][0].value).to.equal(resourceId2);
@@ -110,12 +110,12 @@ describe('Resource handler (sync)', function() {
         expect(result.headers['content-type'][0].value).to.equal('application/json');
       });
 
-      it('should return result.status', function() {
+      it('should return status', function() {
         expect(result.status).to.be.an('number');
         expect(result.status).to.equal(200);
       });
 
-      it('should return result.body', function() {
+      it('should return body', function() {
         expect(result.body).to.be.an('string');
         expect(result.body).to.equal('{"get":true}');
       });
@@ -141,7 +141,7 @@ describe('Resource handler (sync)', function() {
         expect(result).to.be.an('object');
       });
 
-      it('should return result.headers', function() {
+      it('should return headers', function() {
         expect(result.headers).to.be.an('object');
         expect(result.headers['content-type'][0].key).to.equal('Content-Type');
         expect(result.headers['content-type'][0].value).to.equal('application/json');
@@ -151,12 +151,12 @@ describe('Resource handler (sync)', function() {
         expect(result.headers['x-request-id']).to.be.undefined;
       });
 
-      it('should return result.status', function() {
+      it('should return status', function() {
         expect(result.status).to.be.an('number');
         expect(result.status).to.equal(201);
       });
 
-      it('should return result.body', function() {
+      it('should return body', function() {
         expect(result.body).to.be.an('string');
         expect(result.body).to.equal('{"create":true}');
       });
@@ -182,7 +182,7 @@ describe('Resource handler (sync)', function() {
         expect(result).to.be.an('object');
       });
 
-      it('should return result.headers', function() {
+      it('should return headers', function() {
         expect(result.headers).to.be.an('object');
         expect(result.headers['x-request-id'][0].key).to.equal('X-Request-ID');
         expect(result.headers['x-request-id'][0].value).to.equal(resourceId1);
@@ -190,12 +190,12 @@ describe('Resource handler (sync)', function() {
         expect(result.headers['content-type'][0].value).to.equal('application/json');
       });
 
-      it('should return result.status', function() {
+      it('should return status', function() {
         expect(result.status).to.be.an('number');
         expect(result.status).to.equal(201);
       });
 
-      it('should return result.body', function() {
+      it('should return body', function() {
         expect(result.body).to.be.an('string');
         expect(result.body).to.equal('{"put":true}');
       });
@@ -221,7 +221,7 @@ describe('Resource handler (sync)', function() {
         expect(result).to.be.an('object');
       });
 
-      it('should return result.headers', function() {
+      it('should return headers', function() {
         expect(result.headers).to.be.an('object');
         expect(result.headers['x-request-id'][0].key).to.equal('X-Request-ID');
         expect(result.headers['x-request-id'][0].value).to.equal(resourceId2);
@@ -229,12 +229,12 @@ describe('Resource handler (sync)', function() {
         expect(result.headers['content-type'][0].value).to.equal('application/json');
       });
 
-      it('should return result.status', function() {
+      it('should return status', function() {
         expect(result.status).to.be.an('number');
         expect(result.status).to.equal(201);
       });
 
-      it('should return result.body', function() {
+      it('should return body', function() {
         expect(result.body).to.be.an('string');
         expect(result.body).to.equal('{"put":true}');
       });
@@ -260,7 +260,7 @@ describe('Resource handler (sync)', function() {
         expect(result).to.be.an('object');
       });
 
-      it('should return result.headers', function() {
+      it('should return headers', function() {
         expect(result.headers).to.be.an('object');
         expect(result.headers['content-type'][0].key).to.equal('Content-Type');
         expect(result.headers['content-type'][0].value).to.equal('application/json');
@@ -270,12 +270,12 @@ describe('Resource handler (sync)', function() {
         expect(result.headers['x-request-id']).to.be.undefined;
       });
 
-      it('should return result.status', function() {
+      it('should return status', function() {
         expect(result.status).to.be.an('number');
         expect(result.status).to.equal(204);
       });
 
-      it('should return result.body', function() {
+      it('should return body', function() {
         expect(result.body).to.be.an('string');
         expect(result.body).to.equal('{"update":true}');
       });
@@ -301,7 +301,7 @@ describe('Resource handler (sync)', function() {
         expect(result).to.be.an('object');
       });
 
-      it('should return result.headers', function() {
+      it('should return headers', function() {
         expect(result.headers).to.be.an('object');
         expect(result.headers['x-request-id'][0].key).to.equal('X-Request-ID');
         expect(result.headers['x-request-id'][0].value).to.equal(resourceId1);
@@ -309,12 +309,12 @@ describe('Resource handler (sync)', function() {
         expect(result.headers['content-type'][0].value).to.equal('application/json');
       });
 
-      it('should return result.status', function() {
+      it('should return status', function() {
         expect(result.status).to.be.an('number');
         expect(result.status).to.equal(204);
       });
 
-      it('should return result.body', function() {
+      it('should return body', function() {
         expect(result.body).to.be.an('string');
         expect(result.body).to.equal('{"patch":true}');
       });
@@ -340,7 +340,7 @@ describe('Resource handler (sync)', function() {
         expect(result).to.be.an('object');
       });
 
-      it('should return result.headers', function() {
+      it('should return headers', function() {
         expect(result.headers).to.be.an('object');
         expect(result.headers['x-request-id'][0].key).to.equal('X-Request-ID');
         expect(result.headers['x-request-id'][0].value).to.equal(resourceId2);
@@ -348,12 +348,12 @@ describe('Resource handler (sync)', function() {
         expect(result.headers['content-type'][0].value).to.equal('application/json');
       });
 
-      it('should return result.status', function() {
+      it('should return status', function() {
         expect(result.status).to.be.an('number');
         expect(result.status).to.equal(204);
       });
 
-      it('should return result.body', function() {
+      it('should return body', function() {
         expect(result.body).to.be.an('string');
         expect(result.body).to.equal('{"patch":true}');
       });
@@ -379,7 +379,7 @@ describe('Resource handler (sync)', function() {
         expect(result).to.be.an('object');
       });
 
-      it('should return result.headers', function() {
+      it('should return headers', function() {
         expect(result.headers).to.be.an('object');
         expect(result.headers['x-request-id'][0].key).to.equal('X-Request-ID');
         expect(result.headers['x-request-id'][0].value).to.equal(resourceId1);
@@ -387,12 +387,12 @@ describe('Resource handler (sync)', function() {
         expect(result.headers['content-type'][0].value).to.equal('application/json');
       });
 
-      it('should return result.status', function() {
+      it('should return status', function() {
         expect(result.status).to.be.an('number');
         expect(result.status).to.equal(410);
       });
 
-      it('should return result.body', function() {
+      it('should return body', function() {
         expect(result.body).to.be.an('string');
         expect(result.body).to.equal('{"delete":true}');
       });
@@ -415,7 +415,7 @@ describe('Resource handler (sync)', function() {
         expect(result).to.be.an('object');
       });
 
-      it('should return result.headers', function() {
+      it('should return headers', function() {
         expect(result.headers).to.be.an('object');
         expect(result.headers['content-type'][0].key).to.equal('Content-Type');
         expect(result.headers['content-type'][0].value).to.equal('application/json');
@@ -425,12 +425,12 @@ describe('Resource handler (sync)', function() {
         expect(result.headers['x-request-id']).to.be.undefined;
       });
 
-      it('should return result.status', function() {
+      it('should return status', function() {
         expect(result.status).to.be.an('number');
         expect(result.status).to.equal(200);
       });
 
-      it('should return result.body', function() {
+      it('should return body', function() {
         expect(result.body).to.be.an('string');
         expect(result.body).to.equal('{"submit":true}');
       });
@@ -453,7 +453,7 @@ describe('Resource handler (sync)', function() {
         expect(result).to.be.an('object');
       });
 
-      it('should return result.headers', function() {
+      it('should return headers', function() {
         expect(result.headers).to.be.an('object');
         expect(result.headers['x-request-id'][0].key).to.equal('X-Request-ID');
         expect(result.headers['x-request-id'][0].value).to.equal(resourceId1);
@@ -461,12 +461,12 @@ describe('Resource handler (sync)', function() {
         expect(result.headers['content-type'][0].value).to.equal('application/json');
       });
 
-      it('should return result.status', function() {
+      it('should return status', function() {
         expect(result.status).to.be.an('number');
         expect(result.status).to.equal(200);
       });
 
-      it('should return result.body', function() {
+      it('should return body', function() {
         expect(result.body).to.be.an('string');
         expect(result.body).to.equal('{"post":true}');
       });
@@ -489,7 +489,7 @@ describe('Resource handler (sync)', function() {
         expect(result).to.be.an('object');
       });
 
-      it('should return result.headers', function() {
+      it('should return headers', function() {
         expect(result.headers).to.be.an('object');
         expect(result.headers['x-request-id'][0].key).to.equal('X-Request-ID');
         expect(result.headers['x-request-id'][0].value).to.equal(resourceId2);
@@ -497,12 +497,12 @@ describe('Resource handler (sync)', function() {
         expect(result.headers['content-type'][0].value).to.equal('application/json');
       });
 
-      it('should return result.status', function() {
+      it('should return status', function() {
         expect(result.status).to.be.an('number');
         expect(result.status).to.equal(200);
       });
 
-      it('should return result.body', function() {
+      it('should return body', function() {
         expect(result.body).to.be.an('string');
         expect(result.body).to.equal('{"post":true}');
       });
@@ -525,17 +525,17 @@ describe('Resource handler (sync)', function() {
         expect(result).to.be.an('object');
       });
 
-      it('should not return result.headers', function() {
+      it('should not return headers', function() {
         expect(result.headers).to.be.an('object');
         expect(result.headers).to.be.empty;
       });
 
-      it('should return result.status', function() {
+      it('should return status', function() {
         expect(result.status).to.be.an('number');
         expect(result.status).to.equal(405);
       });
 
-      it('should not return result.body', function() {
+      it('should not return body', function() {
         expect(result.body).to.be.undefined;
       });
     });
