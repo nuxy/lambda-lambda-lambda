@@ -1,6 +1,7 @@
 'use strict';
 
-const chai = require('chai');
+const chai  = require('chai');
+const sinon = require('sinon');
 
 const expect = chai.expect;
 
@@ -93,6 +94,11 @@ describe('Common module', function() {
     });
 
     describe('moduleParent', function() {
+
+      // Can be only tested in an E2E context.
+      sinon.stub(Common, 'moduleParent')
+        .returns('/path/to/foo');
+
       const path = Common.moduleParent();
 
       it('should return value', function() {
