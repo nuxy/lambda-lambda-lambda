@@ -1,7 +1,6 @@
 'use strict';
 
-// Load modules.
-const Router = require(`${process.cwd()}/src/Router`);
+const resetCache = require('resnap')();
 
 /**
  * @see AWS::Serverless::Function
@@ -9,6 +8,9 @@ const Router = require(`${process.cwd()}/src/Router`);
 exports.handler = (event, context, callback) => {
   const {request, response} = event.Records[0].cf;
 
+  resetCache(); // Isolate E2E async/sync tests.
+
+  const Router = require(`${process.cwd()}/src/Router`);
   const router = new Router(request, response);
   router.setPrefix('/api');
 
