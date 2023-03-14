@@ -6,7 +6,7 @@ const chai  = require('chai');
 const expect = chai.expect;
 
 // Load modules.
-const Response = require('../../src/router/Response.js');
+const Response = require(`${PACKAGE_ROOT}/src/router/Response.js`);
 
 describe('Response module', function() {
   describe('Instance methods', function() {
