@@ -5,11 +5,6 @@
  */
 module.exports = (req, res, next) => {
 
-  // Exclude non-RESTful request types.
-  if (!['PUT', 'PATCH', 'DELETE'].includes(req.method())) {
-    return next();
-  }
-
   // Check client request headers.
   if (/application\/json;*./.test(req.header('Accept'))) {
     res.status(406).send();

@@ -18,6 +18,9 @@ describe('Resource handler (sync)', function() {
         event.Records[0].cf.request.method = 'GET';
         event.Records[0].cf.request.uri    = `/api/foo/bar/baz/qux/${resourceId1}`;
 
+        // Handle Content Negotiation.
+        event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
+
         app.handler(event, null, function(undef, response) {
           result = response;
           done();
@@ -53,6 +56,9 @@ describe('Resource handler (sync)', function() {
       before(function(done) {
         event.Records[0].cf.request.method = 'GET';
         event.Records[0].cf.request.uri    = `/api/foo/bar/baz/qux/${resourceId2}`;
+
+        // Handle Content Negotiation.
+        event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
 
         app.handler(event, null, function(undef, response) {
           result = response;
@@ -129,14 +135,14 @@ describe('Resource handler (sync)', function() {
         event.Records[0].cf.request.method = 'PUT';
         event.Records[0].cf.request.uri    = `/api/foo/bar/baz/qux/${resourceId2}`;
 
+        // Handle Content Negotiation.
+        event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
+
         app.handler(event, null, function(undef, response) {
           result = response;
           done();
         });
       });
-
-      // Handle Content Negotiation.
-      event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
 
       it('should return an object', function() {
         expect(result).to.be.an('object');
@@ -168,14 +174,14 @@ describe('Resource handler (sync)', function() {
         event.Records[0].cf.request.method = 'PATCH';
         event.Records[0].cf.request.uri    = `/api/foo/bar/baz/qux/${resourceId1}`;
 
+        // Handle Content Negotiation.
+        event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
+
         app.handler(event, null, function(undef, response) {
           result = response;
           done();
         });
       });
-
-      // Handle Content Negotiation.
-      event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
 
       it('should return an object', function() {
         expect(result).to.be.an('object');
@@ -285,6 +291,9 @@ describe('Resource handler (sync)', function() {
         event.Records[0].cf.request.method = 'POST';
         event.Records[0].cf.request.uri    = `/api/foo/bar/baz/qux/${resourceId1}`;
 
+        // Handle Content Negotiation.
+        event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
+
         app.handler(event, null, function(undef, response) {
           result = response;
           done();
@@ -321,6 +330,9 @@ describe('Resource handler (sync)', function() {
         event.Records[0].cf.request.method = 'POST';
         event.Records[0].cf.request.uri    = `/api/foo/bar/baz/qux/${resourceId2}`;
 
+        // Handle Content Negotiation.
+        event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
+
         app.handler(event, null, function(undef, response) {
           result = response;
           done();
@@ -356,6 +368,9 @@ describe('Resource handler (sync)', function() {
       before(function(done) {
         event.Records[0].cf.request.method = 'CONNECT';
         event.Records[0].cf.request.uri    = `/api/foo/bar/baz/qux/${resourceId1}`;
+
+        // Handle Content Negotiation.
+        event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
 
         app.handler(event, null, function(undef, response) {
           result = response;
