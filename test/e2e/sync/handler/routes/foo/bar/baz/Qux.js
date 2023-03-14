@@ -8,15 +8,7 @@ const contentNegotiation = require(`${PACKAGE_ROOT}/test/e2e/sync/handler/middle
  */
 module.exports = {
   middleware: [contentNegotiation],
-  resource: ['get', 'put', 'patch', 'delete', 'post'],
-
-  /**
-   * GET /api/<path>
-   */
-  index (req, res) {
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).json({index: true});
-  },
+  resource: true,
 
   /**
    * GET /api/<path>/<resourceId>
@@ -28,28 +20,12 @@ module.exports = {
   },
 
   /**
-   * PUT /api/<path>
-   */
-  create (req, res) {
-    res.setHeader('Content-Type', 'application/json');
-    res.status(201).json({create: true});
-  },
-
-  /**
    * PUT /api/<path>/<resourceId>
    */
   put (req, res, id) {
     res.setHeader('X-Request-ID', id);
     res.setHeader('Content-Type', 'application/json');
     res.status(201).json({put: true});
-  },
-
-  /**
-   * PATCH /api/<path>
-   */
-  update (req, res) {
-    res.setHeader('Content-Type', 'application/json');
-    res.status(204).json({update: true});
   },
 
   /**
@@ -68,14 +44,6 @@ module.exports = {
     res.setHeader('X-Request-ID', id);
     res.setHeader('Content-Type', 'application/json');
     res.status(410).json({delete: true});
-  },
-
-  /**
-   * POST /api/<path>
-   */
-  submit (req, res) {
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).json({submit: true});
   },
 
   /**

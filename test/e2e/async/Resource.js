@@ -11,41 +11,6 @@ describe('Resource handler (async)', function() {
     const resourceId1 = 'uuid-123456_AbC';
     const resourceId2 = 'uuid-987654_Zyx';
 
-    describe('GET', function() {
-      let result;
-
-      before(async function() {
-        event.Records[0].cf.request.method = 'GET';
-        event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux';
-
-        result = await app.handler(event);
-      });
-
-      it('should return an object', function() {
-        expect(result).to.be.an('object');
-      });
-
-      it('should return headers', function() {
-        expect(result.headers).to.be.an('object');
-        expect(result.headers['content-type'][0].key).to.equal('Content-Type');
-        expect(result.headers['content-type'][0].value).to.equal('application/json');
-      });
-
-      it('should not return header', function() {
-        expect(result.headers['x-request-id']).to.be.undefined;
-      });
-
-      it('should return status', function() {
-        expect(result.status).to.be.an('number');
-        expect(result.status).to.equal(200);
-      });
-
-      it('should return body', function() {
-        expect(result.body).to.be.an('string');
-        expect(result.body).to.equal('{"index":true}');
-      });
-    });
-
     describe('GET (resource 1)', function() {
       let result;
 
@@ -109,44 +74,6 @@ describe('Resource handler (async)', function() {
       it('should return body', function() {
         expect(result.body).to.be.an('string');
         expect(result.body).to.equal('{"get":true}');
-      });
-    });
-
-    describe('PUT', function() {
-      let result;
-
-      before(async function() {
-        event.Records[0].cf.request.method = 'PUT';
-        event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux';
-
-        // Handle Content Negotiation.
-        event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
-
-        result = await app.handler(event);
-      });
-
-      it('should return an object', function() {
-        expect(result).to.be.an('object');
-      });
-
-      it('should return headers', function() {
-        expect(result.headers).to.be.an('object');
-        expect(result.headers['content-type'][0].key).to.equal('Content-Type');
-        expect(result.headers['content-type'][0].value).to.equal('application/json');
-      });
-
-      it('should not return header', function() {
-        expect(result.headers['x-request-id']).to.be.undefined;
-      });
-
-      it('should return status', function() {
-        expect(result.status).to.be.an('number');
-        expect(result.status).to.equal(201);
-      });
-
-      it('should return body', function() {
-        expect(result.body).to.be.an('string');
-        expect(result.body).to.equal('{"create":true}');
       });
     });
 
@@ -219,44 +146,6 @@ describe('Resource handler (async)', function() {
       it('should return body', function() {
         expect(result.body).to.be.an('string');
         expect(result.body).to.equal('{"put":true}');
-      });
-    });
-
-    describe('PATCH', function() {
-      let result;
-
-      before(async function() {
-        event.Records[0].cf.request.method = 'PATCH';
-        event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux';
-
-        // Handle Content Negotiation.
-        event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
-
-        result = await app.handler(event);
-      });
-
-      it('should return an object', function() {
-        expect(result).to.be.an('object');
-      });
-
-      it('should return headers', function() {
-        expect(result.headers).to.be.an('object');
-        expect(result.headers['content-type'][0].key).to.equal('Content-Type');
-        expect(result.headers['content-type'][0].value).to.equal('application/json');
-      });
-
-      it('should not return header', function() {
-        expect(result.headers['x-request-id']).to.be.undefined;
-      });
-
-      it('should return status', function() {
-        expect(result.status).to.be.an('number');
-        expect(result.status).to.equal(204);
-      });
-
-      it('should return body', function() {
-        expect(result.body).to.be.an('string');
-        expect(result.body).to.equal('{"update":true}');
       });
     });
 
@@ -365,41 +254,6 @@ describe('Resource handler (async)', function() {
       it('should return body', function() {
         expect(result.body).to.be.an('string');
         expect(result.body).to.equal('{"delete":true}');
-      });
-    });
-
-    describe('POST', function() {
-      let result;
-
-      before(async function() {
-        event.Records[0].cf.request.method = 'POST';
-        event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux';
-
-        result = await app.handler(event);
-      });
-
-      it('should return an object', function() {
-        expect(result).to.be.an('object');
-      });
-
-      it('should return headers', function() {
-        expect(result.headers).to.be.an('object');
-        expect(result.headers['content-type'][0].key).to.equal('Content-Type');
-        expect(result.headers['content-type'][0].value).to.equal('application/json');
-      });
-
-      it('should not return header', function() {
-        expect(result.headers['x-request-id']).to.be.undefined;
-      });
-
-      it('should return status', function() {
-        expect(result.status).to.be.an('number');
-        expect(result.status).to.equal(200);
-      });
-
-      it('should return body', function() {
-        expect(result.body).to.be.an('string');
-        expect(result.body).to.equal('{"submit":true}');
       });
     });
 
