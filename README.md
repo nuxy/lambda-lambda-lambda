@@ -29,7 +29,7 @@ The easiest way to build a new application, without the need to [manually instal
 - Deploy app sources to AWS.
 - Generate [JSDoc](https://jsdoc.app)/[Swagger](https://swagger.io) documentation.
 
-## Installation
+### Manual installation
 
 Install package dependencies using [NPM](https://npmjs.com).
 
@@ -58,7 +58,7 @@ exports.handler = (event, context, callback) => {
   const router = new Router(request, response);
   router.setPrefix('/api'); // optional, default /
 
-  // Middleware (order is important).
+  // Globally scoped to /api/*
   router.use(function(req, res, next) {
     if (req.method() === 'CONNECT') {
       res.status(405).send();
@@ -99,7 +99,7 @@ exports.handler = async (event) => {
 
   const router = new Router(request, response);
 
-    ..
+    // .. Router Methods
 
   return await router.response();
 };
@@ -143,7 +143,7 @@ The following methods are supported based on the class context.  For further inf
 
 ## Complex routing
 
-When constructing a routing handler the following methods/aliases are supported.  While they can be used interchangeably they must define either a [Route](#route-handler) or [Resource](#resource-handler) handler, but not both.
+When constructing a routing handler the following methods/aliases are supported which can be used interchangeably when defining [Route](#route-handler) or [Resource](#resource-handler) handlers.
 
 | Handler Method | Alias  |
 |----------------|--------|
@@ -167,7 +167,7 @@ const contentTypeHeader = require('middleware/ContentTypeHeader');
  * @export {Object}
  */
 module.exports = {
-  middleware: [contentTypeHeader], // Locally scoped.
+  middleware: [contentTypeHeader], // Locally scoped to /api/foo
 
   /**
    * GET /api/foo
@@ -217,7 +217,7 @@ module.exports = {
  * @export {Object}
  */
 module.exports = {
-  resource: true,
+  resource: true, // Everything is a resource.
 
   /**
    * GET /api/foo/bar/<resourceId>
@@ -249,7 +249,7 @@ module.exports = {
  * @export {Object}
  */
 module.exports = {
-  resource: ['put'],
+  resource: ['put'], // Limit to resource.
 
   /**
    * GET /api/foo
@@ -262,9 +262,50 @@ module.exports = {
   /**
    * PUT /api/foo/<resourceId>
    */
-  get (req, res, id) {
+  put (req, res, id) {
     res.setHeader('Content-Type', 'application/json');
     res.status(200).json({and: 'Omega Mu'});
+  },
+
+  ..
+};
+```
+
+### Asynchronous handler
+
+```javascript
+// .. appName/src/routes/foo.js
+
+'use strict';
+
+/**
+ * @export {Object}
+ */
+module.exports = {
+
+  /**
+   * GET /api/foo
+   */
+  index (req, res) {
+    return new Promise(function(resolve) {
+      res.setHeader('Content-Type', 'text/html');
+      res.status(200).send('Lambda, Lambda, Lambda');
+      resolve();
+    });
+  },
+
+  /**
+   * GET /api/foo/<resourceId>
+   */
+  get (req, res, id) {
+    return asyncOperation(id)
+      .then(function(result) {
+        res.setHeader('Content-Type', 'text/html');
+        res.status(200).send(result || 'No result');
+      })
+      .catch(function() {
+        res.status(500).send();
+      });
   },
 
   ..
@@ -289,6 +330,10 @@ module.exports = (req, res, next) => {
 ```
 
 See [restfulApiHandler](https://github.com/nuxy/lambda-lambda-lambda/tree/master/example/restfulApiHandler/src/middleware) example for more complex use cases.
+
+## Testing
+
+How you handle this is entirely up to the test framework/runner you're using. For examples using [Mocha](https://mochajs.org/) and [Chai](https://www.chaijs.com), please refer to the [E2E tests](https://github.com/nuxy/lambda-lambda-lambda/tree/master/test/e2e/async) included with this package.
 
 ## AWS requirements
 
