@@ -12,6 +12,22 @@
 'use strict';
 
 /**
+ * Check if value is an async function.
+ *
+ * @param {AsyncFunction} func
+ *   Async function.
+ *
+ * @return {Boolean}
+ *
+ * @example
+ * const result = isAsyncFunc(async function() {}));
+ * // true
+ */
+exports.isAsyncFunc = function(value) {
+  return (value && (value[Symbol.toStringTag] === 'AsyncFunction'));
+};
+
+/**
  * Check if object is Promise.
  *
  * @param {Object} obj
