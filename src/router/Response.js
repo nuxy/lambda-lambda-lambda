@@ -17,14 +17,16 @@
 class RouterResponse {
 
   /**
-   * @param {CloudFrontResponse|undefined} obj
+   * @param {CloudFrontResponse|undefined} cfResObj
    *   CloudFront response object (optional).
    */
-  constructor(obj = {}) {
-    this.obj = Object.assign({
+  constructor(cfResObj = {}) {
+    this.cfResObj = Object.assign({
       headers: {},
       status: null
-    }, obj);
+    }, cfResObj);
+
+    Object.seal(this);
   }
 
   /**
@@ -33,7 +35,7 @@ class RouterResponse {
    * @return {CloudFrontResponse}
    */
   data() {
-    return this.obj;
+    return this.cfResObj;
   }
 
   /**
