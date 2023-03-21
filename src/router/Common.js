@@ -141,3 +141,34 @@ exports.moduleParent = function() {
 
   return moduleParents[0]?.parent.path;
 };
+
+/**
+ * Execute events; propagate variable state.
+ *
+ * @param {Array} promises
+ *   Array of promised events.
+ *
+ * @return {Promise}
+ *
+ * @example
+ *   const state = {};
+ *
+ *   const promises = [
+ *     ()  => Promise.resolve(a),
+ *     (b) => Promise.resolve(b),
+ *     (c) => Promise.resolve(c),
+ *
+ *     ..
+ *   ];
+ *
+ *   promiseEvents(promises)
+ *     .then(obj => obj)
+ *     .catch(function(err) {
+ *
+ *     });
+ */
+exports.promiseEvents = function(promises) {
+  return promises.reduce(function(current, next) {
+    return current.then(next);
+  }, Promise.resolve([]));
+};

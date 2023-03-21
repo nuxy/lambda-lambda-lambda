@@ -1,7 +1,10 @@
 'use strict';
 
-const chai  = require('chai');
-const sinon = require('sinon');
+const chai           = require('chai');
+const chaiAsPromised = require('chai-as-promised');
+const sinon          = require('sinon');
+
+chai.use(chaiAsPromised);
 
 const expect = chai.expect;
 
@@ -103,6 +106,26 @@ describe('Common module', function() {
 
       it('should return value', function() {
         expect(path).to.be.an('string');
+      });
+    });
+
+    describe('promiseEvents', function() {
+      const a = {foo: 'bar'};
+
+      const promises = [
+        ()  => Promise.resolve(a),
+        (b) => Promise.resolve(b),
+        (c) => Promise.resolve(c)
+      ];
+
+      const promise = Common.promiseEvents(promises);
+
+      it('should resolve Promise', function() {
+        expect(promise).to.be.fulfilled;
+      });
+
+      it('should return property', function() {
+        expect(promise).to.eventually.have.property('foo');
       });
     });
   });
