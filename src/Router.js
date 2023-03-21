@@ -78,7 +78,7 @@ class Router {
 
     /* istanbul ignore if (tested in: test/e2e/async) */
     if (isPromise(result)) {
-        return result.then(() => this.res.data());
+      return result.then(() => this.res.data());
     }
 
     return this.res.data();
