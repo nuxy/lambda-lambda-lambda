@@ -24,7 +24,7 @@
  * // true
  */
 exports.isPromise = function(obj) {
-  return (typeof obj?.then === 'function');
+  return (obj && (obj[Symbol.toStringTag] === 'Promise' || typeof obj.then === 'function'));
 };
 
 /**
