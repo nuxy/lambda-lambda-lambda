@@ -314,6 +314,8 @@ module.exports = {
 
 ## Middleware
 
+### Synchronous example
+
 ```javascript
 // .. appName/src/middleware/ContentTypeHeader.js
 
@@ -326,6 +328,27 @@ module.exports = (req, res, next) => {
   res.setHeader('Content-Type', 'text/html');
 
   next(); // Run subsequent handler.
+};
+```
+
+### Asynchronous example
+
+```javascript
+// .. appName/src/middleware/SessionCheck.js
+
+'use strict';
+
+/**
+ * Middleware to define session state, if exists.
+ */
+module.exports = async (req, res, next) => {
+  if (await checkSession()) {
+    req['session'] = true; // Passed down the chain.
+  } else {
+    return Promise.reject()
+  }
+
+  // next() should be omitted, use Promise.reject().
 };
 ```
 

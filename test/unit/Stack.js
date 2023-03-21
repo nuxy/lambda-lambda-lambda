@@ -1,7 +1,10 @@
 'use strict';
 
-const event = require(`${PACKAGE_ROOT}/test/event.json`);
-const chai  = require('chai');
+const event          = require(`${PACKAGE_ROOT}/test/event.json`);
+const chai           = require('chai');
+const chaiAsPromised = require('chai-as-promised');
+
+chai.use(chaiAsPromised);
 
 const expect = chai.expect;
 
@@ -161,86 +164,104 @@ describe('Stack module', function() {
       });
 
       describe('async', function() {
-        const stack = new Stack();
+        describe('complete', function() {
+          const stack = new Stack();
 
-        let count = 0;
+          let count = 0;
 
-        const func1 = function(req, res, next) {
-          return new Promise(function(resolve) {
+          const func1 = async function(req, res, next) {
             res.setHeader('Middleware', true);
-            count++;
-            resolve();
-            next();
-          });
-        };
+            await count++;
+          };
 
-        Common.setFuncName(func1, 'middleware');
+          Common.setFuncName(func1, 'middleware');
 
-        const func2 = function(req, res, next) {
-          return new Promise(function(resolve) {
+          const func2 = async function(req, res, next) {
             res.setHeader('Route', true);
             res.status(200).send('Success');
-            count++;
-            resolve();
-            next();
-          });
-        };
+            await count++;
+          };
 
-        Common.setFuncName(func1, 'route:get');
+          Common.setFuncName(func1, 'route:get');
 
-        const func3 = function(req, res, next) {
-          return new Promise(function(resolve) {
+          const func3 = async function(req, res, next) {
             res.setHeader('Resource', true);
             res.status(200).send('Success');
-            count++;
-            resolve();
-            next();
-          });
-        };
+            await count++;
+          };
 
-        Common.setFuncName(func1, 'resource:get');
+          Common.setFuncName(func1, 'resource:get');
 
-        const func4 = function(req, res, next) {
-          return new Promise(function(resolve) {
+          const func4 = async function(req, res, next) {
             res.setHeader('Fallback', true);
             res.status(200).send('Success');
-            count++;
-            resolve();
-            next();
+            await count++;
+          };
+
+          Common.setFuncName(func1, 'fallback');
+
+          stack.middleware = [func1];
+          stack.routes     = [func2];
+          stack.resources  = [func3];
+          stack.fallback   = func4;
+
+          const req = new Request(event.Records[0].cf.request, {});
+          const res = new Response({});
+
+          const promise = stack.exec(req, res);
+
+          const result = res.data();
+
+          it('should execute functions', function() {
+            expect(count).to.equal(4);
           });
-        };
 
-        Common.setFuncName(func1, 'fallback');
+          it('should return headers', function() {
+            expect(result.headers.middleware).to.be.an('array');
+            expect(result.headers.route).to.be.an('array');
+            expect(result.headers.resource).to.be.an('array');
+            expect(result.headers.fallback).to.be.an('array');
+          });
 
-        stack.middleware = [func1];
-        stack.routes     = [func2];
-        stack.resources  = [func3];
-        stack.fallback   = func4;
+          it('should return status', function() {
+            expect(result.status).to.equal(200);
+          });
 
-        const req = new Request(event.Records[0].cf.request, {});
-        const res = new Response({});
+          it('should return body', function() {
+            expect(result.body).to.equal('Success');
+          });
 
-        stack.exec(req, res);
-
-        const result = res.data();
-
-        it('should execute functions', function() {
-          expect(count).to.equal(4);
+          it('should resolve Promise', function() {
+            return expect(promise).to.be.fulfilled;
+          });
         });
 
-        it('should return headers', function() {
-          expect(result.headers.middleware).to.be.an('array');
-          expect(result.headers.route).to.be.an('array');
-          expect(result.headers.resource).to.be.an('array');
-          expect(result.headers.fallback).to.be.an('array');
-        });
+        describe('next()', function() {
+          const stack = new Stack();
 
-        it('should return status', function() {
-          expect(result.status).to.equal(200);
-        });
+          const func1 = async function(req, res, next) {
+            res.setHeader('Middleware', true);
+          };
 
-        it('should return body', function() {
-          expect(result.body).to.equal('Success');
+          Common.setFuncName(func1, 'middleware');
+
+          const func2 = async function(req, res, next) {
+            res.setHeader('Middleware', true);
+            next();
+          };
+
+          Common.setFuncName(func2, 'middleware');
+
+          stack.middleware = [func1, func2];
+
+          const req = new Request(event.Records[0].cf.request, {});
+          const res = new Response({});
+
+          it('should throw Error', function() {
+            const promise = stack.exec(req, res);
+
+            return expect(promise).to.be.rejectedWith(Error, /Middleware next\(\) is unsupported/);
+          });
         });
       });
     });

@@ -10,7 +10,7 @@
 'use strict';
 
 // Local modules.
-const {isPromise, isValidFunc} = require('./Common');
+const {isAsyncFunc, isPromise, isValidFunc, promiseEvents} = require('./Common');
 
 /**
  * Provides Stack item handler and methods.
@@ -112,27 +112,36 @@ class RouterStack {
   exec(req, res) {
     const funcs = [].concat(this.middleware, this.routes, this.resources, [this.fallback]);
 
-    let nextItem = false;
+    let lastItem = true;
+    let nextItem = true;
     let promises = [];
 
     funcs.forEach((func, index) => {
-      if (nextItem || index === 0) {
+      if (nextItem) {
+        lastItem = index++ === funcs.length;
         nextItem = false;
 
-        const promise = func(req, res, () => {
+        if (isAsyncFunc(func) || isPromise(func)) {
 
-          // Skip if end of stack.
-          nextItem = (index !== funcs.length - 1);
-        });
+          // Asynchronous handling.
+          promises.push(() => {
+            return func(req, res, function() {
+              throw new Error('Middleware next() is unsupported in async');
+            });
+          });
 
-        if (isPromise(promise)) {
-          promises.push(promise);
+          nextItem = !lastItem;
+
+        } else if (isValidFunc(func)) {
+
+          // Synchronous handling.
+          func(req, res, () => nextItem = !lastItem);
         }
       }
     });
 
     if (promises.length) {
-      return Promise.all(promises);
+      return promiseEvents(promises);
     }
   }
 };
