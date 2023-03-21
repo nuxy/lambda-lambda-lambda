@@ -10,18 +10,20 @@
 'use strict';
 
 /**
- * Provides AWS CloudFront Request instance and methods.
+ * Provides AWS CloudFront request instance and methods.
  *
  * @see https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-event-structure.html#example-origin-request
  */
 class RouterRequest {
 
   /**
-   * @param {CloudFrontRequest} obj
+   * @param {CloudFrontRequest} cfReqObj
    *   CloudFront request object.
    */
-  constructor(obj) {
-    this.obj = obj;
+  constructor(cfReqObj) {
+    this.cfReqObj = cfReqObj;
+
+    Object.seal(this);
   }
 
   /**
@@ -30,7 +32,7 @@ class RouterRequest {
    * @return {CloudFrontRequest}
    */
   data() {
-    return this.obj;
+    return this.cfReqObj;
   }
 
   /**
