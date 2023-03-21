@@ -169,6 +169,40 @@ describe('Request module', function() {
         expect(result).to.equal(event.Records[0].cf.request.headers);
       });
     });
+
+    describe('plugin', function() {
+      const request = new Request(event.Records[0].cf.request);
+
+      it('should define value', function() {
+        const result = function() {
+          request.plugin('foo', 'bar');
+        };
+
+        expect(result).to.not.throw(Error);
+      });
+
+      it('should update value', function() {
+        const result = function() {
+          request.plugin('foo', 'biz');
+        };
+
+        expect(result).to.not.throw(Error);
+      });
+
+      it('should return value', function() {
+        const result = request.plugin('foo');
+
+        expect(result).to.be.equal('biz');
+      });
+
+      it('should throw Error', function() {
+        const result = function() {
+          request.plugin('bar');
+        };
+
+        expect(result).to.throw(Error, /Plugin "bar" doesn't exist/);
+      });
+    });
   });
 
   describe('Static methods', function() {

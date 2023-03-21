@@ -121,17 +121,18 @@ The following methods are supported based on the class context.  For further inf
 | `router.default(func)`      | Set router fallback (default route).      |
 | `router.response()`         | Return the AWS response object.           |
 
-| Request Method      | Description                                       |
-|---------------------|---------------------------------------------------|
-| `req.is(mimeType)`  | Check `Accept` matches the given value.           |
-| `req.header(name)`  | Return value for given HTTP header name.          |
-| `req.getHeaders()`  | Return the headers of the request.                |
-| `req.method()`      | Return the HTTP method of the request.            |
-| `req.uri()`         | Return the relative path of the requested object. |
-| `req.clientIp()`    | Return the HTTP client IP (remote address).       |
-| `req.param(name)`   | Return the HTTP request parameters or name/value. |
-| `req.queryString()` | Return the serialized query parameters.           |
-| `req.body()`        | Return the base64-encoded body data.              |
+| Request Method            | Description                                       |
+|---------------------------|---------------------------------------------------|
+| `req.is(mimeType)`        | Check `Accept` matches the given value.           |
+| `req.header(name)`        | Return value for given HTTP header name.          |
+| `req.getHeaders()`        | Return the headers of the request.                |
+| `req.method()`            | Return the HTTP method of the request.            |
+| `req.uri()`               | Return the relative path of the requested object. |
+| `req.clientIp()`          | Return the HTTP client IP (remote address).       |
+| `req.param(name)`         | Return the HTTP request parameters or name/value. |
+| `req.queryString()`       | Return the serialized query parameters.           |
+| `req.body()`              | Return the base64-encoded body data.              |
+| `req.plugin(name, value)` | Set/Get value passed down the application stack.  |
 
 | Response Method                 | Description                     |
 |---------------------------------|---------------------------------|
@@ -343,7 +344,7 @@ module.exports = (req, res, next) => {
  */
 module.exports = async (req, res, next) => {
   if (await checkSession()) {
-    req['session'] = true; // Passed down the chain.
+    req.plugin('session', true); // Passed down the chain.
   } else {
     return Promise.reject()
   }

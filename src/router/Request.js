@@ -22,6 +22,7 @@ class RouterRequest {
    */
   constructor(cfReqObj) {
     this.cfReqObj = cfReqObj;
+    this.plugins  = {};
 
     Object.seal(this);
   }
@@ -159,6 +160,37 @@ class RouterRequest {
    */
   getHeaders() {
     return this.data().headers;
+  }
+
+  /**
+   * Set/Get value passed down the application stack.
+   *
+   * @param {String} name
+   *   Plugin name.
+   *
+   * @param {*} value
+   *   Plugin value.
+   *
+   * @return {*|undefined}
+   *
+   * @example
+   * req.plugin('name', 'value');
+   *
+   *   ..
+   *
+   * const value = req.plugin('name');
+   * // value
+   */
+  plugin(name, value) {
+    const plugin = this.plugins[name];
+
+    if ((!plugin && name && value) || (plugin && value)) {
+      this.plugins[name] = value;
+    } else if (plugin && !value) {
+      return this.plugins[name];
+    } else if (!plugin) {
+      throw new Error(`Plugin "${name}" doesn't exist`);
+    }
   }
 
   /**

@@ -265,5 +265,144 @@ describe('Stack module', function() {
         });
       });
     });
+
+    describe('plugin', function() {
+      describe('sync', function() {
+        const stack = new Stack();
+
+        const func1 = function(req, res, next) {
+          const num = 1;
+
+          req.plugin('foo', num);
+          next();
+        };
+
+        Common.setFuncName(func1, 'middleware');
+
+        const func2 = function(req, res, next) {
+          const num = req.plugin('foo');
+
+          req.plugin('foo', num + 1);
+          next();
+        };
+
+        Common.setFuncName(func2, 'middleware');
+
+        const func3 = function(req, res, next) {
+          const num = req.plugin('foo');
+
+          req.plugin('foo', num + 1);
+          next();
+        };
+
+        Common.setFuncName(func3, 'route:get');
+
+        const func4 = function(req, res, next) {
+          const num = req.plugin('foo');
+
+          req.plugin('foo', num + 1);
+          next();
+        };
+
+        Common.setFuncName(func4, 'resource:get');
+
+        const func5 = function(req, res, next) {
+          const num = req.plugin('foo');
+
+          res.status(200).send(num);
+          next();
+        };
+
+        stack.middleware = [func1, func2];
+        stack.routes     = [func3];
+        stack.resources  = [func4];
+        stack.fallback   = func5;
+
+        const req = new Request(event.Records[0].cf.request, {});
+        const res = new Response({});
+
+        stack.exec(req, res);
+
+        const result = res.data();
+
+        it('should not return headers', function() {
+          expect(result.headers).to.be.empty;
+        });
+
+        it('should return status', function() {
+          expect(result.status).to.equal(200);
+        });
+
+        it('should return body', function() {
+          expect(result.body).to.equal('4');
+        });
+      });
+
+      describe('async', function() {
+        const stack = new Stack();
+
+        const func1 = async function(req, res, next) {
+          const num = 1;
+
+          req.plugin('foo', num);
+        };
+
+        Common.setFuncName(func1, 'middleware');
+
+        const func2 = async function(req, res, next) {
+          const num = req.plugin('foo');
+
+          req.plugin('foo', num + 1);
+        };
+
+        Common.setFuncName(func2, 'middleware');
+
+        const func3 = async function(req, res, next) {
+          const num = req.plugin('foo');
+
+          req.plugin('foo', num + 1);
+        };
+
+        Common.setFuncName(func3, 'route:get');
+
+        const func4 = async function(req, res, next) {
+          const num = req.plugin('foo');
+
+          req.plugin('foo', num + 1);
+        };
+
+        Common.setFuncName(func4, 'resource:get');
+
+        const func5 = async function(req, res, next) {
+          const num = req.plugin('foo');
+
+          res.status(200).send(num);
+        };
+
+        stack.middleware = [func1, func2];
+        stack.routes     = [func3];
+        stack.resources  = [func4];
+        stack.fallback   = func5;
+
+        const req = new Request(event.Records[0].cf.request, {});
+        const res = new Response({});
+
+        stack.exec(req, res);
+
+        const result = res.data();
+
+        it('should not return headers', function() {
+          expect(result.headers).to.be.empty;
+        });
+
+        it('should return status', function() {
+          expect(result.status).to.equal(200);
+        });
+
+        it('should return body', function() {
+          expect(result.body).to.equal('4');
+        });
+      });
+    });
   });
 });
