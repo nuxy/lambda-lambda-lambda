@@ -49,6 +49,15 @@ module.exports = (router, route) => {
 
   const isResource = !!route.resource;
 
+  const uriBase = `${router.prefix}${path}`;
+  const uriPath = getResourceId(router.req.uri(), uriBase);
+  const reqPath = `${uriBase}/${uriPath}`;
+
+  // Ensure route matches request URI, skip otherwise.
+  if ((!uriPath && !isResource && uriBase !== router.req.uri()) || (uriPath && isResource && reqPath !== router.req.uri())) {
+    return;
+  }
+
   // Add route-bound middleware, if available.
   if (route.middleware) {
 
@@ -73,7 +82,7 @@ module.exports = (router, route) => {
 
     // Support - Boolean | Array<methodMapKey>
     if (isResource && (route.resource === true || (Array.isArray(route.resource) && route.resource.includes(key)))) {
-      const resourceId = getResourceId(router.req.uri(), `${router.prefix}${path}`);
+      const resourceId = uriPath;
 
       // Add resource ID to Route as argument.
       const oldFunc = routeFunc;
