@@ -1,9 +1,0 @@
-version = 0.1
-[default]
-[default.deploy]
-[default.deploy.parameters]
-stack_name = "RestfulApiHandler"
-s3_bucket = "aws-sam.functions"
-s3_prefix = "cloudFormationStack-RestfulApiHandler"
-region = "us-east-1"
-capabilities = "CAPABILITY_IAM CAPABILITY_NAMED_IAM"

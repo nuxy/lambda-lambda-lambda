@@ -353,7 +353,7 @@ module.exports = async (req, res, next) => {
 };
 ```
 
-See [restfulApiHandler](https://github.com/nuxy/lambda-lambda-lambda/tree/master/example/restfulApiHandler/src/middleware) example for more complex use cases.
+See [restfulApiHandler](https://github.com/lambda-lambda-lambda/example/tree/master/restfulApiHandler/src/middleware) example for more complex use cases.
 
 ## Testing
 
