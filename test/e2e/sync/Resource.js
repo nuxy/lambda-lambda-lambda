@@ -242,14 +242,14 @@ describe('Resource handler (sync)', function() {
         event.Records[0].cf.request.method = 'PATCH';
         event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux';
 
+        // Handle Content Negotiation.
+        event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
+
         app.handler(event, null, function(undef, response) {
           result = response;
           done();
         });
       });
-
-      // Handle Content Negotiation.
-      event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
 
       it('should return an object', function() {
         expect(result).to.be.an('object');
@@ -353,6 +353,9 @@ describe('Resource handler (sync)', function() {
       before(function(done) {
         event.Records[0].cf.request.method = 'DELETE';
         event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux';
+
+        // Handle Content Negotiation.
+        event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
 
         app.handler(event, null, function(undef, response) {
           result = response;
