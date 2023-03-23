@@ -394,6 +394,9 @@ describe('Resource handler (async)', function() {
         event.Records[0].cf.request.method = 'POST';
         event.Records[0].cf.request.uri    = '/api/foo/bar/baz/qux';
 
+        // Handle Content Negotiation.
+        event.Records[0].cf.request.headers['accept'][0].value = 'application/json';
+
         result = await app.handler(event);
       });
 
