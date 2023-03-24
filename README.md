@@ -283,6 +283,7 @@ module.exports = {
  * @export {Object}
  */
 module.exports = {
+  resource: ['get', 'patch'],
 
   /**
    * GET /api/foo
@@ -307,6 +308,20 @@ module.exports = {
       .catch(function() {
         res.status(500).send();
       });
+  },
+
+  /**
+   * PATCH /api/foo/<resourceId>
+   */
+  async patch (req, res, id) {
+    try {
+      const result = await asyncOperation(id);
+
+      res.setHeader('Content-Type', 'text/html');
+      res.status(200).send(result || 'No result');
+    } catch(err) {
+      res.status(500).send();
+    }
   },
 
   ..
