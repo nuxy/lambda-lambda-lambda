@@ -27,13 +27,21 @@ describe('Common module', function() {
 
     describe('isPromise', function() {
       const result1 = Common.isPromise(new Promise(() => {}));
-      const result2 = Common.isPromise(new Object());
-      const result3 = Common.isPromise(new Function());
+      const result2 = Common.isPromise(function() {
+        return new Promise(() => {});
+      });
+      const result3 = Common.isPromise(function() {
+        return Promise.resolve();
+      });
+      const result4 = Common.isPromise(new Object());
+      const result5 = Common.isPromise(new Function());
 
       it('should return value', function() {
         expect(result1).to.be.true;
-        expect(result2).to.be.false;
-        expect(result3).to.be.false;
+        expect(result2).to.be.true;
+        expect(result3).to.be.true;
+        expect(result4).to.be.false;
+        expect(result5).to.be.false;
       });
     });
 

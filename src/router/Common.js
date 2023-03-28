@@ -28,7 +28,7 @@ exports.isAsyncFunc = function(value) {
 };
 
 /**
- * Check if object is Promise.
+ * Check if object is (or returns) Promise.
  *
  * @param {Object} obj
  *   Promise object.
@@ -38,9 +38,14 @@ exports.isAsyncFunc = function(value) {
  * @example
  * const result = isPromise(new Promise(() => {}));
  * // true
+ *
+ * const result = function() {
+ *   return Promise.resolve();
+ * };
+ * // true
  */
 exports.isPromise = function(obj) {
-  return (obj && (obj[Symbol.toStringTag] === 'Promise' || typeof obj.then === 'function'));
+  return (obj && (obj[Symbol.toStringTag] === 'Promise' || typeof obj.then === 'function' || /Promise/.test(obj.toString())));
 };
 
 /**
